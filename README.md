@@ -3,13 +3,14 @@
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone <URL_of_your_repository>
+   git clone https://github.com/Bohdan-wtl/qr-generator.git
    cd qr-generator
     ```
 2. Create a virtual environment and activate it:
     ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate` # On macOS and Linux use `source venv/bin/activate`
+   venv/Scripts/activate  # On Windows
+   source venv/bin/activate # On macOS and Linux
     ```
 3. Install the required packages:
     ```bash
