@@ -180,16 +180,16 @@ class Step2QrVariable(BasePage):
 
 class WebsiteQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
+        self.file_path = Path(os.getcwd()) / f'{generation_test_data.generate_pdf()}'
 
         self.setup_website_qr_code_dropdown = page.locator("//button[@data-target='#acc_nameOfUrl']")
         self.setup_website_qr_code_input = page.locator("//input[@id='url']")
 
     def website_qr_create(self, temporary_website):
-        time.sleep(1)
-        # self.step1_page.website_qr_type.is_editable()
         self.step1_page.website_qr_type.click()
         self.setup_website_qr_code_input.fill(temporary_website)
 
@@ -197,7 +197,12 @@ class WebsiteQrType:
         self.step2_page.next_button.click()
 
         self.step3_page.close_help_modal_window_st3()
-        #
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+
+        self.step3_page.qrcode_add_logo_step3_dropdown.click()
+        self.page.locator(self.step3_page.qrcode_upload_logo_input).set_input_files(str(self.file_path))
         self.step3_page.create_button.click()
 
 

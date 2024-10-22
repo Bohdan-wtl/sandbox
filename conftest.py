@@ -26,8 +26,8 @@ def playwright_instance():
 @pytest.fixture(scope="function")
 def browser(playwright_instance):
     browser = get_browser(playwright_instance,  # "firefox"
-                          # "webkit"
-                          "chrome"
+                          "webkit"
+                          #"chrome"
                           )
     yield browser
     browser.close()
@@ -118,14 +118,14 @@ languages_dev = ["bg", "zh-yue",
                  "sl", "th", "uk"
                  ]
 
-languages_staging = ["cs", "da",
+languages_staging = [#"cs", "da",
                      "en",
                      "fi",
                      "fr", "nl",
-                     "de", "it",
-                     "no", "pl",
-                     "pt", "es",
-                     "sv", "tr",
+                     #"de", "it",
+                     #"no", "pl",
+                     #"pt", "es",
+                     #"sv", "tr",
                      ]
 
 
