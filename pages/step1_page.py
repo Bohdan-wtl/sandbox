@@ -1,7 +1,10 @@
+from base.base_page import BasePage
 
 
-class Step1Page:
+class Step1Page(BasePage):
     def __init__(self, page):
+        super().__init__(page)
+
         self.step1_breadcrumbs_section_to_verify_page = page.locator("//span[@id='tab1text']")
         self.menu_burger_button = page.locator("//div[@id='openMenu']")
         self.website_qr_type = page.locator("//div[@id='step1']//div/input[@data-qr_type='Url']")
@@ -25,4 +28,3 @@ class Step1Page:
 
     def open_burger_menu(self):
         self.menu_burger_button.click()
-

@@ -34,6 +34,7 @@ class BaseTest:
     _general_pricing_page = None
     _dpf_pricing_page = None
 
+
     @fixture(autouse=True)
     def setup(self, request, page):
         request.cls.page = page

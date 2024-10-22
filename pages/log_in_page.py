@@ -1,6 +1,10 @@
+from base.base_page import BasePage
 
-class LogInPage:
+
+class LogInPage(BasePage):
     def __init__(self, page):
+        super().__init__(page)
+
         self.email_log_in = page.locator("//input[@id='input-email']")
         self.password_log_in = page.locator("//input[@id='input-password']")
         self.log_in_confirm_button = page.locator("//button[@id='login-btn']")

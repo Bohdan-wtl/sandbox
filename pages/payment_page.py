@@ -1,5 +1,9 @@
-class PaymentPage:
+from  base.base_page import BasePage
+
+
+class PaymentPage(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         # Billing Information
 
         # Frame payment

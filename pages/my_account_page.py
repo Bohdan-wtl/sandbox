@@ -1,7 +1,10 @@
+from  base.base_page import BasePage
 
 
-class MyAccountPage:
+class MyAccountPage(BasePage):
     def __init__(self, page):
+        super().__init__(page)
+
         self.my_account_name = page.locator("//input[@id='name']")
         self.my_account_surname = page.locator("//input[@id='surname']")
         self.my_account_email = page.locator("//div[@class='input-field-area']/input[@id='email']")

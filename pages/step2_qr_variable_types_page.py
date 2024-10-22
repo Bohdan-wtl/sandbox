@@ -2,16 +2,19 @@ import os
 import time
 from pathlib import Path
 import random
+from base.base_page import BasePage
 
 from faker import Faker
 from pages.step1_page import Step1Page
 from utils import generation_test_data
 from pages.step3_qr_design import Step3Page
 
-class Step2QrVariable:
+
+class Step2QrVariable(BasePage):
     def __init__(self, page):
+        super().__init__(page)
+
         self.file_path = None
-        self.page = page
         self.step3_page = Step3Page(page)
         self.generation_test_data = generation_test_data
 
@@ -32,7 +35,8 @@ class Step2QrVariable:
         self.create_new_folder_button = page.locator("//button[@id='createFolderBtn']")
         # QR code fonts
         self.update_fonts_qr_code_dropdown = page.locator("//button[@data-target='#acc_nameOfFonts']")
-        self.fonts_title_dropdown = page.locator("//div[@id='dropdown_title']/../div/button[@class='drp-icon-btn-open']")
+        self.fonts_title_dropdown = page.locator(
+            "//div[@id='dropdown_title']/../div/button[@class='drp-icon-btn-open']")
         self.fonts_texts_dropdown = page.locator("//div[@id='dropdown_text']/../div/button[@class='drp-icon-btn-open']")
         # QR code welcome screen
         self.upload_welcome_screen_qr_code_dropdown = page.locator("//button[@data-target='#acc_welcomeScreen']")
@@ -50,28 +54,27 @@ class Step2QrVariable:
         self.contact_details_qr_code_add_phone_number = page.locator("//input[@id='vcard_phone']")
         self.contact_details_qr_code_delete_phone_btn = page.locator(
             "//div[@id='phoneBlock']//button[contains(@class,'delete-btn vcard-remove')]")
-        #add email
+        # add email
         self.contact_details_qr_code_add_email_btn = page.locator("//button[@data-target='#add_email-dis']")
         self.contact_details_qr_code_add_email_label = page.locator("//input[@id='vcard_emailLabel']")
         self.contact_details_qr_code_add_email_address = page.locator("//input[@id='vcard_email']")
         self.contact_details_qr_code_delete_email_btn = page.locator(
             "//div[@id='emailBlock']//button[contains(@class,'delete-btn vcard-remove')]")
-        #add website
+        # add website
         self.contact_details_qr_code_add_website_btn = page.locator("//button[@data-target='#add_website-dis']")
         self.contact_details_qr_code_add_website_label = page.locator("//input[@id='vcard_website_title']")
         self.contact_details_qr_code_add_website_url = page.locator("// input[ @id='vcard_website']")
         self.contact_details_qr_code_delete_email_btn = page.locator(
             "//div[@id='websiteBlock']//button[contains(@class,'delete-btn vcard-remove')]")
-        #add location
+        # add location
         self.location_qr_code_dropdown = page.locator("//button[@data-target='#add_website-dis']")
         self.location_qr_code_search_address = page.locator("//input[@id='ship-address1']")
-
-
 
     def set_custom_qr_code_name(self, qr_code_type):
         fake = Faker()
         self.custom_name_qr_code_dropdown.click()
-        custom_qr_code_name = self.custom_name_qr_code_input.fill(f"{qr_code_type}_{str(fake.random_number(digits=9, fix_len=True))}")
+        custom_qr_code_name = self.custom_name_qr_code_input.fill(
+            f"{qr_code_type}_{str(fake.random_number(digits=9, fix_len=True))}")
         return custom_qr_code_name
 
     def close_help_modal_window_st2(self):
@@ -174,6 +177,7 @@ class Step2QrVariable:
         self.upload_welcome_screen_qr_code_dropdown.click()
         page.locator(self.upload_welcome_screen_qr_code_input).set_input_files(str(self.file_path))
 
+
 class WebsiteQrType:
     def __init__(self, page):
         self.step1_page = Step1Page(page)
@@ -185,7 +189,7 @@ class WebsiteQrType:
 
     def website_qr_create(self, temporary_website):
         time.sleep(1)
-        #self.step1_page.website_qr_type.is_editable()
+        # self.step1_page.website_qr_type.is_editable()
         self.step1_page.website_qr_type.click()
         self.setup_website_qr_code_input.fill(temporary_website)
 
@@ -224,8 +228,8 @@ class PdfQrType:
         self.step2_page.close_help_modal_window_st2()
         self.generation_test_data.emulate_drag_and_drop(self.page, '#pdf', self.file_path)
 
-        #self.directly_show_pdf_checkbox.is_editable() # Directly show the PDF file - option
-        #self.directly_show_pdf_checkbox.click() # Directly show the PDF file - option
+        # self.directly_show_pdf_checkbox.is_editable() # Directly show the PDF file - option
+        # self.directly_show_pdf_checkbox.click() # Directly show the PDF file - option
 
         self.step2_page.select_random_design_option_two_colors()
         self.company_pdf_info_input.fill(fake.company())
@@ -248,6 +252,7 @@ class PdfQrType:
         self.step3_page.qrcode_add_logo_step3_dropdown.click()
         self.page.locator(self.step3_page.qrcode_upload_logo_input).set_input_files(str(self.file_path))
         self.step3_page.create_button.click()
+
 
 class LinksQrType:
     def __init__(self, page):
@@ -280,7 +285,7 @@ class LinksQrType:
         self.generation_test_data = generation_test_data
         self.file_path = Path(os.getcwd()) / f'{self.generation_test_data.generate_image()}'
         self.page.locator(self.basic_info_links_qr_code_image_input).set_input_files(str(self.file_path))
-        
+
         self.basic_info_links_qr_code_title_input.fill(fake.text(max_nb_chars=27))
         self.basic_info_links_qr_code_description_input.fill(fake.text(max_nb_chars=270))
         self.list_of_links_qr_code_link_text_input.fill(fake.text(max_nb_chars=27))
@@ -524,7 +529,7 @@ class MenuQrType:
         self.menu_menu_type_section1_name_translated_input = page.locator("//input[@id='productNamesTranslated']")
         self.menu_menu_type_section1_description_input = page.locator("//input[@id='productDescriptions']")
         self.menu_menu_type_section1_price_input = page.locator("//input[@id='productPrices']")
-        #add allergens
+        # add allergens
         self.menu_link_type_url_input = page.locator("//input[@id='url']")
 
     def menu_menu_qr_create(self):
