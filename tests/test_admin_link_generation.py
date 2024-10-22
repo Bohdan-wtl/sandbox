@@ -18,6 +18,8 @@ admin_password = "12345678"
 
 
 @pytest.mark.flaky(reruns=2)
+@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.parametrize("discount_button_locator", [
     "default_pricing_button",
     "discount_70_promo_button",   # 70% OFF

@@ -1,10 +1,12 @@
+from base.base_page import BasePage
 
-class AdminPage:
+
+class AdminPage(BasePage):
 
     def __init__(self, page):
+        super().__init__(page)
 
         # Admin Log In page
-        self.page = page
         self.user_email = None
         self.admin_email_input = page.locator("//input[@id='input-email']")
         self.admin_password_input = page.locator("//input[@id='input-password']")
@@ -22,7 +24,8 @@ class AdminPage:
         self.search_button = page.locator("//button[contains(text(),'Search')]")
 
         # User menu dropdown
-        self.generate_discount_url_btn = page.locator("//div[contains(@class,'dropdown-menu')]/a[text()=' Generate URL']")
+        self.generate_discount_url_btn = page.locator(
+            "//div[contains(@class,'dropdown-menu')]/a[text()=' Generate URL']")
 
         # Link discount variables pop up
         self.pricing_popup_close_button = page.locator("//div[@id='user_plan_generate_modal']//button[@class='close']")
@@ -49,10 +52,12 @@ class AdminPage:
         self.admin_logout_button = page.locator("//ul[2]/li/div/a")
 
     def get_user_menu_dots_button_users_tab(self, user_email):
-        return self.page.locator(f"//tr[td//a[contains(text(), '{user_email}')]]//div[contains(@class, 'dropdown')]//button")
+        return self.page.locator(
+            f"//tr[td//a[contains(text(), '{user_email}')]]//div[contains(@class, 'dropdown')]//button")
 
     def get_user_menu_dots_button_payments_tab(self, email_dpf):
-        return self.page.locator(f"//tr[.//span[contains(text(),'{email_dpf}')]]//div[contains(@class,'dropdown actions-dropdown')]")
+        return self.page.locator(
+            f"//tr[.//span[contains(text(),'{email_dpf}')]]//div[contains(@class,'dropdown actions-dropdown')]")
 
     def get_user_menu_refund_button_payments_tab(self, email_dpf):
         return self.page.locator(f"//tr[.//span[contains(text(),'{email_dpf}')]]//a[text()=' Refund']")

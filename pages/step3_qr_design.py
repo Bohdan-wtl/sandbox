@@ -1,10 +1,11 @@
 import random
+from base.base_page import BasePage
 
 
-
-class Step3Page:
+class Step3Page(BasePage):
     def __init__(self, page):
-        self.page = page
+        super().__init__(page)
+
         self.frame_step3_dropdown = page.locator("//button[@data-target='#acc_frame']")
         self.qrcode_patterns_step3_dropdown = page.locator("//button[@data-target='#acc_patterns']")
         self.qrcode_corners_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
@@ -12,7 +13,7 @@ class Step3Page:
         self.qrcode_upload_logo_input = "// input[ @ id = 'qr_code_logo']"
         self.create_button = page.locator("//button[@id='temp_submit']")
         self.back_button = page.locator("//button[@id='cancel']")
-        #Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.
+        # Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.
         self.help_modal_close_button = page.locator("//div[@id='helpCarousel']//button[@id='closeBtn']")
 
     def close_help_modal_window_st3(self):
