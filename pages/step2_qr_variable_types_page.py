@@ -178,8 +178,10 @@ class Step2QrVariable(BasePage):
         page.locator(self.upload_welcome_screen_qr_code_input).set_input_files(str(self.file_path))
 
 
-class WebsiteQrType:
+class WebsiteQrType(BasePage):
+
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -201,8 +203,9 @@ class WebsiteQrType:
         self.step3_page.create_button.click()
 
 
-class PdfQrType:
+class PdfQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.page = page
         self.generation_test_data = generation_test_data
         self.step1_page = Step1Page(page)
@@ -254,9 +257,9 @@ class PdfQrType:
         self.step3_page.create_button.click()
 
 
-class LinksQrType:
+class LinksQrType(BasePage):
     def __init__(self, page):
-        self.page = page
+        super().__init__(page)
         self.generation_test_data = generation_test_data
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
@@ -309,8 +312,9 @@ class LinksQrType:
         self.step3_page.create_button.click()
 
 
-class VCardQrType:
+class VCardQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -338,8 +342,9 @@ class VCardQrType:
         self.step3_page.create_button.click()
 
 
-class BusinessQrType:
+class BusinessQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -361,8 +366,9 @@ class BusinessQrType:
         self.step3_page.create_button.click()
 
 
-class ImagesQrType:
+class ImagesQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -387,8 +393,9 @@ class ImagesQrType:
         self.step3_page.create_button.click()
 
 
-class VideoQrType:
+class VideoQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -414,8 +421,9 @@ class VideoQrType:
         self.step3_page.create_button.click()
 
 
-class AppsQrType:
+class AppsQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -445,8 +453,9 @@ class AppsQrType:
         self.step3_page.create_button.click()
 
 
-class CouponQrType:
+class CouponQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -474,8 +483,9 @@ class CouponQrType:
         self.step3_page.create_button.click()
 
 
-class Mp3QrType:
+class Mp3QrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -502,8 +512,9 @@ class Mp3QrType:
         self.step3_page.create_button.click()
 
 
-class MenuQrType:
+class MenuQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.file_path = None
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
@@ -561,8 +572,9 @@ class MenuQrType:
         self.step3_page.create_button.click()
 
 
-class WiFiQrType:
+class WiFiQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -579,8 +591,9 @@ class WiFiQrType:
         self.step3_page.create_button.click()
 
 
-class FacebookQrType:
+class FacebookQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -622,8 +635,9 @@ class InstagramQrType:
         self.step3_page.create_button.click()
 
 
-class SocialMediaQrType:
+class SocialMediaQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -648,8 +662,9 @@ class SocialMediaQrType:
         self.step3_page.create_button.click()
 
 
-class WhatsAppQrType:
+class WhatsAppQrType(BasePage):
     def __init__(self, page):
+        super().__init__(page)
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)

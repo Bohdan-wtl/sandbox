@@ -4,6 +4,9 @@ class BasePage:
     def __init__(self, page: Page):
         self.page = page
 
+    def navigate(self, url):
+        self.page.goto(url)
+
     def is_visible(self, locator):
         return expect(self.page.locator(locator)).to_be_visible()
 

@@ -1,3 +1,4 @@
+import allure
 import pytest
 from faker import Faker
 from playwright.sync_api import sync_playwright, expect
@@ -7,66 +8,62 @@ from pages.main_page import MainPage
 from pages.my_qr_codes_page import MyQRCodesPage
 from pages.register_page import RegisterPage
 from pages.step1_page import Step1Page
+from tests.test_sign_up_flow_default import TestDefaultSignUpFlow
+from tests.test_sign_up_flow_dpf import TestDPFSignUpFlow
 from utils.generation_test_data import navigate
-from tests import test_sign_up_flow_dpf, test_sign_up_flow_default
 from config import BASE_URL_DEV
 from config import BASE_URL_STAGING
 import os
 import shutil
 from utils.generation_test_data import signup_password
 
+headless = False
+generated_files_dir = "generated_files"
+tests_generated_files_dir = "tests\generated_files"
+downloaded_qr_codes_dir = "downloaded_qr_codes"
+tests_downloaded_qr_codes_dir = "tests\downloaded_qr_codes"
+
 
 @pytest.fixture(scope="session")
-def playwright_instance():
-    playwright = sync_playwright().start()
-    yield playwright
-    playwright.stop()
+def browser(request):
+    with sync_playwright() as p:
+        browser = getattr(p, request.param).launch(headless=headless)
+        yield browser
+        browser.close()
 
 
 @pytest.fixture(scope="function")
-def browser(playwright_instance):
-    browser = get_browser(playwright_instance,  # "firefox"
-                          # "webkit"
-                          "chrome"
-                          )
-    yield browser
-    browser.close()
-
-
-@pytest.fixture(scope="function")
-def context(browser):
-    context = browser.new_context(viewport={"width": 1440, "height": 1080},
-                                  # record_video_dir="videos/"
-                                  )
+def context(request, browser):
+    context = browser.new_context(viewport={"width": 1440, "height": 1080}) #,record_video_dir="videos/"
     yield context
     context.close()
 
 
 @pytest.fixture(scope="function")
-def page(context):
+def page(context, request):
     page = context.new_page()
     yield page
+    if request.node.rep_call.failed:
+        page.screenshot(path=f"screenshots/{request.node.name}.png", full_page=True)
     page.close()
-
-
-def get_browser(playwright, browser_name):
-    if browser_name == "chrome":
-        return playwright.chromium.launch(channel="chrome", headless=True, slow_mo=0)
-    elif browser_name == "headless":
-        return playwright.chromium.launch(headless=True)
-    elif browser_name == "firefox":
-        return playwright.firefox.launch(channel="firefox", headless=False, slow_mo=000)
-    elif browser_name == "webkit":
-        return playwright.webkit.launch(headless=False, slow_mo=1000)
-    else:
-        raise ValueError(f"Unknown browser: {browser_name}")
+    if request.node.rep_call.failed:
+        page.video.save_as(path=f"videos/{request.node.name}.webm")
 
 
 @pytest.fixture(scope="function")
-def email_dpf():
+def fake_email():
     fake = Faker()
     temporary_mail = "wtl.automation" + fake.aba() + "@test.com"
-    return temporary_mail
+    yield temporary_mail
+
+@pytest.fixture(scope="function", autouse=True)
+def test_artifacts(request):
+    yield
+    if request.node.rep_call.failed:
+        allure.attach.file(f"screenshots/{request.node.name}.png", name="screenshot",
+                           attachment_type=allure.attachment_type.PNG)
+        allure.attach.file(f"videos/{request.node.name}.webm", name="video",
+                           attachment_type=allure.attachment_type.WEBM)
 
 
 @pytest.fixture
@@ -136,7 +133,8 @@ def language(request):
 
 @pytest.fixture(scope="session", autouse=True)
 def clean_folders():
-    folders_to_clean = ["downloaded_qr_codes/", "generated_files/", "screenshot/"]
+    folders_to_clean = [generated_files_dir, tests_generated_files_dir, downloaded_qr_codes_dir,
+                        tests_downloaded_qr_codes_dir]
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)
@@ -145,24 +143,24 @@ def clean_folders():
 
 
 @pytest.fixture(scope="function", params=[
-    test_sign_up_flow_default.test_website_qr_code_create,
-    test_sign_up_flow_default.test_pdf_qr_code_create,
-    test_sign_up_flow_default.test_links_qr_code_create,
-    test_sign_up_flow_default.test_vcard_qr_code_create,
-    test_sign_up_flow_default.test_business_qr_code_create,
-    test_sign_up_flow_default.test_images_qr_code_create,
-    test_sign_up_flow_default.test_video_qr_code_create,
-    test_sign_up_flow_default.test_apps_qr_code_create,
-    test_sign_up_flow_default.test_coupon_qr_code_create,
-    test_sign_up_flow_default.test_mp3_qr_code_create,
-    test_sign_up_flow_default.test_menu_qr_code_create_menu_type,
-    test_sign_up_flow_default.test_menu_qr_code_create_pdf_type,
-    test_sign_up_flow_default.test_menu_qr_code_create_link_type,
-    test_sign_up_flow_default.test_wi_fi_qr_code_type,
-    test_sign_up_flow_default.test_facebook_qr_code_type,
-    test_sign_up_flow_default.test_instagram_qr_code_type,
-    test_sign_up_flow_default.test_social_media_qr_code_type,
-    test_sign_up_flow_default.test_whatsapp_qr_code_type
+    TestDefaultSignUpFlow.test_website_qr_code_create,
+    TestDefaultSignUpFlow.test_pdf_qr_code_create,
+    TestDefaultSignUpFlow.test_links_qr_code_create,
+    TestDefaultSignUpFlow.test_vcard_qr_code_create,
+    TestDefaultSignUpFlow.test_business_qr_code_create,
+    TestDefaultSignUpFlow.test_images_qr_code_create,
+    TestDefaultSignUpFlow.test_video_qr_code_create,
+    TestDefaultSignUpFlow.test_apps_qr_code_create,
+    TestDefaultSignUpFlow.test_coupon_qr_code_create,
+    TestDefaultSignUpFlow.test_mp3_qr_code_create,
+    TestDefaultSignUpFlow.test_menu_qr_code_create_menu_type,
+    TestDefaultSignUpFlow.test_menu_qr_code_create_pdf_type,
+    TestDefaultSignUpFlow.test_menu_qr_code_create_link_type,
+    TestDefaultSignUpFlow.test_wi_fi_qr_code_type,
+    TestDefaultSignUpFlow.test_facebook_qr_code_type,
+    TestDefaultSignUpFlow.test_instagram_qr_code_type,
+    TestDefaultSignUpFlow.test_social_media_qr_code_type,
+    TestDefaultSignUpFlow.test_whatsapp_qr_code_type
 ])
 def setup_qr_code_creation(sign_up_fixture, page, request):
     download_qr_code_page = DownloadPage(page)
@@ -181,24 +179,24 @@ def setup_qr_code_creation(sign_up_fixture, page, request):
 
 
 @pytest.fixture(scope="function", params=[
-    test_sign_up_flow_dpf.test_sign_up_website_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_pdf_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_links_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_vcard_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_business_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_images_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_video_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_apps_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_coupon_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_mp3_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_menu_menu_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_menu_pdf_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_menu_link_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_wifi_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_facebook_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_instagram_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_social_media_qr_type,
-    test_sign_up_flow_dpf.test_sign_up_whatsapp_qr_type
+    TestDPFSignUpFlow.test_sign_up_website_qr_type,
+    TestDPFSignUpFlow.test_sign_up_pdf_qr_type,
+    TestDPFSignUpFlow.test_sign_up_links_qr_type,
+    TestDPFSignUpFlow.test_sign_up_vcard_qr_type,
+    TestDPFSignUpFlow.test_sign_up_business_qr_type,
+    TestDPFSignUpFlow.test_sign_up_images_qr_type,
+    TestDPFSignUpFlow.test_sign_up_video_qr_type,
+    TestDPFSignUpFlow.test_sign_up_apps_qr_type,
+    TestDPFSignUpFlow.test_sign_up_coupon_qr_type,
+    TestDPFSignUpFlow.test_sign_up_mp3_qr_type,
+    TestDPFSignUpFlow.test_sign_up_menu_menu_qr_type,
+    TestDPFSignUpFlow.test_sign_up_menu_pdf_qr_type,
+    TestDPFSignUpFlow.test_sign_up_menu_link_qr_type,
+    TestDPFSignUpFlow.test_sign_up_wifi_qr_type,
+    TestDPFSignUpFlow.test_sign_up_facebook_qr_type,
+    TestDPFSignUpFlow.test_sign_up_instagram_qr_type,
+    TestDPFSignUpFlow.test_sign_up_social_media_qr_type,
+    TestDPFSignUpFlow.test_sign_up_whatsapp_qr_type
 ])
 def setup_qr_code_creation_dpf_flow(page, navigate_to_dpf_page, request, email_dpf):
     download_qr_code_page = DownloadPage(page)
