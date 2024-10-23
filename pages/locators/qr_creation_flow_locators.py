@@ -93,7 +93,7 @@ class QrCreationLocators:
 
         # Links QR code locators
         self.basic_info_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_listInfo']")
-        self.basic_info_links_qr_code_image_input = "//input[@id='companyLogo']"
+        self.basic_info_links_qr_code_image_input = page.locator("//input[@id='companyLogo']")
         self.basic_info_links_qr_code_title_input = page.locator("//input[@id='list_title']")
         self.basic_info_links_qr_code_description_input = page.locator("//textarea[@id='list_description']")
         self.list_of_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_link']")
@@ -250,7 +250,7 @@ class QrCreationLocators:
         self.qrcode_patterns_step3_dropdown = page.locator("//button[@data-target='#acc_patterns']")
         self.qrcode_corners_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
         self.qrcode_add_logo_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
-        self.qrcode_upload_logo_input = "// input[ @ id = 'qr_code_logo']"
+        self.qrcode_upload_logo_input = page.locator("//input[@id='qr_code_logo']")
         self.create_button = page.locator("//button[@id='temp_submit']")
         self.back_button = page.locator("//button[@id='cancel']")
         # Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.

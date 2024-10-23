@@ -19,7 +19,7 @@ class QrCreationPage(BasePage):
     def pdf_qr_create(self):
         self.locator.pdf_qr_type.click()
         self.helper.close_help_modal_window_st2()
-        self.helper.emulate_drag_and_drop('#dropzone', 'pdf')
+        self.helper.emulate_drag_and_drop('#pdf', 'pdf')
         self.helper.select_random_colors()
         self.locator.company_pdf_info_input.fill(self.faker.company())
         self.locator.title_pdf_info_input.fill(self.faker.text(max_nb_chars=100))
@@ -39,115 +39,115 @@ class QrCreationPage(BasePage):
         self.locator.create_button.click()
 
     def coupon_qr_create(self):
-        self.locator.coupon_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для купонов
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
-        self.locator.coupon_info_qr_code_code_input.fill('5859083434')  # Шаг 3: Вводим код купона
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+        self.locator.coupon_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.locator.coupon_info_qr_code_code_input.fill('5859083434')  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def mp3_qr_create(self):
-        self.locator.mp3_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для MP3
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
-        self.helper.emulate_drag_and_drop('#mp3', 'mp3')  # Шаг 3: Генерируем и загружаем MP3 через drag-and-drop
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+        self.locator.mp3_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.helper.emulate_drag_and_drop('#mp3', 'mp3')  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def menu_menu_qr_create(self):
-        self.locator.menu_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для меню
-        self.locator.menu_var_popup_menu_type_button.click()  # Шаг 2: Выбираем тип меню
-        self.helper.close_help_modal_window_st2()  # Шаг 3: Закрываем модальное окно
-        self.locator.menu_menu_type_section1_name_input.fill("section name")  # Шаг 4: Заполняем название секции
-        self.locator.menu_menu_type_section1_product_name_input.fill("menu name")  # Шаг 5: Заполняем название меню
-        self.locator.next_button.click()  # Шаг 6: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 7: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 8: Завершаем создание QR-кода
+        self.locator.menu_qr_type.click()  
+        self.locator.menu_var_popup_menu_type_button.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.locator.menu_menu_type_section1_name_input.fill("section name")  
+        self.locator.menu_menu_type_section1_product_name_input.fill("menu name")  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def menu_pdf_qr_create(self):
-        self.locator.menu_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для меню (PDF)
-        self.locator.menu_var_popup_pdf_type_button.click()  # Шаг 2: Выбираем PDF тип меню
-        self.helper.close_help_modal_window_st2()  # Шаг 3: Закрываем модальное окно
-        self.helper.emulate_drag_and_drop('#pdf', 'pdf')  # Шаг 4: Генерируем и загружаем PDF через drag-and-drop
-        self.locator.next_button.click()  # Шаг 5: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 6: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 7: Завершаем создание QR-кода
+        self.locator.menu_qr_type.click()  
+        self.locator.menu_var_popup_pdf_type_button.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.helper.emulate_drag_and_drop('#pdf', 'pdf')  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def menu_link_qr_create(self):
-        self.locator.menu_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для меню (ссылка)
-        self.locator.menu_var_popup_link_type_button.click()  # Шаг 2: Выбираем тип меню (ссылка)
-        self.locator.menu_link_type_url_input.fill(self.faker.url())  # Шаг 3: Вводим временный URL
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+        self.locator.menu_qr_type.click()  
+        self.locator.menu_var_popup_link_type_button.click()  
+        self.locator.menu_link_type_url_input.fill(self.faker.url())  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def wifi_qr_create(self):
-        self.locator.wifi_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для Wi-Fi
-        self.locator.wi_fi_info_network_name_input.fill("Some wifi name")  # Шаг 2: Вводим имя Wi-Fi сети
-        self.locator.next_button.click()  # Шаг 3: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 4: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 5: Завершаем создание QR-кода
+        self.locator.wifi_qr_type.click()  
+        self.locator.wi_fi_info_network_name_input.fill("Some wifi name")  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def facebook_qr_create(self):
-        self.locator.facebook_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для Facebook
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
+        self.locator.facebook_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
         self.locator.facebook_basic_info_facebook_url.fill(
-            "https://www.facebook.com/automation_test_example")  # Шаг 3: Заполняем URL Facebook
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+            "https://www.facebook.com/automation_test_example")  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def instagram_qr_create(self):
-        self.locator.instagram_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для Instagram
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
+        self.locator.instagram_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
         self.locator.instagram_basic_info_username_input.fill(
-            "insta_nickname")  # Шаг 3: Вводим имя пользователя Instagram
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+            "insta_nickname")  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def social_media_qr_create(self):
-        self.locator.social_media_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для социальных сетей
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
+        self.locator.social_media_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
         self.locator.social_media_basic_info_title.fill(
-            "social_media_title")  # Шаг 3: Заполняем название профиля социальных сетей
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+            "social_media_title")  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def whatsapp_qr_create(self):
-        self.locator.whatsapp_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для WhatsApp
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
-        self.locator.whats_app_information_phone_input.fill("0501234567")  # Шаг 3: Вводим номер телефона для WhatsApp
-        self.locator.next_button.click()  # Шаг 5: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 6: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 7: Завершаем создание QR-кода
+        self.locator.whatsapp_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.locator.whats_app_information_phone_input.fill("0501234567")  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def video_qr_create(self):
-        self.locator.video_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для видео
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
-        self.helper.emulate_drag_and_drop('#files', 'mp4')  # Шаг 3: Генерируем и загружаем видео через drag-and-drop
-        self.locator.next_button.click()  # Шаг 4: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 5: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 6: Завершаем создание QR-кода
+        self.locator.video_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.helper.emulate_drag_and_drop('#files', 'mp4')  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()  
 
     def image_qr_create(self):
         self.locator.images_qr_type.click()
         self.helper.close_help_modal_window_st2()
-        self.helper.emulate_drag_and_drop('#dropzone', 'image')
+        self.helper.emulate_drag_and_drop('#files', 'image')
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.locator.create_button.click()
 
     def apps_qr_create(self):
-        self.locator.apps_qr_type.click()  # Шаг 1: Нажимаем на тип QR-кода для приложений
-        self.helper.close_help_modal_window_st2()  # Шаг 2: Закрываем модальное окно
-        self.locator.app_info_qr_code_app_name_input.fill('App name')  # Шаг 3: Заполняем имя приложения
-        self.locator.links_to_platforms_qr_code_google_add_button.click()  # Шаг 4: Добавляем ссылку на Google платформу
-        self.locator.links_to_platforms_qr_code_google_input.fill(self.faker.url())  # Шаг 5: Заполняем URL приложения
-        self.locator.next_button.click()  # Шаг 6: Переходим к следующему шагу
-        self.helper.close_help_modal_window_st3()  # Шаг 7: Закрываем следующее модальное окно
-        self.locator.create_button.click()  # Шаг 8: Завершаем создание QR-кода
+        self.locator.apps_qr_type.click()  
+        self.helper.close_help_modal_window_st2()  
+        self.locator.app_info_qr_code_app_name_input.fill('App name')  
+        self.locator.links_to_platforms_qr_code_google_add_button.click()  
+        self.locator.links_to_platforms_qr_code_google_input.fill(self.faker.url())  
+        self.locator.next_button.click()  
+        self.helper.close_help_modal_window_st3()  
+        self.locator.create_button.click()
 
     def business_qr_create(self):
         self.locator.business_qr_type.click()

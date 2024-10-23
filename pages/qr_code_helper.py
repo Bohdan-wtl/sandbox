@@ -64,9 +64,7 @@ class QrCodeHelper:
             return mp3_path
 
     def emulate_drag_and_drop(self, selector, file_type):
-        """Эмуляция drag-and-drop с автоматической генерацией файла."""
         file_path = self.generate_file(file_type)
-
         mime_type_mapping = {
             '.pdf': 'application/pdf',
             '.jpg': 'image/jpeg',
@@ -77,15 +75,11 @@ class QrCodeHelper:
             '.mp4': 'video/mp4',
             '.avi': 'video/x-msvideo',
         }
-
         file_extension = file_path.suffix.lower()
         mime_type = mime_type_mapping.get(file_extension, 'application/octet-stream')
-
         with open(file_path, 'rb') as file:
             file_content = file.read()
-
         self.page.wait_for_selector(selector, state='visible')
-
         self.page.evaluate("""
           (data) => {
             const { fileContent, selector, mimeType, fileName } = data;
@@ -114,7 +108,6 @@ class QrCodeHelper:
         self.page.wait_for_selector(self.locator.modal_window_step2, state="hidden", timeout=5000)
 
     def select_random_colors(self):
-        """Выбор случайного цвета из предложенных."""
         design_color_style_locators = [
             "//div[@id='formcolorPalette1']",
             "//div[@id='formcolorPalette2']",
@@ -128,14 +121,12 @@ class QrCodeHelper:
         return random_design
 
     def set_custom_qr_code_name(self, qr_code_type):
-        """Установка кастомного имени для QR-кода."""
         self.locator.custom_name_qr_code_dropdown.click()
         custom_qr_code_name = self.locator.custom_name_qr_code_input.fill(
             f"{qr_code_type}_{str(self.faker.random_number(digits=9, fix_len=True))}")
         return custom_qr_code_name
 
     def fonts_style_select(self):
-        """Выбор стиля шрифта."""
         self.locator.update_fonts_qr_code_dropdown.click()
         self.locator.fonts_title_dropdown.scroll_into_view_if_needed()
         self.locator.fonts_title_dropdown.click(force=True)
@@ -152,19 +143,16 @@ class QrCodeHelper:
         random_text_font.click(force=True)
 
     def welcome_screen_set_img(self):
-        """Загрузка изображения на экран приветствия."""
         image_path = self.generate_file('image')
         self.locator.upload_welcome_screen_qr_code_dropdown.click()
         self.page.locator(self.locator.upload_welcome_screen_qr_code_input).set_input_files(image_path)
 
     def select_random_option(self, locators):
-        """Выбор случайного элемента из списка локаторов."""
         random_locator = random.choice(locators)
         self.page.locator(random_locator).click()
         return random_locator
 
     def select_frame_step3(self):
-        """Выбор случайной рамки для QR-кода."""
         self.locator.frame_step3_dropdown.click()
         frame_locators = [
             "//button[@id='qr_frame_id_{}']".format(i) for i in range(16)
@@ -172,7 +160,6 @@ class QrCodeHelper:
         return self.select_random_option(frame_locators)
 
     def select_pattern_step3(self):
-        """Выбор случайного паттерна для QR-кода."""
         self.locator.qrcode_patterns_step3_dropdown.click()
         pattern_locators = [
             "//label[@id='square']", "//label[@id='round']", "//label[@id='extra_rounded']",
@@ -181,7 +168,6 @@ class QrCodeHelper:
         return self.select_random_option(pattern_locators)
 
     def select_qrcode_corners_step3(self):
-        """Выбор углов QR-кода."""
         self.locator.qrcode_corners_step3_dropdown.click()
         self.select_random_option([
             "//label[@id='NS']", "//label[@id='FR']", "//label[@id='FS']",
@@ -193,7 +179,6 @@ class QrCodeHelper:
         ])
 
     def select_random_social_network_option(self):
-        """Выбор случайной социальной сети."""
         social_networks_locators = [
             "//button[@id='socialicon_id_web']", "//button[@id='socialicon_id_dribbble']",
             "//button[@id='socialicon_id_facebook']", "//button[@id='socialicon_id_flickr']",
