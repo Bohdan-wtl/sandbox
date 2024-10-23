@@ -70,6 +70,9 @@ class Step2QrVariable(BasePage):
         self.location_qr_code_dropdown = page.locator("//button[@data-target='#add_website-dis']")
         self.location_qr_code_search_address = page.locator("//input[@id='ship-address1']")
 
+
+
+
     def set_custom_qr_code_name(self, qr_code_type):
         fake = Faker()
         self.custom_name_qr_code_dropdown.click()
@@ -176,6 +179,19 @@ class Step2QrVariable(BasePage):
         self.file_path = Path(os.getcwd()) / f'{self.generation_test_data.generate_image()}'
         self.upload_welcome_screen_qr_code_dropdown.click()
         page.locator(self.upload_welcome_screen_qr_code_input).set_input_files(str(self.file_path))
+
+    def add_phone_email_web_to_contact_details(self):
+        fake = Faker()
+        self.contact_details_qr_code_add_phone_btn.click()
+        self.contact_details_qr_code_add_phone_label.fill(fake.text(max_nb_chars=20))
+        self.contact_details_qr_code_add_phone_number.fill(fake.basic_phone_number())
+        self.contact_details_qr_code_add_email_btn.click()
+        self.contact_details_qr_code_add_email_label.fill(fake.text(max_nb_chars=20))
+        self.contact_details_qr_code_add_email_address.fill(fake.email())
+        self.contact_details_qr_code_add_website_btn.click()
+        self.contact_details_qr_code_add_website_label.fill(fake.text(max_nb_chars=20))
+        self.contact_details_qr_code_add_website_url.fill(fake.url())
+
 
 
 class WebsiteQrType:
@@ -336,6 +352,7 @@ class VCardQrType:
         self.step2_page.select_random_design_option_two_colors()
         self.v_card_qr_code_first_name_input.fill(fake.first_name())
         self.v_card_qr_code_last_name_input.fill(fake.last_name())
+        self.step2_page.add_phone_email_web_to_contact_details()
         self.step2_page.next_button.click()
 
         self.step3_page.close_help_modal_window_st3()
