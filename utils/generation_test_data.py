@@ -15,12 +15,6 @@ def navigate(BASE_URL_LANG_PARAM, page):
     page.goto(BASE_URL_LANG_PARAM)
 
 
-# def random_email_faker():
-#     fake = Faker()
-#     fake_email = "wtl.automation" + fake.aba() + "@" + fake.domain_word() + ".com"
-#     return fake_email
-
-
 def random_website_faker():
     fake = Faker()
     fake_website = "www.test" + fake.domain_name()

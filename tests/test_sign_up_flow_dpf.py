@@ -7,6 +7,8 @@ from utils.generation_test_data import temporary_website
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 class TestDPFSignUpFlow(BaseTest):
 
+
+
     def test_sign_up_website_qr_type(self, navigate_to_dpf_page, fake_email):
         self.website_qr.website_qr_create(temporary_website)
         self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
