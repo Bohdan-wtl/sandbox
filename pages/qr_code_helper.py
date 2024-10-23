@@ -18,7 +18,6 @@ class QrCodeHelper:
         self.generated_files_dir.mkdir(parents=True, exist_ok=True)
 
     def generate_file(self, file_type):
-        """Генерация файла в зависимости от типа файла."""
         timestamp = int(time.time())
         file_path = self.generated_files_dir
 
