@@ -12,18 +12,14 @@
 # from utils.generation_test_data import navigate
 # from config import BASE_URL_DEV
 # from config import BASE_URL_STAGING
-# import os
-# import shutil
+import os
+import shutil
 # from utils.generation_test_data import signup_password
 #
 import pytest
 from playwright.sync_api import sync_playwright
 
 headless = False
-# generated_files_dir = "generated_files"
-# tests_generated_files_dir = "tests\generated_files"
-# downloaded_qr_codes_dir = "downloaded_qr_codes"
-# tests_downloaded_qr_codes_dir = "tests\downloaded_qr_codes"
 #
 #
 @pytest.fixture(scope="session")
@@ -47,11 +43,11 @@ def context(request, browser):
 def page(context, request):
     page = context.new_page()
     yield page
-    if request.node.rep_call.failed:
-        page.screenshot(path=f"screenshots/{request.node.name}.png", full_page=True)
+    # if request.node.rep_call.failed:
+    #     page.screenshot(path=f"screenshots/{request.node.name}.png", full_page=True)
     page.close()
-    if request.node.rep_call.failed:
-        page.video.save_as(path=f"videos/{request.node.name}.webm")
+    # if request.node.rep_call.failed:
+    #     page.video.save_as(path=f"videos/{request.node.name}.webm")
 #
 #
 # @pytest.fixture(scope="function")
@@ -135,15 +131,14 @@ def page(context, request):
 #     return request.param
 #
 #
-# @pytest.fixture(scope="session", autouse=True)
-# def clean_folders():
-#     folders_to_clean = [generated_files_dir, tests_generated_files_dir, downloaded_qr_codes_dir,
-#                         tests_downloaded_qr_codes_dir]
-#     for folder in folders_to_clean:
-#         if os.path.exists(folder):
-#             shutil.rmtree(folder)
-#         os.makedirs(folder)
-#     yield
+@pytest.fixture(scope="session", autouse=True)
+def clean_folders():
+    folders_to_clean = ["generated_files", "downloaded_qr_codes"]
+    for folder in folders_to_clean:
+        if os.path.exists(folder):
+            shutil.rmtree(folder)
+        os.makedirs(folder)
+    yield
 #
 #
 # @pytest.fixture(scope="function", params=[

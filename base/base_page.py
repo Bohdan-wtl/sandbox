@@ -1,20 +1,15 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, expect, Locator
 
 class BasePage:
     def __init__(self, page: Page):
         self.page = page
+        self.expect = expect
 
     def navigate(self, url):
         self.page.goto(url)
 
     def is_visible(self, locator):
-        return expect(self.page.locator(locator)).to_be_visible()
-
-    def is_not_visible(self, locator):
-        return expect(self.page.locator(locator)).not_to_be_visible()
-
-    def is_clickable(self, locator):
-        return expect(self.page.locator(locator)).to_be_clickable()
+        self.expect(self.page.locator(locator)).to_be_visible()
 
     def get_text(self, locator):
         return self.page.locator(locator).text_content()

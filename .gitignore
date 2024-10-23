@@ -13,6 +13,9 @@ develop-eggs/
 dist/
 downloads/
 eggs/
+generated_files/
+downloaded_qr_codes/
+resources/
 .eggs/
 lib/
 lib64/

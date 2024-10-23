@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from base.base_page import BasePage
-from new_pages.locators.my_qr_codes_locators import MyQrCodesLocators
+from pages.locators.my_qr_codes_locators import MyQrCodesLocators
 
 
 class MyQrCodesPage(BasePage):

@@ -1,5 +1,5 @@
 from base.base_page import BasePage
-from new_pages.locators.login_page_locators import LoginPageLocators
+from pages.locators.login_page_locators import LoginPageLocators
 
 class LogInPage(BasePage):
     def __init__(self, page):

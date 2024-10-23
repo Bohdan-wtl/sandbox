@@ -1,5 +1,5 @@
 from base.base_page import BasePage
-from new_pages.locators.main_page_locators import MainPageLocators
+from pages.locators.main_page_locators import MainPageLocators
 
 class MainPage(BasePage):
 

@@ -1,5 +1,5 @@
 from base.base_page import BasePage
-from new_pages.locators.menu_page_locators import MenuPageLocators
+from pages.locators.menu_page_locators import MenuPageLocators
 
 class MenuPage(BasePage):
     def __init__(self, page):

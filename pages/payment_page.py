@@ -1,5 +1,5 @@
 from base.base_page import BasePage
-from new_pages.locators.payment_page_locators import PaymentPageLocators
+from pages.locators.payment_page_locators import PaymentPageLocators
 
 class PaymentPage(BasePage):
 

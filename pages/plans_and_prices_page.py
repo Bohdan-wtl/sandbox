@@ -1,5 +1,5 @@
 from base.base_page import BasePage
-from new_pages.locators.plans_and_price_page_locators import PlansAndPriceLocators
+from pages.locators.plans_and_price_page_locators import PlansAndPriceLocators
 
 class PlanAndPricesPage(BasePage):
 
