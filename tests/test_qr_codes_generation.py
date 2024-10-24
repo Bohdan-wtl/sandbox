@@ -24,7 +24,6 @@ class TestSandBox(BaseTest):
         yield
 
     def test_coupon(self):
-        self.qr_creation_page.coupon_qr_create()
         self.qr_creation_page.menu_link_qr_create()
 
     def test_pdf_qr_create(self):

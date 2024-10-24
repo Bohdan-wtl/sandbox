@@ -5,6 +5,8 @@ import pytest
 from pytest import hookimpl
 from playwright.sync_api import sync_playwright
 
+from config import languages_urls, languages_dpf_urls, languages_nsf_urls
+
 headless = False
 
 

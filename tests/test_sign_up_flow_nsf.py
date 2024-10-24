@@ -1,122 +1,130 @@
+from random import Random
 import pytest
-from playwright.sync_api import expect
+from faker import Faker
 from base.base_test import BaseTest
-from utils.generation_test_data import temporary_website
+from config import languages_nsf_urls
 
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
+@pytest.mark.parametrize("nsf_language", languages_nsf_urls.keys())
 class TestNSFSignUpFlow(BaseTest):
+    
+    @pytest.fixture(autouse=True)
+    def setup_faker(self):
+        self.faker = Faker()
+        self.random_number = Random().randint(1000, 3000)
+        self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
 
-    @pytest.fixture
-    def navigate_to_nsf_page(self, page, BASE_URL_STAGING):
-        url_nsf = f"{BASE_URL_STAGING}/create?step=1&qr_onboarding=active_nsf"
-        page.goto(url_nsf)
+    @pytest.fixture(scope='function')
+    def navigate_to_nsf_page(self, nsf_language):
+        stage_url = languages_nsf_urls[nsf_language]
+        self.main_page.open_page(stage_url)
 
-    def test_nsf_sign_up_website_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.website_qr.website_qr_create(temporary_website)
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_website_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.website_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_pdf_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.pdf_qr.pdf_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_pdf_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.pdf_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_links_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.links_qr.links_qr_create(temporary_website)
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_links_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.links_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_vcard_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.vcard_qr.vcard_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_vcard_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.vcard_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_business_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.business_qr.business_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_business_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.business_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_images_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.images_qr.image_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_images_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.image_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_video_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.video_qr.video_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_video_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.video_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_apps_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.apps_qr.apps_qr_create(temporary_website)
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_apps_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.apps_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_coupon_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.coupon_qr.coupon_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_coupon_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.coupon_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_mp3_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.mp3_qr.mp3_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_mp3_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.mp3_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_menu_menu_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.menu_qr.menu_menu_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_menu_menu_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.menu_menu_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_menu_pdf_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.menu_qr.menu_pdf_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_menu_pdf_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.menu_pdf_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_menu_link_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.menu_qr.menu_link_qr_create(temporary_website)
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_menu_link_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.menu_link_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     @pytest.mark.flaky(reruns=2)
-    def test_nsf_sign_up_wifi_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.wifi_qr.wifi_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_wifi_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.wifi_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_facebook_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.facebook_qr.facebook_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_facebook_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.facebook_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_instagram_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.instagram_qr.instagram_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_instagram_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.instagram_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_social_media_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.social_media_qr.social_media_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_social_media_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.social_media_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
-    def test_nsf_sign_up_whatsapp_qr_type(self, navigate_to_nsf_page, fake_email):
-        self.whatsapp_qr.whatsapp_qr_create()
-        self.dpf_flow_download_your_qr_page.dpf_form_email_input.fill(fake_email)
-        self.dpf_flow_download_your_qr_page.dpf_form_submit_button.click()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+    def test_nsf_sign_up_whatsapp_qr_type(self, navigate_to_nsf_page):
+        self.qr_creation_page.whatsapp_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()

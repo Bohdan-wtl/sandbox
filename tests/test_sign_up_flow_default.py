@@ -1,80 +1,95 @@
+from random import Random
 import pytest
-from playwright.sync_api import expect
+from faker import Faker
 from base.base_test import BaseTest
-from utils.generation_test_data import temporary_website
+from config import languages_urls
 
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 class TestDefaultSignUpFlow(BaseTest):
 
+    @pytest.fixture(autouse=True)
+    def setup_faker(self):
+        self.faker = Faker()
+        self.random_number = Random().randint(1000, 3000)
+        self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
+
+    @pytest.fixture(scope='function', autouse=True)
+    def sign_up_fixture(self, language):
+        stage_url = languages_urls[language]
+        self.main_page.open_page(stage_url)
+        self.main_page.go_to_sign_up_page()
+        self.register_page.sign_up(self.fake_email, "wtl-testBohdan@gmail.com")
+        yield
+
     def test_website_qr_code_create(self, sign_up_fixture):
-        self.website_qr.website_qr_create(temporary_website)
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.website_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_pdf_qr_code_create(self, sign_up_fixture):
-        self.pdf_qr.pdf_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.pdf_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_links_qr_code_create(self, sign_up_fixture):
-        self.links_qr.links_qr_create(temporary_website)
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.links_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_vcard_qr_code_create(self, sign_up_fixture):
-        self.vcard_qr.vcard_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.vcard_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_business_qr_code_create(self, sign_up_fixture):
-        self.business_qr.business_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.business_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_images_qr_code_create(self, sign_up_fixture):
-        self.images_qr.image_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.image_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_video_qr_code_create(self, sign_up_fixture):
-        self.video_qr.video_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.video_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_apps_qr_code_create(self, sign_up_fixture):
-        self.apps_qr.apps_qr_create(temporary_website)
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.apps_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_coupon_qr_code_create(self, sign_up_fixture):
-        self.coupon_qr.coupon_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.coupon_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_mp3_qr_code_create(self, sign_up_fixture):
-        self.mp3_qr.mp3_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.mp3_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_menu_qr_code_create_menu_type(self, sign_up_fixture):
-        self.menu_qr.menu_menu_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.menu_menu_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_menu_qr_code_create_pdf_type(self, sign_up_fixture):
-        self.menu_qr.menu_pdf_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.menu_pdf_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_menu_qr_code_create_link_type(self, sign_up_fixture):
-        self.menu_qr.menu_link_qr_create(temporary_website)
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.menu_link_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_wi_fi_qr_code_type(self, sign_up_fixture):
-        self.wifi_qr.wifi_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.wifi_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_facebook_qr_code_type(self, sign_up_fixture):
-        self.facebook_qr.facebook_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.facebook_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_instagram_qr_code_type(self, sign_up_fixture):
-        self.instagram_qr.instagram_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.instagram_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_social_media_qr_code_type(self, sign_up_fixture):
-        self.social_media_qr.social_media_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.social_media_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
     def test_whatsapp_qr_code_type(self, sign_up_fixture):
-        self.whatsapp_qr.whatsapp_qr_create()
-        expect(self.download_qr_code_page.sign_up_success_image).to_be_enabled()
+        self.qr_creation_page.whatsapp_qr_create()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
