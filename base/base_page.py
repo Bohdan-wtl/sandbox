@@ -5,7 +5,7 @@ class BasePage:
         self.page = page
         self.expect = expect
 
-    def navigate(self, url):
+    def open_page(self, url):
         self.page.goto(url)
 
     def is_visible(self, locator):

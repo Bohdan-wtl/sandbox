@@ -7,9 +7,6 @@ class MainPage(BasePage):
         super().__init__(page)
         self.locator = MainPageLocators(page)
 
-    def open_page(self):
-        self.navigate("https://oqg-staging.test-qr.com/")
-
     def go_to_log_in_page(self):
         self.locator.sign_up_button.click()
 

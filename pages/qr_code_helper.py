@@ -78,7 +78,6 @@ class QrCodeHelper:
         mime_type = mime_type_mapping.get(file_extension, 'application/octet-stream')
         with open(file_path, 'rb') as file:
             file_content = file.read()
-        self.page.wait_for_selector(selector, state='visible')
         self.page.evaluate("""
           (data) => {
             const { fileContent, selector, mimeType, fileName } = data;
@@ -97,9 +96,13 @@ class QrCodeHelper:
             'fileName': file_path.name
         })
 
+    def set_file(self, selector, file_type):
+        file_path = self.generate_file(file_type)
+        self.page.locator(selector).set_input_files(file_path)
+
     def close_help_modal_window_st3(self):
-        if self.locator.help_modal_close_button.is_visible():
-            self.locator.help_modal_close_button.click()
+        self.locator.help_modal_close_button.is_visible()
+        self.locator.help_modal_close_button.click()
 
     def close_help_modal_window_st2(self):
         self.locator.help_modal_close_button.is_visible()

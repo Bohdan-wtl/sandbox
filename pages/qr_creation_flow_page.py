@@ -35,7 +35,7 @@ class QrCreationPage(BasePage):
         self.helper.select_pattern_step3()
         self.helper.select_qrcode_corners_step3()
         self.locator.qrcode_add_logo_step3_dropdown.click()
-        self.helper.emulate_drag_and_drop(self.locator.qrcode_upload_logo_input, 'image')
+        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
     def coupon_qr_create(self):
@@ -171,7 +171,7 @@ class QrCreationPage(BasePage):
         self.locator.links_qr_type.click()
         self.helper.close_help_modal_window_st2()
         self.helper.select_random_colors()
-        self.helper.emulate_drag_and_drop(self.locator.basic_info_links_qr_code_image_input, 'image')
+        self.helper.set_file(self.locator.basic_info_links_qr_code_image_input, 'image')
         self.locator.basic_info_links_qr_code_title_input.fill(self.faker.text(max_nb_chars=27))
         self.locator.basic_info_links_qr_code_description_input.fill(self.faker.text(max_nb_chars=270))
         self.locator.list_of_links_qr_code_link_text_input.fill(self.faker.text(max_nb_chars=27))
@@ -188,14 +188,14 @@ class QrCreationPage(BasePage):
         self.helper.select_pattern_step3()
         self.helper.select_qrcode_corners_step3()
         self.locator.qrcode_add_logo_step3_dropdown.click()
-        self.helper.emulate_drag_and_drop(self.locator.qrcode_upload_logo_input, 'image')
+        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
     def website_qr_create(self):
         self.locator.website_qr_type.click()
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
         self.locator.custom_name_qr_code_dropdown.click()
-        self.locator.custom_name_qr_code_input(qr_code_type="Website")
+        self.helper.set_custom_qr_code_name(qr_code_type="Website")
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.locator.create_button.click()

@@ -12,7 +12,10 @@ build/
 develop-eggs/
 dist/
 downloads/
+reports/
 eggs/
+videos
+screenshots
 generated_files/
 downloaded_qr_codes/
 resources/
