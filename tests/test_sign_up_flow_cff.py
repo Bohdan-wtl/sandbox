@@ -38,14 +38,14 @@ def test_cff_sign_up_website_qr_type(page, navigate_to_dpf_page, email_cff):
     main_page.main_logo_link.click()
     expect(success_image.sign_up_success_image).to_be_enabled()
 
-#@pytest.mark.flaky(reruns=2)
+
 def test_cff_sign_up_pdf_qr_type(page, navigate_to_dpf_page, email_cff):
     qr_pdf = PdfQrType(page)
     dpf_setup_email_page = DpfDownloadQrPage(page)
     success_image = DownloadPage(page)
     main_page = MainPage(page)
 
-    qr_pdf.pdf_qr_create()
+    qr_pdf.pdf_qr_create(page)
     dpf_setup_email_page.dpf_form_email_input.fill(email_cff)
     dpf_setup_email_page.dpf_form_submit_button.click()
     main_page.main_logo_link.click()

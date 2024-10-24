@@ -48,6 +48,7 @@ class Step2QrVariable(BasePage):
         # Add list of social networks
         # QR code contact details
         self.contact_details_qr_code_dropdown = page.locator("//button[@data-target='#acc_contactInfo']")
+        self.contact_details_contact_name = page.locator("//input[@id='contactName']")
         # add phone
         self.contact_details_qr_code_add_phone_btn = page.locator("//button[@data-target='#add_phone-dis']")
         self.contact_details_qr_code_add_phone_label = page.locator("//input[@id='vcard_phoneLabel']")
@@ -69,7 +70,14 @@ class Step2QrVariable(BasePage):
         # add location
         self.location_qr_code_dropdown = page.locator("//button[@data-target='#add_website-dis']")
         self.location_qr_code_search_address = page.locator("//input[@id='ship-address1']")
-
+        # add button
+        self.add_button_with_link = page.locator("//button[@id='add']")
+        self.add_button_with_link_name = page.locator("//input[@id='businessButtons']")
+        self.add_button_with_link_url = page.locator("//input[@id='businessButtonUrls']")
+        # opening hours
+        self.monday_checkbox = page.locator("//input[@id='checkboxMon']")
+        self.monday_time_from = page.locator("//input[@id='Monday_From']")
+        self.monday_time_to = page.locator("//input[@id='Monday_To']")
 
 
 
@@ -159,26 +167,26 @@ class Step2QrVariable(BasePage):
         self.page.locator(random_social_network).click()
         return random_social_network
 
-    def fonts_style_select(self, page):
+    def select_random_fonts_style(self):
         self.update_fonts_qr_code_dropdown.click()
         self.fonts_title_dropdown.scroll_into_view_if_needed()
         self.fonts_title_dropdown.click(force=True)
         self.page.wait_for_selector("//div[@id='dropdown_title']/button", state="attached")
-        title_options = page.query_selector_all("//div[@id='dropdown_title']/button")
+        title_options = self.page.query_selector_all("//div[@id='dropdown_title']/button")
         random_title_font = random.choice(title_options)
         random_title_font.scroll_into_view_if_needed()
         random_title_font.click(force=True)
-        page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(1000)
         self.fonts_texts_dropdown.click()
-        text_options = page.query_selector_all("//div[@id='dropdown_text']/button")
+        text_options = self.page.query_selector_all("//div[@id='dropdown_text']/button")
         random_text_font = random.choice(text_options)
         random_text_font.scroll_into_view_if_needed()
         random_text_font.click(force=True)
 
-    def welcome_screen_set_img(self, page):
+    def welcome_screen_set_img(self):
         self.file_path = Path(os.getcwd()) / f'{self.generation_test_data.generate_image()}'
         self.upload_welcome_screen_qr_code_dropdown.click()
-        page.locator(self.upload_welcome_screen_qr_code_input).set_input_files(str(self.file_path))
+        self.page.locator(self.upload_welcome_screen_qr_code_input).set_input_files(str(self.file_path))
 
     def add_phone_email_web_to_contact_details(self):
         fake = Faker()
@@ -192,7 +200,11 @@ class Step2QrVariable(BasePage):
         self.contact_details_qr_code_add_website_label.fill(fake.text(max_nb_chars=20))
         self.contact_details_qr_code_add_website_url.fill(fake.url())
 
-
+    def set_location_step2(self):
+        fake = Faker()
+        self.location_qr_code_search_address.fill(fake.city())
+        self.page.keyboard.press("ArrowDown")
+        self.page.keyboard.press("Enter")
 
 class WebsiteQrType:
     def __init__(self, page):
@@ -200,7 +212,7 @@ class WebsiteQrType:
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
-        self.file_path = Path(os.getcwd()) / f'{generation_test_data.generate_pdf()}'
+        self.file_path = Path(os.getcwd()) / f'{generation_test_data.generate_image()}'
 
         self.setup_website_qr_code_dropdown = page.locator("//button[@data-target='#acc_nameOfUrl']")
         self.setup_website_qr_code_input = page.locator("//input[@id='url']")
@@ -208,17 +220,13 @@ class WebsiteQrType:
     def website_qr_create(self, temporary_website):
         self.step1_page.website_qr_type.click()
         self.setup_website_qr_code_input.fill(temporary_website)
-
         self.step2_page.set_custom_qr_code_name(qr_code_type="Website")
         self.step2_page.next_button.click()
-
         self.step3_page.close_help_modal_window_st3()
         self.step3_page.select_frame_step3()
         self.step3_page.select_pattern_step3()
         self.step3_page.select_qrcode_corners_step3()
-
-        self.step3_page.qrcode_add_logo_step3_dropdown.click()
-        self.page.locator(self.step3_page.qrcode_upload_logo_input).set_input_files(str(self.file_path))
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
@@ -242,12 +250,14 @@ class PdfQrType:
         self.website_pdf_info_input = page.locator("//input[@id='website']")
         self.button_pdf_info_input = page.locator("//input[@id='button']")
 
-    def pdf_qr_create(self):
+    def pdf_qr_create(self, page):
+        self.page = page
         fake = Faker()
 
         self.step1_page.pdf_qr_type.click()
         self.step2_page.close_help_modal_window_st2()
         self.generation_test_data.emulate_drag_and_drop(self.page, '#pdf', self.file_path)
+        self.file_path = Path(os.getcwd()) / f'{generation_test_data.generate_pdf()}'
 
         # self.directly_show_pdf_checkbox.is_editable() # Directly show the PDF file - option
         # self.directly_show_pdf_checkbox.click() # Directly show the PDF file - option
@@ -258,20 +268,15 @@ class PdfQrType:
         self.description_pdf_info_input.fill(fake.text(max_nb_chars=250))
         self.website_pdf_info_input.fill(fake.url())
         self.button_pdf_info_input.fill(fake.word())
-        self.step2_page.fonts_style_select(self.page)
-
-        self.step2_page.welcome_screen_set_img(self.page)
-
+        self.step2_page.select_random_fonts_style()
+        self.step2_page.welcome_screen_set_img()
         self.step2_page.set_custom_qr_code_name(qr_code_type="PDF")
         self.step2_page.next_button.click()
-
         self.step3_page.close_help_modal_window_st3()
         self.step3_page.select_frame_step3()
         self.step3_page.select_pattern_step3()
         self.step3_page.select_qrcode_corners_step3()
-
-        self.step3_page.qrcode_add_logo_step3_dropdown.click()
-        self.page.locator(self.step3_page.qrcode_upload_logo_input).set_input_files(str(self.file_path))
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
@@ -315,8 +320,8 @@ class LinksQrType:
         self.step2_page.select_random_social_network_option()
         self.links_qr_code_social_network_url_input.fill(temporary_website)
         self.links_qr_code_social_network_text_input.fill(fake.text(max_nb_chars=27))
-        self.step2_page.fonts_style_select(self.page)
-        self.step2_page.welcome_screen_set_img(self.page)
+        self.step2_page.select_random_fonts_style()
+        self.step2_page.welcome_screen_set_img()
         self.step2_page.set_custom_qr_code_name(qr_code_type="Links")
         self.step2_page.next_button.click()
 
@@ -324,14 +329,13 @@ class LinksQrType:
         self.step3_page.select_frame_step3()
         self.step3_page.select_pattern_step3()
         self.step3_page.select_qrcode_corners_step3()
-
-        self.step3_page.qrcode_add_logo_step3_dropdown.click()
-        self.page.locator(self.step3_page.qrcode_upload_logo_input).set_input_files(str(self.file_path))
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class VCardQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -347,21 +351,31 @@ class VCardQrType:
     def vcard_qr_create(self):
         fake = Faker()
         self.step1_page.vcard_qr_type.click()
-
         self.step2_page.close_help_modal_window_st2()
         self.step2_page.select_random_design_option_two_colors()
         self.v_card_qr_code_first_name_input.fill(fake.first_name())
         self.v_card_qr_code_last_name_input.fill(fake.last_name())
         self.step2_page.add_phone_email_web_to_contact_details()
+        self.step2_page.set_location_step2()
+        self.v_card_qr_code_company_details_company_input.fill(fake.company())
+        self.v_card_qr_code_company_details_profession_input.fill(fake.word())
+        self.v_card_qr_code_company_details_summary_input.fill(fake.text(max_nb_chars=250))
+        self.step2_page.select_random_social_network_option()
+        self.step2_page.select_random_fonts_style()
+        self.step2_page.welcome_screen_set_img()
+        self.step2_page.set_custom_qr_code_name(qr_code_type="vCard")
         self.step2_page.next_button.click()
-
         self.step3_page.close_help_modal_window_st3()
-
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class BusinessQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -375,16 +389,36 @@ class BusinessQrType:
         self.about_company_business_qr_type_textarea = page.locator("//textarea[@id='aboutCompany']")
 
     def business_qr_create(self):
+        fake = Faker()
         self.step1_page.business_qr_type.click()
         self.step2_page.close_help_modal_window_st2()
-        self.business_info_business_qr_type_company_input.fill('Some First name')
+        self.business_info_business_qr_type_company_input.fill(fake.company())
+        self.business_info_business_qr_type_title_input.fill(fake.text(max_nb_chars=20))
+        self.business_info_business_qr_type_subtitle_input.fill(fake.text(max_nb_chars=50))
+        self.step2_page.add_button_with_link.click()
+        self.step2_page.add_button_with_link_name.fill(fake.word())
+        self.step2_page.add_button_with_link_url.fill(fake.url())
+        self.step2_page.monday_checkbox.check(force=True)
+        self.page.evaluate("document.querySelector('#Monday_From').value = '8:00'")
+        self.page.evaluate("document.querySelector('#Monday_To').value = '9:00'")
+        #self.step2_page.set_location_step2()
+        self.step2_page.contact_details_contact_name.fill(fake.name())
+        self.step2_page.add_phone_email_web_to_contact_details()
+        self.step2_page.select_random_social_network_option()
+        self.about_company_business_qr_type_textarea.fill(fake.text(max_nb_chars=4000))
+
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class ImagesQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -406,11 +440,16 @@ class ImagesQrType:
         self.generation_test_data.emulate_drag_and_drop(page, '#files', self.file_path)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class VideoQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -433,11 +472,16 @@ class VideoQrType:
         self.generation_test_data.emulate_drag_and_drop(page, '#files', self.file_path)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class AppsQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -464,11 +508,16 @@ class AppsQrType:
         self.links_to_platforms_qr_code_google_input.fill(temporary_website)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class CouponQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -493,11 +542,16 @@ class CouponQrType:
         self.coupon_info_qr_code_code_input.fill('5859083434')
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class Mp3QrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -521,11 +575,16 @@ class Mp3QrType:
         self.generation_test_data.emulate_drag_and_drop(page, '#mp3', self.file_path)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class MenuQrType:
     def __init__(self, page):
+        self.page = page
         self.file_path = None
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
@@ -562,6 +621,10 @@ class MenuQrType:
         self.menu_menu_type_section1_product_name_input.fill("menu name")
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
     def menu_pdf_qr_create(self, page):
@@ -572,6 +635,10 @@ class MenuQrType:
         self.generation_test_data.emulate_drag_and_drop(page, '#pdf', self.file_path)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
     def menu_link_qr_create(self, temporary_website):
@@ -580,11 +647,16 @@ class MenuQrType:
         self.menu_link_type_url_input.fill(temporary_website)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class WiFiQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -598,11 +670,16 @@ class WiFiQrType:
         self.wi_fi_info_network_name_input.fill("Some wifi name")
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class FacebookQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -623,11 +700,16 @@ class FacebookQrType:
         self.facebook_basic_info_facebook_url.fill("https://www.facebook.com/automation_test_example")
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class InstagramQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -641,11 +723,16 @@ class InstagramQrType:
         self.instagram_basic_info_username_input.fill("insta_nickname")
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class SocialMediaQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
@@ -667,12 +754,18 @@ class SocialMediaQrType:
         self.social_media_basic_info_title.fill("social_media_title")
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()
 
 
 class WhatsAppQrType:
     def __init__(self, page):
+        self.page = page
         self.step1_page = Step1Page(page)
+
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
 
@@ -687,4 +780,8 @@ class WhatsAppQrType:
         time.sleep(2)
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
+        self.step3_page.select_frame_step3()
+        self.step3_page.select_pattern_step3()
+        self.step3_page.select_qrcode_corners_step3()
+        self.step3_page.qr_logo_set_img()
         self.step3_page.create_button.click()

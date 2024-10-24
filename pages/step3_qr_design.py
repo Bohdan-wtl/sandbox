@@ -1,16 +1,20 @@
 import random
 from base.base_page import BasePage
-
+from pathlib import Path
+import os
+from utils import generation_test_data
 
 class Step3Page(BasePage):
     def __init__(self, page):
         super().__init__(page)
+        self.generation_test_data = generation_test_data
+        self.file_path = None
 
         self.frame_step3_dropdown = page.locator("//button[@data-target='#acc_frame']")
         self.qrcode_patterns_step3_dropdown = page.locator("//button[@data-target='#acc_patterns']")
         self.qrcode_corners_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
         self.qrcode_add_logo_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
-        self.qrcode_upload_logo_input = "// input[ @ id = 'qr_code_logo']"
+        self.qrcode_upload_logo_input = "//input[@id='qr_code_logo']"
         self.create_button = page.locator("//button[@id='temp_submit']")
         self.back_button = page.locator("//button[@id='cancel']")
         # Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.
@@ -99,3 +103,8 @@ class Step3Page(BasePage):
         self.qrcode_corners_step3_dropdown.click()
         self.select_random_qrcode_frame_around_corner()
         self.select_random_qrcode_corner_dot()
+
+    def qr_logo_set_img(self):
+        self.file_path = Path(os.getcwd()) / f'{self.generation_test_data.generate_image()}'
+        self.qrcode_add_logo_step3_dropdown.click()
+        self.page.locator(self.qrcode_upload_logo_input).set_input_files(str(self.file_path))
