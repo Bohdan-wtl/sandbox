@@ -18,5 +18,4 @@ class MyQrCodesLocators:
         self.size_1024_of_qr_file_download = page.locator("//input[@id='1024x1024']")
         self.size_2048_of_qr_file_download = page.locator("//input[@id='2048x2048']")
         self.size_4096_of_qr_file_download = page.locator("//input[@id='4096x4096']")
-        self.download_modal_close_button = page.locator("//div[@id='DownloadModal']//button[@type='button']")
         self.sign_up_success_image = page.locator("//img[contains(@class,'dl-modal-head-img')]")

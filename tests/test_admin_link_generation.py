@@ -7,11 +7,9 @@ from config import languages_urls, languages_dpf_urls
 link_to_admin = "https://oqg-staging.test-qr.com/helpdesk"
 admin_email = "oqg-dev@outlook.com"
 admin_password = "12345678"
-refund_alert_text = "The refund was successfully made."
+refund_alert_text = "The refund was successfully completed."
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
-@pytest.mark.parametrize("language", languages_urls.keys())
-@pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
 class TestAdminLinkGeneration(BaseTest):
 
     @pytest.fixture(autouse=True)
@@ -27,7 +25,7 @@ class TestAdminLinkGeneration(BaseTest):
         self.main_page.go_to_sign_up_page()
         self.register_page.sign_up(self.fake_email, "wtl-testBohdan@gmail.com")
         yield
-        
+
     @pytest.fixture(scope='function')
     def navigate_to_dpf_page(self, dpf_language):
         stage_url = languages_dpf_urls[dpf_language]
@@ -36,6 +34,7 @@ class TestAdminLinkGeneration(BaseTest):
     @pytest.mark.flaky(reruns=0)
     @pytest.mark.smoke
     @pytest.mark.regression
+    @pytest.mark.parametrize("language", languages_urls.keys())
     @pytest.mark.parametrize("discount_button_locator", [
         "default_pricing_button",
         "discount_70_promo_button",
@@ -77,47 +76,65 @@ class TestAdminLinkGeneration(BaseTest):
         self.qr_creation_page.expect(self.qr_creation_page.locator.congrats_download_button).to_be_visible()
 
     @pytest.mark.flaky(reruns=0)
+    @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
     @pytest.mark.parametrize("refund_button", [
         "full_refund_plan_button_cancel_subscription",
         "full_refund_plan_button_keep_subscription"
     ])
     def test_admin_full_refund_options(self, navigate_to_dpf_page, refund_button):
-        test_flow.test_sign_up_website_qr_type(navigate_to_dpf_page, self.fake_email)
-        self.my_qr_codes_page.download_modal_close_button.click()
-        self.menu_page.my_account.click()
-        self.my_account_page.log_out_button.click()
-        self.my_account_page.goto(link_to_admin)
-        self.admin_page.admin_email_input.fill(admin_email)
-        self.admin_page.admin_log_in_button.click()
-        self.admin_page.admin_password_input.fill(admin_password)
-        self.admin_page.admin_log_in_button.click()
-        self.admin_page.menu_payments_button.click()
-        self.admin_page.get_user_menu_dots_button_payments_tab(self.fake_email).click()
-        self.admin_page.get_user_menu_refund_button_payments_tab(self.fake_email).click()
-        getattr(self.admin_page, refund_button).click()
-        self.admin_page.refund_confirm_button_payments_tab.click()
+        fake_email = self.fake_email
+        self.qr_creation_page.website_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.qr_creation_page.select_dpf_plan()
+        self.payment_page.make_payment()
+        self.payment_page.click_on_submit_payment_button()
+        self.qr_creation_page.locator.congrats_download_button.click()
+        self.my_qr_codes_page.locator.download_modal_close_button.click()
+        self.menu_page.locator.my_account.click()
+        self.my_account_page.locator.log_out_button.click()
+        self.my_account_page.open_page(link_to_admin)
+        self.admin_page.locator.admin_email_input.fill(admin_email)
+        self.admin_page.locator.admin_log_in_button.click()
+        self.admin_page.locator.admin_password_input.fill(admin_password)
+        self.admin_page.locator.admin_log_in_button.click()
+        self.admin_page.locator.menu_payments_button.click()
+        self.admin_page.get_user_menu_dots_button_payments_tab(fake_email).click()
+        self.admin_page.get_user_menu_refund_button_payments_tab(fake_email).click()
+        getattr(self.admin_page.locator, refund_button).click()
+        self.admin_page.locator.refund_confirm_button_payments_tab.click()
+        self.admin_page.expect(self.admin_page.locator.refund_alert_message).to_be_visible(timeout=10000)
         self.admin_page.expect(self.admin_page.locator.refund_alert_message).to_have_text(refund_alert_text)
 
-    @pytest.mark.flaky(reruns=2)
+    @pytest.mark.flaky(reruns=0)
+    @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
     @pytest.mark.parametrize("refund_button", [
         "partial_refund_plan_button_cancel_subscription",
         "partial_refund_plan_button_keep_subscription"
     ])
     def test_admin_partial_refund_options(self, navigate_to_dpf_page, refund_button):
-        test_flow.test_sign_up_website_qr_type(navigate_to_dpf_page, self.fake_email)
+        fake_email = self.fake_email
+        self.qr_creation_page.website_qr_create()
+        self.qr_creation_page.locator.dpf_form_email_input.fill(fake_email)
+        self.qr_creation_page.locator.dpf_form_submit_button.click()
+        self.qr_creation_page.select_dpf_plan()
+        self.payment_page.make_payment()
+        self.payment_page.click_on_submit_payment_button()
+        self.qr_creation_page.locator.congrats_download_button.click()
         self.my_qr_codes_page.locator.download_modal_close_button.click()
-        self.menu_page.my_account.click()
-        self.my_account_page.log_out_button.click()
-        self.my_account_page.goto(link_to_admin)
-        self.admin_page.admin_email_input.fill(admin_email)
-        self.admin_page.admin_log_in_button.click()
-        self.admin_page.admin_password_input.fill(admin_password)
-        self.admin_page.admin_log_in_button.click()
-        self.admin_page.menu_payments_button.click()
-        self.admin_page.get_user_menu_dots_button_payments_tab(self.fake_email).click()
-        self.admin_page.get_user_menu_refund_button_payments_tab(self.fake_email).click()
-        getattr(self.admin_page, refund_button).click()
-        self.admin_page.refund_confirm_button_payments_tab.click()
-        self.admin_page.refund_amount_input_field.fill("2")
-        self.admin_page.refund_amount_input_payment_button.click()
-        self.admin_page.expect(self.admin_page.refund_alert_message).to_have_text(refund_alert_text)
+        self.menu_page.locator.my_account.click()
+        self.my_account_page.locator.log_out_button.click()
+        self.my_account_page.open_page(link_to_admin)
+        self.admin_page.locator.admin_email_input.fill(admin_email)
+        self.admin_page.locator.admin_log_in_button.click()
+        self.admin_page.locator.admin_password_input.fill(admin_password)
+        self.admin_page.locator.admin_log_in_button.click()
+        self.admin_page.locator.menu_payments_button.click()
+        self.admin_page.get_user_menu_dots_button_payments_tab(fake_email).click()
+        self.admin_page.get_user_menu_refund_button_payments_tab(fake_email).click()
+        getattr(self.admin_page.locator, refund_button).click()
+        self.admin_page.locator.refund_confirm_button_payments_tab.click()
+        self.admin_page.locator.refund_amount_input_field.fill("2")
+        self.admin_page.locator.refund_amount_input_payment_button.click()
+        self.admin_page.expect(self.admin_page.locator.refund_alert_message).to_be_visible(timeout=10000)
+        self.admin_page.expect(self.admin_page.locator.refund_alert_message).to_have_text(refund_alert_text)
