@@ -45,7 +45,7 @@ def test_cff_sign_up_pdf_qr_type(page, navigate_to_dpf_page, email_cff):
     success_image = DownloadPage(page)
     main_page = MainPage(page)
 
-    qr_pdf.pdf_qr_create(page)
+    qr_pdf.pdf_qr_create()
     dpf_setup_email_page.dpf_form_email_input.fill(email_cff)
     dpf_setup_email_page.dpf_form_submit_button.click()
     main_page.main_logo_link.click()
@@ -175,7 +175,7 @@ def test_cff_sign_up_menu_pdf_qr_type(page, navigate_to_dpf_page, email_cff):
     success_image = DownloadPage(page)
     main_page = MainPage(page)
 
-    qr_menu.menu_pdf_qr_create(page)
+    qr_menu.menu_pdf_qr_create()
     dpf_setup_email_page.dpf_form_email_input.fill(email_cff)
     dpf_setup_email_page.dpf_form_submit_button.click()
     main_page.main_logo_link.click()
@@ -208,7 +208,6 @@ def test_cff_sign_up_wifi_qr_type(page, navigate_to_dpf_page, email_cff):
     expect(success_image.sign_up_success_image).to_be_enabled()
 
 
-# QR types are not available on staging
 def test_cff_sign_up_facebook_qr_type(page, navigate_to_dpf_page, email_cff):
     qr_facebook = FacebookQrType(page)
     dpf_setup_email_page = DpfDownloadQrPage(page)
