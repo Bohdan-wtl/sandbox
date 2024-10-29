@@ -18,4 +18,4 @@ COPY . .
 RUN python -m playwright install
 
 # Запускаем pytest с xvfb для выполнения тестов
-CMD ["xvfb-run", "pytest", "tests/test_example.py"]
+CMD ["xvfb-run", "pytest", "tests/"]
