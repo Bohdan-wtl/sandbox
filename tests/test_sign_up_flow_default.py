@@ -6,6 +6,7 @@ from config import languages_urls
 
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
+@pytest.mark.parametrize("languages", languages_urls.keys())
 class TestDefaultSignUpFlow(BaseTest):
 
     @pytest.fixture(autouse=True)
@@ -15,8 +16,8 @@ class TestDefaultSignUpFlow(BaseTest):
         self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
 
     @pytest.fixture(scope='function', autouse=True)
-    def sign_up_fixture(self, language):
-        stage_url = languages_urls[language]
+    def sign_up_fixture(self, languages):
+        stage_url = languages_urls[languages]
         self.main_page.open_page(stage_url)
         self.main_page.go_to_sign_up_page()
         self.register_page.sign_up(self.fake_email, "wtl-testBohdan@gmail.com")

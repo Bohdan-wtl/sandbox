@@ -2,10 +2,9 @@ from random import Random
 import pytest
 from faker import Faker
 from base.base_test import BaseTest
-from config import languages_urls, languages_dpf_urls
+from config import languages_dpf_urls
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
-@pytest.mark.parametrize("language", languages_urls.keys())
 @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
 class TestCFFSignUpFlow(BaseTest):
     
