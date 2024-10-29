@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 180
     runs-on: ubuntu-latest
     container:
-      image: white779/playwtight-python:latest
+      image: white779/playwtight-python
 
     steps:
     - name: Check out repository
