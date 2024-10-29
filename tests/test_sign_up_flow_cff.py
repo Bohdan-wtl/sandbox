@@ -15,6 +15,11 @@ class TestCFFSignUpFlow(BaseTest):
         self.random_number = Random().randint(1000, 3000)
         self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
 
+    @pytest.fixture(scope='function')
+    def navigate_to_dpf_page(self, dpf_language):
+        stage_url = languages_dpf_urls[dpf_language]
+        self.main_page.open_page(stage_url)
+
     def test_cff_sign_up_website_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.website_qr_create()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
