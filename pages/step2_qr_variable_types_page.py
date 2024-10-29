@@ -96,7 +96,6 @@ class Step2QrVariable(BasePage):
         return custom_qr_code_name
 
     def close_help_modal_window_st2(self):
-        self.help_modal_close_button.is_visible()
         self.help_modal_close_button.click()
         self.page.wait_for_selector(self.modal_window_step2, state="hidden", timeout=5000)
 
@@ -212,6 +211,7 @@ class Step2QrVariable(BasePage):
 
     def set_location_step2(self):
         fake = Faker()
+        self.location_qr_code_search_address.click()
         self.location_qr_code_search_address.fill(fake.city())
         self.page.keyboard.press("ArrowDown")
         self.page.keyboard.press("Enter")
@@ -374,7 +374,7 @@ class VCardQrType:
         self.v_card_qr_code_first_name_input.fill(fake.first_name())
         self.v_card_qr_code_last_name_input.fill(fake.last_name())
         self.step2_page.contact_information_add_phone_email_web()
-        #self.step2_page.set_location_step2()
+        self.step2_page.set_location_step2()
         self.v_card_qr_code_company_details_company_input.fill(fake.company())
         self.v_card_qr_code_company_details_profession_input.fill(fake.word())
         self.v_card_qr_code_company_details_summary_input.fill(fake.text(max_nb_chars=250))
@@ -419,7 +419,7 @@ class BusinessQrType:
         self.step2_page.monday_checkbox.check(force=True)
         self.page.evaluate("document.querySelector('#Monday_From').value = '8:00'")
         self.page.evaluate("document.querySelector('#Monday_To').value = '9:00'")
-        #self.step2_page.set_location_step2()
+        self.step2_page.set_location_step2()
         self.step2_page.contact_details_contact_name.fill(fake.name())
         self.step2_page.contact_information_add_phone_email_web()
         self.step2_page.select_random_social_network_option()
@@ -902,7 +902,7 @@ class SocialMediaQrType:
         self.social_media_basic_info_title.fill(fake.text(max_nb_chars=30))
         self.social_media_basic_info_description.fill(fake.text(max_nb_chars=3000))
         self.generation_test_data.emulate_drag_and_drop(self.page, '#files', self.file_path)
-        self.step2_page.select_random_social_network_option()
+        #self.step2_page.select_random_social_network_option()
         self.step2_page.select_random_fonts_style()
         self.step2_page.welcome_screen_set_img()
         self.step2_page.set_custom_qr_code_name(qr_code_type="Social Network")
@@ -919,7 +919,6 @@ class WhatsAppQrType:
     def __init__(self, page):
         self.page = page
         self.step1_page = Step1Page(page)
-
         self.step2_page = Step2QrVariable(page)
         self.step3_page = Step3Page(page)
 
@@ -928,10 +927,12 @@ class WhatsAppQrType:
         self.whats_app_information_message_input = page.locator("//textarea[@id='whatsapp_body']")
 
     def whatsapp_qr_create(self):
+        fake = Faker()
         self.step1_page.whatsapp_qr_type.click()
         self.step2_page.close_help_modal_window_st2()
-        self.whats_app_information_phone_input.fill("0501234567")
-        time.sleep(2)
+        self.whats_app_information_phone_input.fill(fake.basic_phone_number())
+        self.whats_app_information_message_input.fill(fake.text(max_nb_chars=1500))
+        self.step2_page.set_custom_qr_code_name(qr_code_type="WhatsApp")
         self.step2_page.next_button.click()
         self.step3_page.close_help_modal_window_st3()
         self.step3_page.select_frame_step3()
