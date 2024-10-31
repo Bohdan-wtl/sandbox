@@ -25,6 +25,7 @@ class QrCreationLocators:
         # Common Locators from Step 2 screen
         self.back_button = page.locator("//button[@id='cancel']")
         self.next_button = page.locator("//button[@id='temp_next']")
+        self.step2_qr_frame = page.locator("//iframe[@id='iframesrc']")
         self.modal_window_step2 = "//div[@id='helpCarousel']"
         self.help_modal_close_button = page.locator("//div[@id='helpCarousel']//button[@id='closeBtn']")
         # QR code name
@@ -54,19 +55,19 @@ class QrCreationLocators:
         # QR code contact details
         self.contact_details_qr_code_dropdown = page.locator("//button[@data-target='#acc_contactInfo']")
         # add phone
-        self.contact_details_qr_code_add_phone_btn = page.locator("//button[@data-target='#add_phone-dis']")
+        self.contact_details_qr_code_add_phone_btn = page.locator("//button[@data-anchor='vcardPhone']")
         self.contact_details_qr_code_add_phone_label = page.locator("//input[@id='vcard_phoneLabel']")
         self.contact_details_qr_code_add_phone_number = page.locator("//input[@id='vcard_phone']")
         self.contact_details_qr_code_delete_phone_btn = page.locator(
             "//div[@id='phoneBlock']//button[contains(@class,'delete-btn vcard-remove')]")
         # add email
-        self.contact_details_qr_code_add_email_btn = page.locator("//button[@data-target='#add_email-dis']")
+        self.contact_details_qr_code_add_email_btn = page.locator("//button[@data-anchor='vcardEmail']")
         self.contact_details_qr_code_add_email_label = page.locator("//input[@id='vcard_emailLabel']")
         self.contact_details_qr_code_add_email_address = page.locator("//input[@id='vcard_email']")
         self.contact_details_qr_code_delete_email_btn = page.locator(
             "//div[@id='emailBlock']//button[contains(@class,'delete-btn vcard-remove')]")
         # add website
-        self.contact_details_qr_code_add_website_btn = page.locator("//button[@data-target='#add_website-dis']")
+        self.contact_details_qr_code_add_website_btn = page.locator("//button[@data-anchor='vcardWeb']")
         self.contact_details_qr_code_add_website_label = page.locator("//input[@id='vcard_website_title']")
         self.contact_details_qr_code_add_website_url = page.locator("// input[ @id='vcard_website']")
         self.contact_details_qr_code_delete_email_btn = page.locator(
@@ -94,6 +95,7 @@ class QrCreationLocators:
         # Links QR code locators
         self.basic_info_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_listInfo']")
         self.basic_info_links_qr_code_image_input = "//input[@id='companyLogo']"
+        self.basic_info_company_logo_input = page.locator("//input[@id='companyLogo']")
         self.basic_info_links_qr_code_title_input = page.locator("//input[@id='list_title']")
         self.basic_info_links_qr_code_description_input = page.locator("//textarea[@id='list_description']")
         self.list_of_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_link']")

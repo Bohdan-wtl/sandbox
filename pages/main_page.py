@@ -8,7 +8,7 @@ class MainPage(BasePage):
         self.locator = MainPageLocators(page)
 
     def go_to_log_in_page(self):
-        self.locator.sign_up_button.click()
+        self.locator.log_in_button.click()
 
     def go_to_sign_up_page(self):
         self.locator.sign_up_button.click()
