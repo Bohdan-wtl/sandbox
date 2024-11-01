@@ -8,7 +8,6 @@ from faker import Faker
 from pydub.generators import Sine
 from moviepy.editor import ColorClip
 
-
 class QrCodeHelper:
     def __init__(self, page, locator):
         self.page = page
