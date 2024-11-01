@@ -24,6 +24,7 @@ class QrCreationLocators:
 
         # Common Locators from Step 2 screen
         self.back_button = page.locator("//button[@id='cancel']")
+        self.loader_img = page.locator("//img[@id='overlay_img']")
         self.next_button = page.locator("//button[@id='temp_next']")
         self.step2_qr_frame = page.locator("//iframe[@id='iframesrc']")
         self.modal_window_step2 = "//div[@id='helpCarousel']"

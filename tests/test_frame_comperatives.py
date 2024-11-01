@@ -1,4 +1,8 @@
+import os
+import sys
+from PIL import Image
 import pytest
+from pathlib import Path
 from base.base_test import BaseTest
 
 
@@ -9,41 +13,24 @@ class TestFrameComparatives(BaseTest):
     def log_in_fixture(self):
         self.main_page.open_page("https://oqg-staging.test-qr.com/")
         self.main_page.go_to_log_in_page()
-        self.login_page.log_in("wtl-test+897897897@gmail.com", "wtl-test+897897897@gmail.com")
+        self.login_page.log_in("wtl-test+897@gmail.com", "wtl-test+897@gmail.com")
         yield
 
-    def test_make_iframe_screenshot(self, log_in_fixture):
+    @pytest.mark.parametrize("qr_create_method", ["pdf_qr_create"])
+    def test_make_iframe_screenshot_pdf_test(self, log_in_fixture, browser, request, assert_snapshot, qr_create_method):
+        test_file = Path(str(request.node.fspath)).stem
+        test_func = request.node.originalname
+        preview_screenshot_path = (f"tests/snapshots/preview/{test_file}/{test_func}/{test_func}"
+                                   f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}][{sys.platform}].png")
+        self.qr_creation_page.set_screenshot_path(preview_screenshot_path)
         self.my_qr_codes_page.locator.header_create_qr_code_button.click()
-        self.qr_creation_page.locator.vcard_qr_type.click(delay=1000)
-        self.qr_creation_page.locator.help_modal_close_button.click()
-        self.qr_creation_page.locator.basic_info_company_logo_input.set_input_files("resources/screenshot_1.png")
-        self.qr_creation_page.locator.v_card_qr_code_first_name_input.fill("Jhon")
-        self.qr_creation_page.locator.v_card_qr_code_last_name_input.fill("Doe")
-        self.qr_creation_page.locator.contact_details_qr_code_add_phone_btn.click()
-        self.qr_creation_page.locator.contact_details_qr_code_add_phone_label.fill("Mobile")
-        self.qr_creation_page.locator.contact_details_qr_code_add_phone_number.fill("123456789")
-        self.qr_creation_page.locator.contact_details_qr_code_add_email_btn.click()
-        self.qr_creation_page.locator.contact_details_qr_code_add_email_label.fill("Work")
-        self.qr_creation_page.locator.contact_details_qr_code_add_email_address.fill("Test@gmail.com")
-        self.qr_creation_page.locator.contact_details_qr_code_add_website_btn.click()
-        self.qr_creation_page.locator.contact_details_qr_code_add_website_label.fill("Website")
-        self.qr_creation_page.locator.contact_details_qr_code_add_website_url.fill("https://www.google.com")
-        self.qr_creation_page.page.add_style_tag(content="""
-            .card {
-                border-radius: 0px !important;
-            }
-            .mb-frame-inner .card::after {
-                background-image: none !important;
-            }
-            #iframesrc, #iframesrc * {
-                border-radius: 0px !important;
-            }
-        """)
-
-        mobile = self.qr_creation_page.page.locator("//div[@id='tabs-1']/div")
-        iphone_line = self.qr_creation_page.page.locator("//div[@class='iphone-line']")
-        iphone_line.evaluate("element => element.style.position = 'none'")
-        mobile.evaluate("element => element.style.height = '100vh'")
-        mobile.evaluate("element => element.style.backgroundImage = 'none'")
-        iframe = self.qr_creation_page.page.frame_locator("//iframe[@id='iframesrc']")
-        iframe.locator("//div[@class='App']").screenshot(path="frame/test.png")
+        qr_create_method_func = getattr(self.qr_creation_page, qr_create_method)
+        qr_create_method_func()
+        with Image.open(preview_screenshot_path) as img:
+            width, height = img.size
+        new_page = self.my_qr_codes_page.open_in_new_tab(self.my_qr_codes_page.open_last_qr_link())
+        new_page.set_viewport_size({"width": width, "height": height})
+        new_page.wait_for_timeout(5000)
+        diff_image_name = (f"tests/snapshots/webview/{test_file}/{test_func}/{test_func}"
+                           f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}][{sys.platform}].png")
+        new_page.screenshot(full_page=True, path=diff_image_name)
