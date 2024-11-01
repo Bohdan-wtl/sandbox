@@ -1,11 +1,16 @@
-import pytest
 
 
-@pytest.fixture(scope="session")
-def BASE_URL_STAGING(language):
-    return f"https://oqg-staging.test-qr.com/{language}"
+languages_urls = {
+    "en": "https://oqg-staging.test-qr.com/en",
+    #"ar": "https://oqg-staging.test-qr.com/ar",
+}
 
+languages_dpf_urls = {
+    "en": "https://oqg-staging.test-qr.com/create?step=1&qr_onboarding=active_dpf",
+    "bg": "https://oqg-staging.test-qr.com/bg/create?step=1&qr_onboarding=active_dpf"
+}
 
-@pytest.fixture(scope="session")
-def BASE_URL_DEV(language):
-    return f"https://oqg-dev.test-qr.com/{language}"
+languages_nsf_urls = {
+    "en": "https://oqg-staging.test-qr.com/create?step=1&qr_onboarding=active_nsf",
+    #"zh-hk": "https://oqg-staging.test-qr.com/zh-hk/create?step=1&qr_onboarding=active_nsf"
+}

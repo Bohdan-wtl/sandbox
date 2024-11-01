@@ -1,11 +1,6 @@
-from base.base_page import BasePage
-
-
-class AdminPage(BasePage):
+class AdminPageLocators:
 
     def __init__(self, page):
-        super().__init__(page)
-
         # Admin Log In page
         self.user_email = None
         self.admin_email_input = page.locator("//input[@id='input-email']")
@@ -50,14 +45,3 @@ class AdminPage(BasePage):
         # Log out button
         self.admin_logout_area = page.locator("//ul[2]/li/a")
         self.admin_logout_button = page.locator("//ul[2]/li/div/a")
-
-    def get_user_menu_dots_button_users_tab(self, user_email):
-        return self.page.locator(
-            f"//tr[td//a[contains(text(), '{user_email}')]]//div[contains(@class, 'dropdown')]//button")
-
-    def get_user_menu_dots_button_payments_tab(self, email_dpf):
-        return self.page.locator(
-            f"//tr[.//span[contains(text(),'{email_dpf}')]]//div[contains(@class,'dropdown actions-dropdown')]")
-
-    def get_user_menu_refund_button_payments_tab(self, email_dpf):
-        return self.page.locator(f"//tr[.//span[contains(text(),'{email_dpf}')]]//a[text()=' Refund']")
