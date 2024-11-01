@@ -33,11 +33,3 @@ class MyQrCodesPage(BasePage):
         file_path = os.path.join(download_path, file_name)
         download.save_as(file_path)
         assert os.path.exists(file_path), "QR code not downloaded"
-
-    def open_qr_link(self, qr_name):
-        qr_link = self.page.locator(f"//span[text()='{qr_name}']/../../../..//a[@class='qr-card-link']").first
-        return qr_link
-
-    def open_last_qr_link(self):
-        qr_link = self.page.locator("//a[@class='qr-card-link']").first
-        return qr_link
