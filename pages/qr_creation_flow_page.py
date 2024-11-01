@@ -47,7 +47,7 @@ class QrCreationPage(BasePage):
         self.helper.close_help_modal_window_st2()  
         self.locator.coupon_info_qr_code_code_input.fill('5859083434')
         self.helper.take_iframe_screenshot()
-        self.locator.next_button.click()
+        self.locator.next_button.click(delay=1000)
         self.helper.close_help_modal_window_st3()  
         self.locator.create_button.click()
         self.helper.wait_for_loader_disappear()

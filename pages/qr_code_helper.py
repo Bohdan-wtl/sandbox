@@ -95,6 +95,7 @@ class QrCodeHelper:
             'mimeType': mime_type,
             'fileName': file_path.name
         })
+        self.page.wait_for_selector("//span[@class='image-edit-icon']", state="visible")
 
     def set_file(self, selector, file_type):
         file_path = self.generate_file(file_type)

@@ -1,6 +1,3 @@
-from re import search
-
-
 class MyQrCodesLocators:
     def __init__(self, page):
         self.download_modal_h3_title = page.locator("//div[@id='DownloadModal']//h3")
