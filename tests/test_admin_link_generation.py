@@ -15,7 +15,7 @@ class TestAdminLinkGeneration(BaseTest):
     @pytest.fixture(autouse=True)
     def setup_faker(self):
         self.faker = Faker()
-        self.random_number = Random().randint(99999, 99999999999)
+        self.random_number = Random().randint(1000, 3000)
         self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
 
     @pytest.fixture(scope='function')
@@ -75,7 +75,6 @@ class TestAdminLinkGeneration(BaseTest):
         self.qr_creation_page.locator.congrats_download_button.wait_for(state="visible")
         self.qr_creation_page.expect(self.qr_creation_page.locator.congrats_download_button).to_be_visible()
 
-
     @pytest.mark.flaky(reruns=0)
     @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
     @pytest.mark.parametrize("refund_button", [
@@ -106,7 +105,6 @@ class TestAdminLinkGeneration(BaseTest):
         self.admin_page.locator.refund_confirm_button_payments_tab.click()
         self.admin_page.expect(self.admin_page.locator.refund_alert_message).to_be_visible(timeout=10000)
         self.admin_page.expect(self.admin_page.locator.refund_alert_message).to_have_text(refund_alert_text)
-
 
     @pytest.mark.flaky(reruns=0)
     @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
