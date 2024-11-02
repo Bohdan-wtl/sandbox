@@ -242,7 +242,5 @@ class QrCodeHelper:
         mobile.evaluate("element => element.style.height = '100vh'")
         mobile.evaluate("element => element.style.backgroundImage = 'none'")
         iframe = self.page.frame_locator("//iframe[@id='iframesrc']")
-        iframe.locator("//div[@class='App']").screenshot(
-            path=str(self.screenshot_path)
-        )
+        iframe.locator("//div[@class='App']").screenshot(path=str(self.screenshot_path))
         footer_element.evaluate("element => element.style.display = ''")

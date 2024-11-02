@@ -1,4 +1,3 @@
-import sys
 from PIL import Image
 import pytest
 from base.base_test import BaseTest
@@ -15,19 +14,21 @@ class TestFrameComparatives(BaseTest):
         self.login_page.log_in("wtl-test+897@gmail.com", "wtl-test+897@gmail.com")
         yield
 
-    @pytest.mark.parametrize("qr_create_method", ["pdf_qr_create", "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
+    @pytest.mark.parametrize("qr_create_method", ["pdf_qr_create",
+                                                  "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
                                                   "menu_pdf_qr_create", "menu_link_qr_create", "wifi_qr_create", "facebook_qr_create",
                                                   "instagram_qr_create", "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
                                                   "image_qr_create", "apps_qr_create", "business_qr_create", "vcard_qr_create", "links_qr_create",
-                                                  "website_qr_create"])
-    def test_make_iframe_screenshot_pdf_test(self, log_in_fixture, browser, request, qr_create_method):
+                                                  "website_qr_create"
+                                                  ])
+    def test_comparative_preview_and_view(self, log_in_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
         expected_image_path = (f"tests/snapshots/preview/Expected/{test_func}"
-                                   f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}][{sys.platform}].png")
+                                   f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         actual_image_path = (f"tests/snapshots/preview/Actual/{test_func}"
-                             f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}][{sys.platform}].png")
+                             f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         diff_image_path =  (f"tests/snapshots/preview/Diff/{test_func}"
-                            f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}][{sys.platform}].png")
+                            f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         self.qr_creation_page.set_screenshot_path(expected_image_path)
         self.my_qr_codes_page.locator.header_create_qr_code_button.click()
         qr_create_method_func = getattr(self.qr_creation_page, qr_create_method)

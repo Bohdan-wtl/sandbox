@@ -2,7 +2,7 @@ class QrCreationLocators:
 
     def __init__(self, page):
         # QR Code Types From Step 1 screen
-        self.breadcrumbs_section_to_verify_page = page.locator("//span[@id='tab1text']")
+        self.step1_breadcrumbs_section_to_verify_page = page.locator("//span[@id='tab1text']")
         self.menu_burger_button = page.locator("//div[@id='openMenu']")
         self.website_qr_type = page.locator("//div[@id='step1']//div/input[@data-qr_type='Url']")
         self.pdf_qr_type = page.locator("//div[@id='step1']//div/input[@data-qr_type='Pdf']")
@@ -24,7 +24,6 @@ class QrCreationLocators:
 
         # Common Locators from Step 2 screen
         self.back_button = page.locator("//button[@id='cancel']")
-        self.loader_img = page.locator("//img[@id='overlay_img']")
         self.next_button = page.locator("//button[@id='temp_next']")
         self.step2_qr_frame = page.locator("//iframe[@id='iframesrc']")
         self.modal_window_step2 = "//div[@id='helpCarousel']"
@@ -47,28 +46,31 @@ class QrCreationLocators:
         self.fonts_texts_dropdown = page.locator("//div[@id='dropdown_text']/../div/button[@class='drp-icon-btn-open']")
         # QR code welcome screen
         self.upload_welcome_screen_qr_code_dropdown = page.locator("//button[@data-target='#acc_welcomeScreen']")
-        self.upload_welcome_screen_qr_code_input = "//input[@id='screen']"
+        self.upload_welcome_screen_qr_code_input = page.locator("//input[@id='screen']")
         # QR code color theme
         self.update_color_theme_qr_code_dropdown = page.locator("//button[@data-target='#acc_Design']")
         # QR code social networks
         self.social_network_qr_code_dropdown = page.locator("//button[@data-target='#acc_social']")
         # Add list of social networks
+        self.social_network_url_input = page.locator("//input[@id='socialUrl']")
+        self.social_network_text_input = page.locator("//input[@name='social_icon_text[]']")
         # QR code contact details
         self.contact_details_qr_code_dropdown = page.locator("//button[@data-target='#acc_contactInfo']")
+        self.contact_details_contact_name = page.locator("//input[@id='contactName']")
         # add phone
-        self.contact_details_qr_code_add_phone_btn = page.locator("//button[@data-anchor='vcardPhone']")
+        self.contact_details_qr_code_add_phone_btn = page.locator("//button[@id='addPhone']")
         self.contact_details_qr_code_add_phone_label = page.locator("//input[@id='vcard_phoneLabel']")
         self.contact_details_qr_code_add_phone_number = page.locator("//input[@id='vcard_phone']")
         self.contact_details_qr_code_delete_phone_btn = page.locator(
             "//div[@id='phoneBlock']//button[contains(@class,'delete-btn vcard-remove')]")
         # add email
-        self.contact_details_qr_code_add_email_btn = page.locator("//button[@data-anchor='vcardEmail']")
+        self.contact_details_qr_code_add_email_btn = page.locator("//button[@id='addEmail']")
         self.contact_details_qr_code_add_email_label = page.locator("//input[@id='vcard_emailLabel']")
         self.contact_details_qr_code_add_email_address = page.locator("//input[@id='vcard_email']")
         self.contact_details_qr_code_delete_email_btn = page.locator(
             "//div[@id='emailBlock']//button[contains(@class,'delete-btn vcard-remove')]")
         # add website
-        self.contact_details_qr_code_add_website_btn = page.locator("//button[@data-anchor='vcardWeb']")
+        self.contact_details_qr_code_add_website_btn = page.locator("//button[@id='addWebsite']")
         self.contact_details_qr_code_add_website_label = page.locator("//input[@id='vcard_website_title']")
         self.contact_details_qr_code_add_website_url = page.locator("// input[ @id='vcard_website']")
         self.contact_details_qr_code_delete_email_btn = page.locator(
@@ -76,6 +78,19 @@ class QrCreationLocators:
         # add location
         self.location_qr_code_dropdown = page.locator("//button[@data-target='#add_website-dis']")
         self.location_qr_code_search_address = page.locator("//input[@id='ship-address1']")
+        # add button
+        self.add_button_with_link = page.locator("//button[@id='add']")
+        self.add_button_with_link_name = page.locator("//input[@id='businessButtons']")
+        self.add_button_with_link_url = page.locator("//input[@id='businessButtonUrls']")
+        # add button2
+        self.add_button2_image_with_link = page.locator("//button[@id='add2']")
+        self.add_button2_image_text_input = page.locator("//input[@id='button_text']")
+        self.add_button2_image_url_input = page.locator("//input[@id='button_url']")
+
+        # opening hours
+        self.monday_checkbox = page.locator("//input[@id='checkboxMon']")
+        self.monday_time_from = page.locator("//input[@id='Monday_From']")
+        self.monday_time_to = page.locator("//input[@id='Monday_To']")
 
         # Website QR code locators
         self.setup_website_qr_code_dropdown = page.locator("//button[@data-target='#acc_nameOfUrl']")
@@ -95,6 +110,7 @@ class QrCreationLocators:
 
         # Links QR code locators
         self.basic_info_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_listInfo']")
+        self.basic_info_links_qr_code_image_input = page.locator("//input[@id='companyLogo']")
         self.basic_info_links_qr_code_image_input = "//input[@id='companyLogo']"
         self.basic_info_company_logo_input = page.locator("//input[@id='companyLogo']")
         self.basic_info_links_qr_code_title_input = page.locator("//input[@id='list_title']")
@@ -151,7 +167,7 @@ class QrCreationLocators:
         self.app_info_qr_code_app_name_input = page.locator("//input[@id='app_title']")
         self.app_info_qr_code_dev_company_input = page.locator("//input[@id='app_company']")
         self.app_info_qr_code_logo_img_input = page.locator("//input[@id='companyLogo']")
-        self.app_info_qr_code_description_input = page.locator("//input[@id='companyLogo']")
+        self.app_info_qr_code_description_input = page.locator("//textarea[@id='app_description']")
         self.app_info_qr_code_website_input = page.locator("//input[@id='app_website']")
         self.links_to_platforms_qr_code_dropdown = page.locator("//button[@data-target='#acc_imageInfo']")
         self.links_to_platforms_qr_code_google_add_button = page.locator("//button[contains(@class,'google_btn')]")
@@ -192,7 +208,7 @@ class QrCreationLocators:
         self.menu_var_popup_modal_title = page.locator("//div[@id='helpCarousel1']//h5")
         self.menu_var_popup_menu_type_button = page.locator("//div[@id='menuModal']//button[@value='menu']")
         self.menu_var_popup_pdf_type_button = page.locator("//div[@id='menuModal']//button[@value='pdf']")
-        self.menu_var_popup_link_type_button = page.locator("//div[@id='menuModal']//button[@value='url']")
+        self.menu_var_popup_web_type_button = page.locator("//div[@id='menuModal']//button[@value='url']")
         self.menu_var_popup_cross_button = page.locator("//div[@id='menuModal']//button[@value='url']")
         self.menu_menu_type_restaurant_dropdown = page.locator("//button[@data-target='#acc_menuInfo']")
         self.menu_menu_type_restaurant_img_input = page.locator("//input[@id='companyLogo']")
@@ -202,6 +218,7 @@ class QrCreationLocators:
         self.menu_menu_type_section1_dropdown = page.locator(
             "//div[@id='add_section']//button[contains(@class,'section-btn') and @data-target='#menu_section_1']")
         self.menu_menu_type_section1_name_input = page.locator("//input[@id='sectionNames']")
+        self.menu_menu_type_section1_description_of_section_input = page.locator("//input[@id='sectionDescriptions']")
         self.menu_menu_type_section1_image_input = page.locator("//input[@id='productImages1']")
         self.menu_menu_type_section1_product_name_input = page.locator(
             "//div[@class='row']//input[contains(@name,'productNames') and contains(@class,'pName')]")
@@ -215,13 +232,16 @@ class QrCreationLocators:
         self.wi_fi_info_dropdown = page.locator("//button[@data-target='#acc_WiFi_Information']")
         self.wi_fi_info_network_name_input = page.locator("//input[@id='wifi_ssid']")
         self.wi_fi_info_network_password_input = page.locator("//input[@id='wifi_password']")
+        self.wi_fi_info_encrypting_type_dropdown = page.locator("//select[@id='wifi_encryption']")
 
         # Facebook QR code locators
         self.facebook_design_dropdown = page.locator("//button[@data-target='#facebook-bg']")
         self.facebook_design_image0 = page.locator("//div[@id='facebook-bg']//div[@data-image_id='0']")
         self.facebook_design_image1 = page.locator("//div[@id='facebook-bg']//div[@data-image_id='1']")
         self.facebook_design_image2 = page.locator("//div[@id='facebook-bg']//div[@data-image_id='2']")
+        self.facebook_design_background_input = page.locator("//input[@id='fbBgImage']")
         self.facebook_profile_img_dropdown = page.locator("//button[@data-target='#facebook-profile']")
+        self.facebook_profile_img_input = page.locator("//input[@id='companyLogo']")
         self.facebook_basic_info_dropdown = page.locator("//button[@data-target='#facebook-details']")
         self.facebook_basic_info_facebook_url = page.locator("//input[@id='facebook_url']")
         self.facebook_basic_info_facebook_title = page.locator("//input[@id='facebook_title']")
@@ -242,6 +262,7 @@ class QrCreationLocators:
         self.social_media_basic_info_dropdown = page.locator("//button[@data-target='#social-media']")
         self.social_media_basic_info_title = page.locator("//input[@id='social_title']")
         self.social_media_basic_info_description = page.locator("//textarea[@id='social_description']")
+        self.social_media_basic_info_description = page.locator("//textarea[@id='social_description']")
 
         # Whatsapp QR code locators
         self.whats_app_information_dropdown = page.locator("//button[@data-target='#whatsapp_no']")
@@ -252,15 +273,14 @@ class QrCreationLocators:
         self.frame_step3_dropdown = page.locator("//button[@data-target='#acc_frame']")
         self.qrcode_patterns_step3_dropdown = page.locator("//button[@data-target='#acc_patterns']")
         self.qrcode_corners_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
-        self.qrcode_add_logo_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
-        self.qrcode_upload_logo_input = "//input[@id='qr_code_logo']"
+        self.qrcode_add_logo_step3_dropdown = page.locator("//button[@data-target='#acc_addLogo']")
+        self.qrcode_upload_logo_input = page.locator("//input[@id='qr_code_logo']")
         self.create_button = page.locator("//button[@id='temp_submit']")
         self.back_button = page.locator("//button[@id='cancel']")
         # Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.
         self.help_modal_close_button = page.locator("//div[@id='helpCarousel']//button[@id='closeBtn']")
 
-        #DPF Locators
-
+        # DPF Download locators
 
         # DPF QR code pricing
         self.days_14_limited_access_button = page.locator("//input[@id='dpfPlan1']")
