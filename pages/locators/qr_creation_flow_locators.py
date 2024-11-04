@@ -109,11 +109,11 @@ class QrCreationLocators:
         # Links QR code locators
         self.basic_info_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_listInfo']")
         self.basic_info_links_qr_code_image_input = page.locator("//input[@id='companyLogo']")
-<<<<<<< HEAD
-=======
+
+
         #self.basic_info_links_qr_code_image_input = "//input[@id='companyLogo']"
         self.basic_info_company_logo_input = page.locator("//input[@id='companyLogo']")
->>>>>>> e61430e (commit before pull)
+
         self.basic_info_links_qr_code_title_input = page.locator("//input[@id='list_title']")
         self.basic_info_links_qr_code_description_input = page.locator("//textarea[@id='list_description']")
         self.list_of_links_qr_code_dropdown = page.locator("//button[@data-target='#acc_link']")
