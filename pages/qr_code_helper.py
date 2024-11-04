@@ -96,6 +96,7 @@ class QrCodeHelper:
             'mimeType': mime_type,
             'fileName': file_path.name
         })
+        self.page.wait_for_selector("//span[@class='image-edit-icon']", state="visible")
 
     def set_file(self, selector, file_type):
         file_path = self.generate_file(file_type)
@@ -210,24 +211,34 @@ class QrCodeHelper:
                 child.click(force=True)
                 break
 
+    def set_screenshot_path(self, screenshot_path):
+        self.screenshot_path = screenshot_path
+
     def take_iframe_screenshot(self):
         self.page.add_style_tag(content="""
-            .card {
-                border-radius: 0px !important;
-            }
-            .mb-frame-inner .card::after {
-                background-image: none !important;
-            }
-            #iframesrc, #iframesrc * {
-                border-radius: 0px !important;
-            }
+        .card {
+            border-radius: 0px !important;
+            width: 430px !important;
+        }
+        .mb-frame-inner .card {
+            max-width: none !important; 
+        }
+        .mb-frame-inner .card::after {
+            background-image: none !important;
+        }
+        #iframesrc, #iframesrc * {
+            border-radius: 0px !important;
+        }
         """)
+        footer_element = self.page.locator("//div[@id='qr-proceed-footer']")
+        footer_element.evaluate("element => element.style.display = 'none'")
         mobile = self.page.locator("//div[@id='tabs-1']/div")
         iphone_line = self.page.locator("//div[@class='iphone-line']")
         iphone_line.evaluate("element => element.style.position = 'none'")
         mobile.evaluate("element => element.style.height = '100vh'")
         mobile.evaluate("element => element.style.backgroundImage = 'none'")
         iframe = self.page.frame_locator("//iframe[@id='iframesrc']")
-        timestamp = int(time.time())
-        self.screenshot_path = f"frame/test_{timestamp}.png"
-        iframe.locator("//div[@class='App']").screenshot(path=self.screenshot_path)
+        iframe.locator("//div[@class='App']").screenshot(
+            path=str(self.screenshot_path)
+        )
+        footer_element.evaluate("element => element.style.display = 'block'")

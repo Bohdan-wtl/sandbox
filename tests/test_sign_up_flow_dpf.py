@@ -12,7 +12,7 @@ class TestDPFSignUpFlow(BaseTest):
     @pytest.fixture(autouse=True)
     def setup_faker(self):
         self.faker = Faker()
-        self.random_number = Random().randint(1000, 3000)
+        self.random_number = Random().randint(3000, 99999999)
         self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
 
     @pytest.fixture(scope='function')
@@ -182,7 +182,7 @@ class TestDPFSignUpFlow(BaseTest):
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
         self.payment_page.make_payment()
-        self.payment_page.locator.click_on_submit_payment_button().click()
+        self.payment_page.locator.submit_payment_button.click()
         self.qr_creation_page.locator.congrats_download_button.click()
         self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
         self.my_qr_codes_page.file_download("downloaded_qr_codes/")
