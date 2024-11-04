@@ -12,7 +12,7 @@ class TestAdminLinkGeneration(BaseTest):
     @pytest.fixture(autouse=True)
     def setup_faker(self):
         self.faker = Faker()
-        self.random_number = Random().randint(3000, 3000000)
+        self.random_number = Random().randint(3000, 10000000)
         self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
 
     @pytest.fixture(scope='function')
