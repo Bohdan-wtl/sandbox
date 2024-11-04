@@ -163,17 +163,12 @@ class QrCodeHelper:
     #     return self.select_random_option(pattern_locators)
 
     def select_qrcode_corners_step3(self):
-        self.locator.qrcode_corners_step3_dropdown.is_enabled()
-        self.locator.qrcode_corners_step3_dropdown.scroll_into_view_if_needed(timeout=60000)
         self.locator.qrcode_corners_step3_dropdown.click()
-        self.select_random_option([
-            "//label[@id='NS']", "//label[@id='FR']", "//label[@id='FS']",
-            "//label[@id='FRR']", "//label[@id='FF']", "//label[@id='FL']"
-        ])
-        self.select_random_option([
-            "//label[@id='IN']", "//label[@id='ID']", "//label[@id='IS']",
-            "//label[@id='IR']", "//label[@id='IDD']", "//label[@id='IF']", "//label[@id='IL']"
-        ])
+        self.select_random_child_by_attribute(
+            "//div[@id='acc_corners']//div[@class='col-md-6']//div[@class='cornerBtn-container']", 'label', 'id')
+        self.select_random_child_by_attribute(
+            "//div[@id='acc_corners']//div[contains(@class,'col-md-5')]//div[@class='cornerBtn-container']", 'label',
+            'id')
 
     def add_phone_email_website(self):
         self.locator.contact_details_qr_code_add_phone_btn.is_visible()
