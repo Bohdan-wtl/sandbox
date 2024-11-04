@@ -53,7 +53,7 @@ def artifacts(request):
 
 @pytest.fixture(scope="session", autouse=True)
 def clean_folders():
-    folders_to_clean = ["generated_files", "downloaded_qr_codes", "reports", "screenshots", "videos"]
+    folders_to_clean = ["generated_files", "downloaded_qr_codes", "reports", "screenshots", "videos", "tests/snapshots"]
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)

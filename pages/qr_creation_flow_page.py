@@ -129,8 +129,8 @@ class QrCreationPage(BasePage):
         self.locator.add_button_with_link_name.fill(self.faker.word())
         self.locator.add_button_with_link_url.fill(self.faker.url())
         self.locator.monday_checkbox.check(force=True)
-        self.page.evaluate("document.querySelector('#Monday_From').value = '8:00'")
-        self.page.evaluate("document.querySelector('#Monday_To').value = '9:00'")
+        self.page.evaluate("document.querySelector('#Monday_From').value = '08:00'")
+        self.page.evaluate("document.querySelector('#Monday_To').value = '09:00'")
         self.helper.set_location()
         self.locator.contact_details_contact_name.fill(self.faker.name())
         self.helper.add_phone_email_website()
@@ -313,8 +313,8 @@ class QrCreationPage(BasePage):
         self.locator.menu_menu_type_section1_description_input.fill(self.faker.text(max_nb_chars=1000))
         self.locator.menu_menu_type_section1_price_input.fill(str(self.faker.random_int(min=2, max=100)))
         self.helper.select_random_child_by_attribute('//div[@id="menu_product_1_1"]//div[contains(@class,"mt-1 row  mx-0  align-item-center all_allergens")]', 'input', 'value')
-        self.page.evaluate("document.querySelector('#Monday_From').value = '8:00'")
-        self.page.evaluate("document.querySelector('#Monday_To').value = '9:00'")
+        self.page.evaluate("document.querySelector('#Monday_From').value = '08:00'")
+        self.page.evaluate("document.querySelector('#Monday_To').value = '09:00'")
         self.helper.add_phone_email_website()
         self.helper.select_random_child_by_attribute('//div[@class= "socialIconContain"]', 'button',
                                                      'id')  # BUG on click!
@@ -461,7 +461,6 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
-
 
 
     def whatsapp_qr_create(self):

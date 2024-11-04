@@ -87,8 +87,8 @@ class QrCreationLocators:
 
         # opening hours
         self.monday_checkbox = page.locator("//input[@id='checkboxMon']")
-        self.monday_time_from = page.locator("//input[@id='Monday_From']")
-        self.monday_time_to = page.locator("//input[@id='Monday_To']")
+        self.monday_time_from = page.locator("#Monday_From")
+        self.monday_time_to = page.locator("#Monday_To")
 
         # Website QR code locators
         self.setup_website_qr_code_dropdown = page.locator("//button[@data-target='#acc_nameOfUrl']")
@@ -267,8 +267,8 @@ class QrCreationLocators:
         self.qrcode_upload_logo_input = page.locator("//input[@id='qr_code_logo']")
         self.create_button = page.locator("//button[@id='temp_submit']")
         self.back_button = page.locator("//button[@id='cancel']")
+        self.close_download_modal_button = page.locator("//div[@id='DownloadModal']//button[@aria-label='Close']")
         # Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.
-        self.help_modal_close_button = page.locator("//div[@id='helpCarousel']//button[@id='closeBtn']")
 
         # DPF Download locators
 
