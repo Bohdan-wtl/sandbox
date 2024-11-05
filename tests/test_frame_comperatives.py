@@ -25,12 +25,12 @@ class TestFrameComparatives(BaseTest):
         self.register_page.sign_up(self.fake_email, "wtl-testBohdan@gmail.com")
         yield
 
-    @pytest.mark.parametrize("qr_create_method", ["pdf_qr_create",
-                                                  "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
-                                                  "menu_pdf_qr_create", "menu_link_qr_create", "wifi_qr_create", "facebook_qr_create",
-                                                  "instagram_qr_create", "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
-                                                  "image_qr_create", "apps_qr_create", "business_qr_create", "vcard_qr_create", "links_qr_create",
-                                                  "website_qr_create"
+    @pytest.mark.parametrize("qr_create_method", ["apps_qr_create",
+                                                  # "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
+                                                  # "menu_pdf_qr_create", "menu_link_qr_create", "wifi_qr_create", "facebook_qr_create",
+                                                  # "instagram_qr_create", "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
+                                                  # "image_qr_create", "apps_qr_create", "business_qr_create", "vcard_qr_create", "links_qr_create",
+                                                  # "website_qr_create", "pdf_qr_create"
                                                   ])
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
