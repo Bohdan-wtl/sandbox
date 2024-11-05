@@ -163,7 +163,6 @@ class QrCodeHelper:
     #     return self.select_random_option(pattern_locators)
 
     def select_qrcode_corners_step3(self):
-        self.locator.qrcode_corners_step3_dropdown.click()
         self.select_random_child_by_attribute(
             "//div[@id='acc_corners']//div[@class='col-md-6']//div[@class='cornerBtn-container']", 'label', 'id')
         self.select_random_child_by_attribute(
@@ -171,8 +170,7 @@ class QrCodeHelper:
             'id')
 
     def add_phone_email_website(self):
-        self.locator.contact_details_qr_code_add_phone_btn.is_visible()
-        self.locator.contact_details_qr_code_add_phone_btn.is_enabled()
+        self.locator.contact_details_qr_code_add_phone_btn.scroll_into_view_if_needed()
         self.locator.contact_details_qr_code_add_phone_btn.click()
         self.locator.contact_details_qr_code_add_phone_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_phone_number.fill(self.faker.basic_phone_number())
@@ -203,7 +201,8 @@ class QrCodeHelper:
         random_value = random.choice(attribute_values)
         for child in child_elements:
             if child.get_attribute(unique_attribute) == random_value:
-                child.click(force=True)
+                child.scroll_into_view_if_needed()
+                child.click()
                 break
 
     def set_screenshot_path(self, screenshot_path):

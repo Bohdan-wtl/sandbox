@@ -16,6 +16,7 @@ class PaymentPageLocators:
         self.billing_country_input = self.frame_billing.locator("//input[@id='Field-countryInput']")
         self.billing_address_line1_input = self.frame_billing.locator("//input[@id='Field-addressLine1Input']")
         self.billing_city_input = self.frame_billing.locator("//input[@id='Field-localityInput']")
+        self.billing_oblast_input = self.frame_billing.locator("//select[@id='Field-administrativeAreaInput']")
         self.billing_postal_code_input = self.frame_billing.locator("//input[@id='Field-postalCodeInput']")
 
         self.billing_info_continue_button = page.locator("//button[@id='infoSubmit']")
