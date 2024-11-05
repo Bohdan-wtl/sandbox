@@ -41,3 +41,6 @@ class MyQrCodesPage(BasePage):
     def open_last_qr_link(self):
         qr_link = self.page.locator("//a[@class='qr-card-link']").first
         return qr_link
+
+    def turn_off_iframe(self):
+        self.page.locator("body").press("ControlOrMeta+.")

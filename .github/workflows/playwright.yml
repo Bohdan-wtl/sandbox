@@ -12,16 +12,20 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: white779/playwright-python:wtl
+    env:
+      STAGE_ADMIN_LINK: ${{ secrets.STAGE_ADMIN_LINK }}
+      STAGE_ADMIN_EMAIL: ${{ secrets.STAGE_ADMIN_EMAIL }}
+      STAGE_ADMIN_PASSWORD: ${{ secrets.STAGE_ADMIN_PASSWORD }}
 
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Run Playwright tests with Xvfb
-      run: xvfb-run -a pytest tests/
+      - name: Run Playwright tests with Xvfb
+        run: xvfb-run -a pytest tests/
 
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: allure-reports
-        path: reports
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: allure-reports
+          path: reports

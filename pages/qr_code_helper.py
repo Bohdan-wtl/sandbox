@@ -96,7 +96,6 @@ class QrCodeHelper:
             'mimeType': mime_type,
             'fileName': file_path.name
         })
-        self.page.wait_for_selector("//span[@class='image-edit-icon']", state="visible")
 
     def set_file(self, selector, file_type):
         file_path = self.generate_file(file_type)
@@ -133,6 +132,7 @@ class QrCodeHelper:
         text_options = self.page.query_selector_all("//div[@id='dropdown_text']/button")
         random_text_font = random.choice(text_options)
         random_text_font.scroll_into_view_if_needed()
+        random_text_font.click(force=True)
         random_text_font.click(force=True)
 
     def welcome_screen_set_img(self):
