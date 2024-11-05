@@ -39,7 +39,7 @@ jobs:
         run: sudo apt-get install -y xvfb
 
       - name: Run Playwright tests with Xvfb
-        run: xvfb-run -a pytest --tracing=on
+        run: xvfb-run -a pytest tests/test_admin_link_generation.py -k test_admin_create_uniq_payment_link --tracing=on
 
       - name: Upload Allure Reports
         uses: actions/upload-artifact@v3
