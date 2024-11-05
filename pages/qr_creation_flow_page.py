@@ -16,12 +16,11 @@ class QrCreationPage(BasePage):
         self.locator.annual_plan_button.click()
         self.locator.continue_user_plan_button.click()
 
-
     def website_qr_create(self):
         self.locator.website_qr_type.click(delay=1000)
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
         self.helper.set_custom_qr_code_name(qr_code_type="Website")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -33,14 +32,13 @@ class QrCreationPage(BasePage):
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
-
     def pdf_qr_create(self):
         self.locator.pdf_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
         self.helper.emulate_drag_and_drop('#pdf', 'pdf')
 
-        #self.locator.directly_show_pdf_checkbox.is_editable() # Directly show the PDF file - option
-        #self.locator.directly_show_pdf_checkbox.click() # Directly show the PDF file - option
+        # self.locator.directly_show_pdf_checkbox.is_editable() # Directly show the PDF file - option
+        # self.locator.directly_show_pdf_checkbox.click() # Directly show the PDF file - option
 
         self.helper.select_random_child_by_attribute('//div[contains(@class,"colorPaletteForm row m-0")]', 'div', 'id')
         self.locator.company_pdf_info_input.fill(self.faker.company())
@@ -51,7 +49,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="PDF")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -78,7 +76,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Links")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -88,7 +86,6 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
-
 
     def vcard_qr_create(self):
         self.locator.vcard_qr_type.click(delay=1000)
@@ -108,7 +105,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="vCard")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -143,7 +140,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -168,7 +165,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -178,7 +175,6 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
-
 
     def video_qr_create(self):
         self.locator.video_qr_type.click(delay=1000)
@@ -199,7 +195,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -228,7 +224,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Apps")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -256,12 +252,13 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Coupon")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
         self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute('//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
+        self.helper.select_random_child_by_attribute(
+            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
@@ -286,7 +283,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="MP3")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -312,7 +309,9 @@ class QrCreationPage(BasePage):
         self.locator.menu_menu_type_section1_name_translated_input.fill(self.faker.word())
         self.locator.menu_menu_type_section1_description_input.fill(self.faker.text(max_nb_chars=1000))
         self.locator.menu_menu_type_section1_price_input.fill(str(self.faker.random_int(min=2, max=100)))
-        self.helper.select_random_child_by_attribute('//div[@id="menu_product_1_1"]//div[contains(@class,"mt-1 row  mx-0  align-item-center all_allergens")]', 'input', 'value')
+        self.helper.select_random_child_by_attribute(
+            '//div[@id="menu_product_1_1"]//div[contains(@class,"mt-1 row  mx-0  align-item-center all_allergens")]',
+            'input', 'value')
         self.page.evaluate("document.querySelector('#Monday_From').value = '08:00'")
         self.page.evaluate("document.querySelector('#Monday_To').value = '09:00'")
         self.helper.add_phone_email_website()
@@ -323,7 +322,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Menu-Digital")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -351,7 +350,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Menu - PDF")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -367,7 +366,7 @@ class QrCreationPage(BasePage):
         self.locator.menu_var_popup_web_type_button.click()
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
         self.helper.set_custom_qr_code_name(qr_code_type="Menu - Website")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -378,8 +377,6 @@ class QrCreationPage(BasePage):
         self.locator.qrcode_add_logo_step3_dropdown.click()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
-
-
 
     def wifi_qr_create(self):
         self.locator.wifi_qr_type.click(delay=1000)
@@ -409,7 +406,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Facebook")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -419,14 +416,13 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
-
 
     def instagram_qr_create(self):
         self.locator.instagram_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
         self.locator.instagram_basic_info_username_input.fill(self.faker.user_name())
         self.helper.set_custom_qr_code_name(qr_code_type="Instagram")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -436,7 +432,6 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
-
 
     def social_media_qr_create(self):
         self.locator.social_media_qr_type.click(delay=1000)
@@ -445,13 +440,13 @@ class QrCreationPage(BasePage):
         self.locator.social_media_basic_info_title.fill(self.faker.text(max_nb_chars=30))
         self.locator.social_media_basic_info_description.fill(self.faker.text(max_nb_chars=3000))
         self.helper.emulate_drag_and_drop('#files', 'image')
-        #self.helper.select_random_child_by_attribute('//div[@class= "socialIconContain"]','button', 'id') #BUG on click!
-        #self.locator.links_qr_code_social_network_url_input.fill(self.faker.url())
-        #self.locator.links_qr_code_social_network_text_input.fill(self.faker.text(max_nb_chars=27))
+        # self.helper.select_random_child_by_attribute('//div[@class= "socialIconContain"]','button', 'id') #BUG on click!
+        # self.locator.links_qr_code_social_network_url_input.fill(self.faker.url())
+        # self.locator.links_qr_code_social_network_text_input.fill(self.faker.text(max_nb_chars=27))
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Social Media")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -462,14 +457,13 @@ class QrCreationPage(BasePage):
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
-
     def whatsapp_qr_create(self):
         self.locator.whatsapp_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
         self.locator.whats_app_information_phone_input.fill(str(self.faker.random_int(min=111111111, max=999999999)))
         self.locator.whats_app_information_message_input.fill(self.faker.text(max_nb_chars=1500))
         self.helper.set_custom_qr_code_name(qr_code_type="WhatsApp")
-        self.helper.take_iframe_screenshot()
+
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()

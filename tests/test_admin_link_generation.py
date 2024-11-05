@@ -35,8 +35,8 @@ class TestAdminLinkGeneration(BaseTest):
     @pytest.mark.parametrize("discount_button_locator", [
         "default_pricing_button",
         "discount_70_promo_button",
-        # "discount_8_99_monthly_button",
-        # "discount_50_one_time_button"
+        "discount_8_99_monthly_button",
+        "discount_50_one_time_button"
     ])
     def test_admin_create_uniq_payment_link(self, sign_up_fixture, discount_button_locator):
         discount_locator = getattr(self.admin_page.locator, discount_button_locator)

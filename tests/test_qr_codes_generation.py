@@ -7,7 +7,7 @@ from config import languages_urls
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
-class TestSandBox(BaseTest):
+class TestQrCodesGeneration(BaseTest):
 
     @pytest.fixture(autouse=True)
     def setup_faker(self):
