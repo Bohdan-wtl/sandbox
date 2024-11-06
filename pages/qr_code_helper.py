@@ -232,9 +232,6 @@ class QrCodeHelper:
             overflow: visible !important;
             height: auto !important;
         }
-        #color_palette {
-            display: none !important;
-        }
     """)
         footer_element = self.page.locator("//div[@id='qr-proceed-footer']")
         footer_element.evaluate("element => element.style.display = 'none'")

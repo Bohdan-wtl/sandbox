@@ -16,6 +16,19 @@ class QrCreationPage(BasePage):
         self.locator.annual_plan_button.click()
         self.locator.continue_user_plan_button.click()
 
+    def click_next_button_step2(self):
+        self.locator.next_button.click()
+
+    def complete_step_3(self):
+        self.helper.close_help_modal_window_st3()
+        self.helper.select_frame_step3()
+        self.locator.qrcode_patterns_step3_dropdown.click()
+        self.helper.select_random_child_by_attribute(
+            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
+        self.helper.select_qrcode_corners_step3()
+        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
+        self.locator.create_button.click()
+
     def website_qr_create(self):
         self.locator.website_qr_type.click(delay=1000)
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
@@ -48,16 +61,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="PDF")
-        self.helper.take_iframe_screenshot()
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def links_qr_create(self):
         self.locator.links_qr_type.click(delay=1000)
@@ -75,16 +78,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Links")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def vcard_qr_create(self):
         self.locator.vcard_qr_type.click(delay=1000)
@@ -104,16 +97,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="vCard")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def business_qr_create(self):
         self.locator.business_qr_type.click(delay=1000)
@@ -140,16 +123,6 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
 
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
-
     def image_qr_create(self):
         self.locator.images_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -164,15 +137,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def video_qr_create(self):
         self.locator.video_qr_type.click(delay=1000)
@@ -194,16 +158,6 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
 
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
-
 
     def apps_qr_create(self):
         self.locator.apps_qr_type.click(delay=1000)
@@ -224,15 +178,6 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Apps")
         self.helper.take_iframe_screenshot()
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def coupon_qr_create(self):
         self.locator.coupon_qr_type.click(delay=1000)
@@ -251,16 +196,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Coupon")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def mp3_qr_create(self):
         self.locator.mp3_qr_type.click(delay=1000)
@@ -282,16 +217,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="MP3")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def menu_menu_qr_create(self):
         self.locator.menu_qr_type.click(delay=1000)
@@ -322,16 +247,6 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Menu-Digital")
 
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
-
     def menu_pdf_qr_create(self):
         self.locator.menu_qr_type.click(delay=1000)
         self.locator.menu_var_popup_pdf_type_button.click()
@@ -349,16 +264,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Menu - PDF")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def menu_link_qr_create(self):
         self.locator.menu_qr_type.click(delay=1000)
@@ -384,15 +289,6 @@ class QrCreationPage(BasePage):
         random_encryption_type = random.choice(["WPA", "WEP", "WPA/WPA2", "nopass"])
         self.locator.wi_fi_info_encrypting_type_dropdown.select_option(random_encryption_type)
         self.helper.set_custom_qr_code_name(qr_code_type="Wi-Fi")
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def facebook_qr_create(self):
         self.locator.facebook_qr_type.click(delay=1000)
@@ -406,31 +302,11 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Facebook")
 
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
-
     def instagram_qr_create(self):
         self.locator.instagram_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
         self.locator.instagram_basic_info_username_input.fill(self.faker.user_name())
         self.helper.set_custom_qr_code_name(qr_code_type="Instagram")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
 
     def social_media_qr_create(self):
         self.locator.social_media_qr_type.click(delay=1000)
@@ -446,29 +322,9 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Social Media")
 
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()
-
     def whatsapp_qr_create(self):
         self.locator.whatsapp_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
         self.locator.whats_app_information_phone_input.fill(str(self.faker.random_int(min=111111111, max=999999999)))
         self.locator.whats_app_information_message_input.fill(self.faker.text(max_nb_chars=1500))
         self.helper.set_custom_qr_code_name(qr_code_type="WhatsApp")
-
-        self.locator.next_button.click()
-        self.helper.close_help_modal_window_st3()
-        self.helper.select_frame_step3()
-        self.locator.qrcode_patterns_step3_dropdown.click()
-        self.helper.select_random_child_by_attribute(
-            '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
-        self.helper.select_qrcode_corners_step3()
-        self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
-        self.locator.create_button.click()

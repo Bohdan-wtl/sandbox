@@ -30,7 +30,7 @@ class TestFrameComparatives(BaseTest):
                                                   # "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
                                                   # "facebook_qr_create",
                                                   # "instagram_qr_create", "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
-                                                  # "image_qr_create", "business_qr_create", "vcard_qr_create", "links_qr_create",
+                                                  # "image_qr_create", "business_qr_create", "vcard_qr_create",
                                                   # "pdf_qr_create", "apps_qr_create
                                                   ])
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
@@ -44,6 +44,9 @@ class TestFrameComparatives(BaseTest):
         self.qr_creation_page.helper.set_screenshot_path(expected_image_path)
         qr_create_method_func = getattr(self.qr_creation_page, qr_create_method)
         qr_create_method_func()
+        self.qr_creation_page.helper.take_iframe_screenshot()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.close_download_modal_button.click()
         with Image.open(expected_image_path) as img:
             width, height = img.size
