@@ -154,13 +154,6 @@ class QrCodeHelper:
         ]
         return self.select_random_option(frame_locators)
 
-    # def select_pattern_step3(self):
-    #     self.locator.qrcode_patterns_step3_dropdown.click()
-    #     pattern_locators = [
-    #         "//label[@id='square']", "//label[@id='round']", "//label[@id='extra_rounded']",
-    #         "//label[@id='dot']", "//label[@id='heart']", "//label[@id='diamond']"
-    #     ]
-    #     return self.select_random_option(pattern_locators)
 
     def select_qrcode_corners_step3(self):
         self.select_random_child_by_attribute(
