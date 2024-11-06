@@ -222,6 +222,9 @@ class QrCodeHelper:
         #iframesrc, #iframesrc * {
             border-radius: 0px !important;
         }
+        .mb-frame {
+            padding: 0px !important;
+        }
         .App {
             overflow: visible !important;
             height: auto !important;
@@ -229,17 +232,22 @@ class QrCodeHelper:
     """)
         footer_element = self.page.locator("//div[@id='qr-proceed-footer']")
         footer_element.evaluate("element => element.style.display = 'none'")
-        preview_qrcode = self.page.locator("//div[@id='preview_qrcode']")
-        preview_qrcode.evaluate("element => element.style.display = 'none'")
-        header = self.page.locator("//header")
-        header.evaluate("element => element.style.display = 'none'")
+        self.page.locator("//div[@id='preview_qrcode']").evaluate("element => element.style.display = 'none'")
+        self.page.locator("//header").evaluate("element => element.style.display = 'none'")
+        self.page.locator("//div[@class='iphone-line']").evaluate("element => element.style.display = 'none'")
         mobile = self.page.locator("//div[@id='tabs-1']/div")
-        iphone_line = self.page.locator("//div[@class='iphone-line']")
-        iphone_line.evaluate("element => element.style.display = 'none'")
-        mobile.evaluate("element => element.style.height = '900px'")
         mobile.evaluate("element => element.style.overflow = 'visible'")
         mobile.evaluate("element => element.style.backgroundImage = 'none'")
         iframe = self.page.frame_locator("iframe#iframesrc").locator("//div[@class='App']")
         iframe.evaluate("element => element.style.background = 'white'")
+        iframe_height = (self.page.frame_locator("iframe#iframesrc")
+                         .locator("//div[@class='App']")
+                         .evaluate("element => element.scrollHeight"))
+        self.page.frame_locator("iframe#iframesrc").locator("//html/head").evaluate("""
+            () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        """)
+        mobile.evaluate(f"element => element.style.height = '{iframe_height}px'")
         iframe.screenshot(path=str(self.screenshot_path))
         footer_element.evaluate("element => element.style.display = 'block'")

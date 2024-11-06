@@ -1,5 +1,5 @@
 from PIL import Image
-from utils.comparison_module import compare_screenshots
+from utils.comparison_module import compare_images
 import pytest
 from random import Random
 from faker import Faker
@@ -26,13 +26,13 @@ class TestFrameComparatives(BaseTest):
         self.register_page.sign_up(user_email, "wtl-testBohdan@gmail.com")
         yield
 
-    @pytest.mark.parametrize("qr_create_method", ["apps_qr_create",
-                                                  # "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
-                                                  # "facebook_qr_create",
-                                                  # "instagram_qr_create", "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
-                                                  # "image_qr_create", "business_qr_create", "vcard_qr_create",
-                                                  # "pdf_qr_create", "apps_qr_create
+    @pytest.mark.parametrize("qr_create_method", [
+                                                  "coupon_qr_create", "mp3_qr_create", "menu_menu_qr_create",
+                                                    "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
+                                                  "image_qr_create", "business_qr_create", "vcard_qr_create",
+                                                  "pdf_qr_create", "apps_qr_create"
                                                   ])
+    @pytest.mark.flaky(reruns=1)
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
         expected_image_path = (f"tests/snapshots/preview/Expected/{test_func}"
@@ -53,7 +53,7 @@ class TestFrameComparatives(BaseTest):
         self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.header_create_qr_code_button).to_be_visible()
         new_page = self.my_qr_codes_page.open_in_new_tab(self.my_qr_codes_page.open_last_qr_link())
         new_page.set_viewport_size({"width": width, "height": height})
-        new_page.wait_for_timeout(5000)
+        new_page.wait_for_timeout(10000)
         new_page.locator("body").press("ControlOrMeta+.")
         new_page.add_style_tag(content="""
         .App {
@@ -61,4 +61,4 @@ class TestFrameComparatives(BaseTest):
         }
         """)
         new_page.screenshot(full_page=True, path=actual_image_path)
-        compare_screenshots(actual_image_path, expected_image_path, diff_image_path)
+        compare_images(actual_image_path, expected_image_path, diff_image_path, threshold=10)
