@@ -2,11 +2,16 @@ import os
 import shutil
 import allure
 import pytest
+import requests
 from pytest import hookimpl
 from playwright.sync_api import sync_playwright
+from random import Random
+from config import languages_urls, languages_dpf_urls, languages_nsf_urls
 
 headless = False
 slow_mo = 0
+
+DELETE_USER_URL = "https://oqg-dev.test-qr.com/api/test-user-delete"
 
 
 @pytest.fixture(scope="session")
@@ -60,3 +65,46 @@ def clean_folders():
             shutil.rmtree(folder)
         os.makedirs(folder)
     yield
+
+
+@pytest.fixture(scope='function')
+def fake_email():
+    random_number = Random().randint(3000, 9999999999999)
+    fake_email = f"wtl-automation{random_number}@test.com"
+    return fake_email
+
+
+@pytest.fixture(scope='function')
+def sign_up_fixture(request, fake_email, language):
+    stage_url = languages_urls[language]
+    email = fake_email
+    request.instance.main_page.open_page(stage_url)
+    request.instance.main_page.go_to_sign_up_page()
+    request.instance.register_page.sign_up(email, "wtl-testBohdan@gmail.com")
+    yield
+
+@pytest.fixture(scope='function')
+def delete_user_after_test(fake_email):
+    yield
+    fake_email = "wtl-test+897@gmail.com"
+    headers = {"Content-Type": "application/json"}
+    data = {
+        "emails": [f"{fake_email}"]
+    }
+    response = requests.post(DELETE_USER_URL, headers=headers, json=data)
+    if response.status_code == 200:
+        print(f"User with email {fake_email} deleted successfully.")
+    else:
+        print(f"Failed to delete user with email {fake_email}. Status code: {response.status_code}, "
+              f"Response: {response.text}")
+
+
+@pytest.fixture(scope='function')
+def navigate_to_dpf_page(request, dpf_language):
+    stage_url = languages_dpf_urls[dpf_language]
+    request.instance.main_page.open_page(stage_url)
+
+@pytest.fixture(scope='function')
+def navigate_to_nsf_page(request, nsf_language):
+    stage_url = languages_nsf_urls[nsf_language]
+    request.instance.main_page.open_page(stage_url)
