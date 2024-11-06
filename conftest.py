@@ -6,6 +6,7 @@ from pytest import hookimpl
 from playwright.sync_api import sync_playwright
 
 headless = False
+slow_mo = 0
 
 
 @pytest.fixture(scope="session")

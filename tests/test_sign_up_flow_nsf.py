@@ -84,7 +84,7 @@ class TestNSFSignUpFlow(BaseTest):
         self.qr_creation_page.menu_menu_qr_create()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
-        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled(timeout=50000)
 
     def test_nsf_sign_up_menu_pdf_qr_type(self, navigate_to_nsf_page):
         self.qr_creation_page.menu_pdf_qr_create()

@@ -1,4 +1,6 @@
+import time
 from random import Random
+import random
 import pytest
 from faker import Faker
 from base.base_test import BaseTest
@@ -65,6 +67,12 @@ class TestAdminLinkGeneration(BaseTest):
         self.payment_page.locator.billing_full_name_input.fill("John Smit")
         self.payment_page.locator.billing_address_line1_input.fill("ser John Smit st.")
         self.payment_page.locator.billing_city_input.fill("LA")
+        options = self.payment_page.locator.billing_oblast_input.locator("option").all()
+        available_options = [option for option in options if not option.is_disabled()]
+        if available_options:
+            random_option = random.choice(available_options)
+            value = random_option.get_attribute("value")
+            self.payment_page.locator.billing_oblast_input.select_option(value)
         self.payment_page.locator.billing_postal_code_input.fill("37800")
         self.payment_page.locator.billing_info_continue_button.click()
         self.payment_page.make_payment()
