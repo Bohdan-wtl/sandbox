@@ -20,7 +20,6 @@ class QrCreationPage(BasePage):
         self.locator.website_qr_type.click(delay=1000)
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
         self.helper.set_custom_qr_code_name(qr_code_type="Website")
-
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -49,7 +48,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="PDF")
-
+        self.helper.take_iframe_screenshot()
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -165,7 +164,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
-
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -206,6 +204,7 @@ class QrCreationPage(BasePage):
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
+
     def apps_qr_create(self):
         self.locator.apps_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -213,7 +212,7 @@ class QrCreationPage(BasePage):
         self.locator.app_info_qr_code_app_name_input.fill(self.faker.company())
         self.locator.app_info_qr_code_dev_company_input.fill(self.faker.company())
         self.helper.set_file(self.locator.app_info_qr_code_logo_img_input, 'image')
-        self.locator.app_info_qr_code_description_input.fill(self.faker.text(max_nb_chars=2000))
+        self.locator.app_info_qr_code_description_input.fill(self.faker.text(max_nb_chars=500))
         self.locator.app_info_qr_code_website_input.fill(self.faker.url())
         self.locator.links_to_platforms_qr_code_google_add_button.click()
         self.locator.links_to_platforms_qr_code_google_input.fill(self.faker.url())
@@ -224,7 +223,7 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Apps")
-
+        self.helper.take_iframe_screenshot()
         self.locator.next_button.click()
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()

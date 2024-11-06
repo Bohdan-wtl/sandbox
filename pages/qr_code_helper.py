@@ -2,6 +2,7 @@ import random
 import os
 import time
 from pathlib import Path
+
 from PIL import Image, ImageDraw, ImageFont
 from fpdf import FPDF
 from faker import Faker
@@ -101,7 +102,6 @@ class QrCodeHelper:
         file_path = self.generate_file(file_type)
         selector.set_input_files(file_path)
 
-
     def close_help_modal_window_st3(self):
         self.locator.help_modal_close_button.is_visible()
         self.locator.help_modal_close_button.click()
@@ -185,7 +185,7 @@ class QrCodeHelper:
         self.locator.contact_details_qr_code_add_email_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_email_address.fill(self.faker.email())
         self.locator.contact_details_qr_code_add_website_btn.click()
-        self.locator.contact_details_qr_code_add_website_label .fill(self.faker.word())
+        self.locator.contact_details_qr_code_add_website_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_website_url.fill(self.faker.url())
 
     def set_location(self):
@@ -218,10 +218,9 @@ class QrCodeHelper:
         self.page.add_style_tag(content="""
         .card {
             border-radius: 0px !important;
-            width: 430px !important;
         }
         .mb-frame-inner .card {
-            max-width: none !important; 
+            max-width: none !important;
         }
         .mb-frame-inner .card::after {
             background-image: none !important;
@@ -229,16 +228,27 @@ class QrCodeHelper:
         #iframesrc, #iframesrc * {
             border-radius: 0px !important;
         }
-        """)
+        .App {
+            overflow: visible !important;
+            height: auto !important;
+        }
+        #color_palette {
+            display: none !important;
+        }
+    """)
         footer_element = self.page.locator("//div[@id='qr-proceed-footer']")
         footer_element.evaluate("element => element.style.display = 'none'")
+        preview_qrcode = self.page.locator("//div[@id='preview_qrcode']")
+        preview_qrcode.evaluate("element => element.style.display = 'none'")
+        header = self.page.locator("//header")
+        header.evaluate("element => element.style.display = 'none'")
         mobile = self.page.locator("//div[@id='tabs-1']/div")
         iphone_line = self.page.locator("//div[@class='iphone-line']")
-        iphone_line.evaluate("element => element.style.position = 'none'")
-        mobile.evaluate("element => element.style.height = '100vh'")
+        iphone_line.evaluate("element => element.style.display = 'none'")
+        mobile.evaluate("element => element.style.height = '900px'")
+        mobile.evaluate("element => element.style.overflow = 'visible'")
         mobile.evaluate("element => element.style.backgroundImage = 'none'")
-        iframe = self.page.frame_locator("//iframe[@id='iframesrc']")
-        iframe.locator("//div[@class='App']").screenshot(
-            path=str(self.screenshot_path)
-        )
+        iframe = self.page.frame_locator("iframe#iframesrc").locator("//div[@class='App']")
+        iframe.evaluate("element => element.style.background = 'white'")
+        iframe.screenshot(path=str(self.screenshot_path))
         footer_element.evaluate("element => element.style.display = 'block'")
