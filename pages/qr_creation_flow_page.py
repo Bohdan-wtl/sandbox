@@ -25,6 +25,7 @@ class QrCreationPage(BasePage):
         self.locator.qrcode_patterns_step3_dropdown.click()
         self.helper.select_random_child_by_attribute(
             '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
+        self.locator.qrcode_corners_step3_dropdown.click()
         self.helper.select_qrcode_corners_step3()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
@@ -179,7 +180,6 @@ class QrCreationPage(BasePage):
         self.helper.fonts_style_select()
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Apps")
-        self.helper.take_iframe_screenshot()
 
     def coupon_qr_create(self):
         self.locator.coupon_qr_type.click(delay=1000)
@@ -318,7 +318,8 @@ class QrCreationPage(BasePage):
         self.locator.social_media_basic_info_title.fill(self.faker.text(max_nb_chars=30))
         self.locator.social_media_basic_info_description.fill(self.faker.text(max_nb_chars=3000))
         self.helper.emulate_drag_and_drop('#files', 'image')
-        # self.helper.select_random_child_by_attribute('//div[@class= "socialIconContain"]','button', 'id') #BUG on click!
+        # self.helper.select_random_child_by_attribute('//div[@class= "socialIconContain"]', 'button',
+        #                                              'id')
         # self.locator.links_qr_code_social_network_url_input.fill(self.faker.url())
         # self.locator.links_qr_code_social_network_text_input.fill(self.faker.text(max_nb_chars=27))
         self.helper.fonts_style_select()

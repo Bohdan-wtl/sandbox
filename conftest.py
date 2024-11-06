@@ -5,7 +5,7 @@ import pytest
 from pytest import hookimpl
 from playwright.sync_api import sync_playwright
 
-headless = False
+headless = True
 slow_mo = 0
 
 

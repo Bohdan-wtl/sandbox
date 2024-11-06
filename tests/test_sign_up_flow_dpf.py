@@ -35,6 +35,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_pdf_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.pdf_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -46,6 +48,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_links_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.links_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -57,6 +61,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_vcard_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.vcard_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -68,6 +74,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_business_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.business_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -79,6 +87,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_images_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.image_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -90,6 +100,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_video_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.video_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -101,6 +113,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_apps_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.apps_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -112,6 +126,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_coupon_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.coupon_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -123,6 +139,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_mp3_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.mp3_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -134,6 +152,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_menu_menu_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.menu_menu_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -145,6 +165,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_menu_pdf_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.menu_pdf_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -167,6 +189,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_wifi_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.wifi_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -178,6 +202,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_facebook_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.facebook_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -189,6 +215,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_instagram_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.instagram_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -200,6 +228,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_social_media_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.social_media_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
@@ -211,6 +241,8 @@ class TestDPFSignUpFlow(BaseTest):
 
     def test_sign_up_whatsapp_qr_type(self, navigate_to_dpf_page):
         self.qr_creation_page.whatsapp_qr_create()
+        self.qr_creation_page.click_next_button_step2()
+        self.qr_creation_page.complete_step_3()
         self.qr_creation_page.locator.dpf_form_email_input.fill(self.fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.qr_creation_page.select_dpf_plan()
