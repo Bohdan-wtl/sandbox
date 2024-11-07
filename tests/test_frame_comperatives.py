@@ -19,11 +19,11 @@ class TestFrameComparatives(BaseTest):
     ])
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
-        expected_image_path = (f"tests/snapshots/preview/Expected/{test_func}"
+        expected_image_path = (f"artifacts/snapshots/preview/Expected/{test_func}"
                                f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
-        actual_image_path = (f"tests/snapshots/preview/Actual/{test_func}"
+        actual_image_path = (f"artifacts/snapshots/preview/Actual/{test_func}"
                              f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
-        diff_image_path = (f"tests/snapshots/preview/Diff/{test_func}"
+        diff_image_path = (f"artifacts/snapshots/preview/Diff/{test_func}"
                            f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         self.qr_creation_page.helper.set_screenshot_path(expected_image_path)
         qr_create_method_func = getattr(self.qr_creation_page, qr_create_method)

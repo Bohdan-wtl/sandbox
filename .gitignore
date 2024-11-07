@@ -175,6 +175,7 @@ cython_debug/
 .webm
 .pdf
 .mp3
+.allure-results
 .mp4
 .DS_Store
 

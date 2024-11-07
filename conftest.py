@@ -25,7 +25,7 @@ def browser(request):
 
 @pytest.fixture(scope="function")
 def context(request, browser):
-    context = browser.new_context(viewport={"width": 1440, "height": 1080}, record_video_dir="videos/")
+    context = browser.new_context(viewport={"width": 1440, "height": 1080}, record_video_dir="artifacts/videos/")
     yield context
     context.close()
 
@@ -35,10 +35,10 @@ def page(context, request):
     page = context.new_page()
     yield page
     if request.node.rep_call.failed:
-        page.screenshot(path=f"screenshots/{request.node.name}.png", full_page=True)
+        page.screenshot(path=f"artifacts/screenshots/{request.node.name}.png", full_page=True)
     page.close()
     if request.node.rep_call.failed:
-        page.video.save_as(path=f"videos/{request.node.name}.webm")
+        page.video.save_as(path=f"artifacts/videos/{request.node.name}.webm")
 
 
 @hookimpl(tryfirst=True, hookwrapper=True)
@@ -53,15 +53,16 @@ def pytest_runtest_makereport(item, call):
 def artifacts(request):
     yield
     if request.node.rep_call.failed:
-        allure.attach.file(f"screenshots/{request.node.name}.png", name="screenshot",
+        allure.attach.file(f"artifacts/screenshots/{request.node.name}.png", name="screenshot",
                            attachment_type=allure.attachment_type.PNG)
-        allure.attach.file(f"videos/{request.node.name}.webm", name="video",
+        allure.attach.file(f"artifacts/videos/{request.node.name}.webm", name="video",
                            attachment_type=allure.attachment_type.WEBM)
 
 
 @pytest.fixture(scope="session", autouse=True)
 def clean_folders():
-    folders_to_clean = ["generated_files", "downloaded_qr_codes", "reports", "screenshots", "videos", "tests/snapshots"]
+    folders_to_clean = ["artifacts/generated_files", "artifacts/downloaded_qr_codes", "artifacts/screenshots",
+                        "artifacts/videos", "artifacts/snapshots"]
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)
@@ -70,7 +71,6 @@ def clean_folders():
 
 
 @pytest.fixture(scope='function')
-@allure.step("Generated fake email")
 def fake_email():
     random_number = Random().randint(3000, 9999999999999)
     fake_email = f"wtl-automation{random_number}@test.com"
@@ -78,7 +78,6 @@ def fake_email():
 
 
 @pytest.fixture(scope='function')
-@allure.step("Sign up")
 def sign_up_fixture(request, fake_email, language):
     stage_url = languages_urls[language]
     email = fake_email
@@ -87,7 +86,6 @@ def sign_up_fixture(request, fake_email, language):
     yield
 
 @pytest.fixture(scope='function', autouse=True)
-@allure.step("Delete user after test")
 def delete_user_after_test(fake_email):
     yield
     headers = {"Content-Type": "application/json"}
@@ -103,13 +101,11 @@ def delete_user_after_test(fake_email):
 
 
 @pytest.fixture(scope='function')
-@allure.step("Navigate to DPF funnel")
 def navigate_to_dpf_page(request, dpf_language):
     stage_url = languages_dpf_urls[dpf_language]
     request.instance.main_page.open_page(stage_url)
 
 @pytest.fixture(scope='function')
-@allure.step("Navigate to NSF funnel")
 def navigate_to_nsf_page(request, nsf_language):
     stage_url = languages_nsf_urls[nsf_language]
     request.instance.main_page.open_page(stage_url)
