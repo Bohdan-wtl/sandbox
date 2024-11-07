@@ -78,8 +78,7 @@ def fake_email():
 def sign_up_fixture(request, fake_email, language):
     stage_url = languages_urls[language]
     email = fake_email
-    request.instance.main_page.open_page(stage_url)
-    request.instance.main_page.go_to_sign_up_page()
+    request.instance.main_page.open_page(f"{stage_url}/register")
     request.instance.register_page.sign_up(email, "wtl-testBohdan@gmail.com")
     yield
 

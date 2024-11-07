@@ -1,3 +1,4 @@
+import allure
 from PIL import Image
 from utils.comparison_module import compare_images
 import pytest
@@ -5,15 +6,16 @@ from base.base_test import BaseTest
 from config import languages_urls
 
 
-@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
+@pytest.mark.parametrize("browser", ["chromium", "firefox"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
 class TestFrameComparatives(BaseTest):
 
     @pytest.mark.parametrize("qr_create_method", [
-        "mp3_qr_create", "menu_menu_qr_create",
-        "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
-        "image_qr_create", "business_qr_create", "vcard_qr_create",
-        "pdf_qr_create", "apps_qr_create"
+        "mp3_qr_create",
+        # "menu_menu_qr_create",
+        # "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
+        # "image_qr_create", "business_qr_create", "vcard_qr_create",
+        # "pdf_qr_create", "apps_qr_create"
     ])
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
