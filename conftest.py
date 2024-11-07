@@ -15,6 +15,7 @@ DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
 
 
 @pytest.fixture(scope="session")
+@allure.title("Set up browser")
 def browser(request):
     with sync_playwright() as p:
         browser = getattr(p, request.param).launch(headless=headless)
@@ -48,6 +49,7 @@ def pytest_runtest_makereport(item, call):
 
 
 @pytest.fixture(scope="function", autouse=True)
+@allure.title("Failed test artifacts")
 def artifacts(request):
     yield
     if request.node.rep_call.failed:
@@ -68,6 +70,7 @@ def clean_folders():
 
 
 @pytest.fixture(scope='function')
+@allure.step("Generated fake email")
 def fake_email():
     random_number = Random().randint(3000, 9999999999999)
     fake_email = f"wtl-automation{random_number}@test.com"
@@ -75,14 +78,16 @@ def fake_email():
 
 
 @pytest.fixture(scope='function')
+@allure.step("Sign up")
 def sign_up_fixture(request, fake_email, language):
     stage_url = languages_urls[language]
     email = fake_email
     request.instance.main_page.open_page(f"{stage_url}/register")
-    request.instance.register_page.sign_up(email, "wtl-testBohdan@gmail.com")
+    request.instance.register_page.sign_up(email, email)
     yield
 
 @pytest.fixture(scope='function', autouse=True)
+@allure.step("Delete user after test")
 def delete_user_after_test(fake_email):
     yield
     headers = {"Content-Type": "application/json"}
@@ -98,11 +103,13 @@ def delete_user_after_test(fake_email):
 
 
 @pytest.fixture(scope='function')
+@allure.step("Navigate to DPF funnel")
 def navigate_to_dpf_page(request, dpf_language):
     stage_url = languages_dpf_urls[dpf_language]
     request.instance.main_page.open_page(stage_url)
 
 @pytest.fixture(scope='function')
+@allure.step("Navigate to NSF funnel")
 def navigate_to_nsf_page(request, nsf_language):
     stage_url = languages_nsf_urls[nsf_language]
     request.instance.main_page.open_page(stage_url)
