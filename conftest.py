@@ -86,10 +86,9 @@ def sign_up_fixture(request, fake_email, language):
 @pytest.fixture(scope='function')
 def delete_user_after_test(fake_email):
     yield
-    fake_email = "wtl-test+897@gmail.com"
     headers = {"Content-Type": "application/json"}
     data = {
-        "emails": [f"{fake_email}"]
+        "emails": [fake_email]
     }
     response = requests.post(DELETE_USER_URL, headers=headers, json=data)
     if response.status_code == 200:
