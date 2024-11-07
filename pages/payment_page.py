@@ -16,3 +16,8 @@ class PaymentPage(BasePage):
     def click_on_submit_payment_button(self):
         self.locator.submit_payment_button.wait_for(state='visible', timeout=40000)
         self.locator.submit_payment_button.click()
+
+    def select_country_and_zip_in_payment_frame(self):
+        self.locator.payment_country_dropdown.select_option(value="US")
+        self.locator.payment_zip_input.fill("90001")
+        self.locator.exit_from_payment_frame.click()

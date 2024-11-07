@@ -329,6 +329,9 @@ class QrCreationPage(BasePage):
     def whatsapp_qr_create(self):
         self.locator.whatsapp_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
-        self.locator.whats_app_information_phone_input.fill(str(self.faker.random_int(min=111111111, max=999999999)))
+        self.locator.whats_app_information_country_code_button.click()
+        self.locator.whats_app_information_us_code_option.scroll_into_view_if_needed()
+        self.locator.whats_app_information_us_code_option.click()
+        self.locator.whats_app_information_phone_input.fill(str(self.faker.random_int(min=1111111111, max=9999999999)))
         self.locator.whats_app_information_message_input.fill(self.faker.text(max_nb_chars=100))
         self.helper.set_custom_qr_code_name(qr_code_type="WhatsApp")
