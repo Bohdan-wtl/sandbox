@@ -92,7 +92,7 @@ def delete_user_after_test(fake_email):
     }
     response = requests.post(DELETE_USER_URL, headers=headers, json=data)
     if response.status_code == 200:
-        print(f"User with email {fake_email} deleted successfully.")
+        pass
     else:
         print(f"Failed to delete user with email {fake_email}. Status code: {response.status_code}, "
               f"Response: {response.text}")
