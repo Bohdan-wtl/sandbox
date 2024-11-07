@@ -11,7 +11,7 @@ from config import languages_urls, languages_dpf_urls, languages_nsf_urls
 headless = False
 slow_mo = 0
 
-DELETE_USER_URL = "https://oqg-dev.test-qr.com/api/test-user-delete"
+DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
 
 
 @pytest.fixture(scope="session")
@@ -83,7 +83,7 @@ def sign_up_fixture(request, fake_email, language):
     request.instance.register_page.sign_up(email, "wtl-testBohdan@gmail.com")
     yield
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='function', autouse=True)
 def delete_user_after_test(fake_email):
     yield
     headers = {"Content-Type": "application/json"}
