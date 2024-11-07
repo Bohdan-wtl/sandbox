@@ -261,6 +261,8 @@ class QrCreationLocators:
 
         # Whatsapp QR code locators
         self.whats_app_information_dropdown = page.locator("//button[@data-target='#whatsapp_no']")
+        self.whats_app_information_country_code_button = page.locator("//button[@class='iti__selected-country']")
+        self.whats_app_information_us_code_option = page.locator("//li[@id='iti-0__item-us']")
         self.whats_app_information_phone_input = page.locator("//input[@id='phone']")
         self.whats_app_information_message_input = page.locator("//textarea[@id='whatsapp_body']")
 

@@ -6,6 +6,8 @@ class PaymentPageLocators:
         self.card_number = self.frame_payment.locator("//input[@id='Field-numberInput']")
         self.expiry_date_input = self.frame_payment.locator("//input[@id='Field-expiryInput']")
         self.cvc_code_input = self.frame_payment.locator("//input[@id='Field-cvcInput']")
+        self.payment_country_dropdown = self.frame_payment.locator("//select[@id='Field-countryInput']")
+        self.payment_zip_input = self.frame_payment.locator("//input[@id='Field-postalCodeInput']")
         self.exit_from_payment_frame = page.locator("body")
         self.submit_payment_button = page.locator("//button[@id='submit']")
 
