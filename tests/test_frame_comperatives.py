@@ -1,45 +1,28 @@
 from PIL import Image
 from utils.comparison_module import compare_images
 import pytest
-from random import Random
-from faker import Faker
 from base.base_test import BaseTest
 from config import languages_urls
 
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
-@pytest.mark.parametrize("languages", languages_urls.keys())
+@pytest.mark.parametrize("language", languages_urls.keys())
 class TestFrameComparatives(BaseTest):
 
-    @pytest.fixture(autouse=True)
-    def setup_faker(self):
-        self.faker = Faker()
-        self.random_number = Random().randint(3000, 99999999)
-        self.fake_email = "wtl-automation" + str(self.random_number) + "@test.com"
-
-    @pytest.fixture(scope='function', autouse=True)
-    def sign_up_fixture(self, languages):
-        user_email = self.fake_email
-        stage_url = languages_urls[languages]
-        self.main_page.open_page(stage_url)
-        self.main_page.go_to_sign_up_page()
-        self.register_page.sign_up(user_email, "wtl-testBohdan@gmail.com")
-        yield
-
     @pytest.mark.parametrize("qr_create_method", [
-                                                  "mp3_qr_create", "menu_menu_qr_create",
-                                                    "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
-                                                  "image_qr_create", "business_qr_create", "vcard_qr_create",
-                                                  "pdf_qr_create", "apps_qr_create"
-                                                  ])
+        "mp3_qr_create", "menu_menu_qr_create",
+        "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
+        "image_qr_create", "business_qr_create", "vcard_qr_create",
+        "pdf_qr_create", "apps_qr_create"
+    ])
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
         expected_image_path = (f"tests/snapshots/preview/Expected/{test_func}"
-                                   f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
+                               f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         actual_image_path = (f"tests/snapshots/preview/Actual/{test_func}"
                              f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
-        diff_image_path =  (f"tests/snapshots/preview/Diff/{test_func}"
-                            f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
+        diff_image_path = (f"tests/snapshots/preview/Diff/{test_func}"
+                           f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         self.qr_creation_page.helper.set_screenshot_path(expected_image_path)
         qr_create_method_func = getattr(self.qr_creation_page, qr_create_method)
         qr_create_method_func()
