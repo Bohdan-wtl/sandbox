@@ -1,5 +1,6 @@
 stages:
   - test
+  - generate_report
   - deploy
 
 variables:
@@ -10,36 +11,44 @@ variables:
 run_tests:
   stage: test
   image: mcr.microsoft.com/playwright/python:v1.47.0-noble
-  before_script:
-  - mkdir -p /public/allure-report
-  - echo "Содержимое папки перед загрузкой:"
-  - ls -la /public allure-report
   script:
     - apt-get update
     - apt-get install -y xvfb
     - python -m pip install --upgrade pip
     - pip install -r requirements.txt
     - python -m playwright install --with-deps
-  #  - if [ -d public/reports/history ]; then cp -R public/reports/history public/reports/history_backup; fi
-    - xvfb-run -a pytest tests/test_sign_up_flow_default.py --alluredir=reports
-  #  - if [ -d public/reports/history_backup ]; then cp -R public/reports/history_backup public/reports/history; fi
-    - mkdir -p public
-    - allure generate reports/ -o /public/allure-report
+    - xvfb-run -a pytest tests/test_sign_up_flow_dpf.py -k test_sign_up_website_qr_type --alluredir=reports
+    - mkdir -p reports
   artifacts:
     when: always
     expire_in: 1 day
     paths:
-      - /public/allure-report
-     # - public/reports/history
+      - reports
   when: manual
+
+generate_allure_report:
+  stage: generate_report
+  image: mcr.microsoft.com/playwright/python:v1.47.0-noble
+  needs:
+    - run_tests
+  script:
+    - apt-get update
+    - apt-get install -y allure
+    - mkdir -p public/allure-report
+    - allure generate reports/ -o public/allure-report
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - public/allure-report
 
 pages:
   stage: deploy
   needs:
-    - job: run_tests
+    - job: generate_allure_report
   script:
-    - mv /public/allure-report public/
+    - mv public/allure-report/* public/
   artifacts:
     paths:
-      - /public
+      - public
 
