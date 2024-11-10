@@ -28,6 +28,8 @@ run_tests:
 
 pages:
   stage: deploy
+  needs:
+    - job: run_tests
   script:
     - mv public/allure-report public/
   artifacts:
