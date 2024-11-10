@@ -29,11 +29,14 @@ run_tests:
 generate_allure_report:
   stage: generate_report
   image: mcr.microsoft.com/playwright/python:v1.47.0-noble
-  needs:
+  needs: 
     - run_tests
   script:
     - apt-get update
-    - apt-get install -y allure
+    - apt-get install -y wget unzip
+    - wget https://github.com/allure-framework/allure2/releases/download/2.21.0/allure-2.21.0.zip -O allure.zip
+    - unzip allure.zip -d /opt/allure
+    - export PATH=$PATH:/opt/allure/allure-2.21.0/bin
     - mkdir -p public/allure-report
     - allure generate reports/ -o public/allure-report
   artifacts:
@@ -41,6 +44,7 @@ generate_allure_report:
     expire_in: 1 week
     paths:
       - public/allure-report
+
 
 pages:
   stage: deploy
