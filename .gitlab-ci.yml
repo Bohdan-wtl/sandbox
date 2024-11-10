@@ -16,9 +16,9 @@ run_tests:
     - python -m pip install --upgrade pip
     - pip install -r requirements.txt
     - python -m playwright install --with-deps
-    - if [ -d public/reports/history ]; then cp -R public/reports/history public/reports/history_backup; fi
+    #- #if [ -d public/reports/history ]; then cp -R public/reports/history public/reports/history_backup; fi
     - xvfb-run -a pytest --alluredir=reports
-    - if [ -d public/reports/history_backup ]; then cp -R public/reports/history_backup public/reports/history; fi
+    #- #if [ -d public/reports/history_backup ]; then cp -R public/reports/history_backup public/reports/history; fi
     - mkdir -p public
     - allure generate reports/ -o public/allure-report
   artifacts:
@@ -26,7 +26,7 @@ run_tests:
     expire_in: 1 day
     paths:
       - public/allure-report
-      - public/reports/history
+     # - public/reports/history
   when: manual
 
 pages:
