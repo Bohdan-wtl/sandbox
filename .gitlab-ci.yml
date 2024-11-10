@@ -19,13 +19,13 @@ run_tests:
     #- #if [ -d public/reports/history ]; then cp -R public/reports/history public/reports/history_backup; fi
     - xvfb-run -a pytest --alluredir=reports
     #- #if [ -d public/reports/history_backup ]; then cp -R public/reports/history_backup public/reports/history; fi
-    - mkdir -p public
-    - allure generate reports/ -o public/allure-report
+    - mkdir -p ./public
+    - allure generate reports/ -o ./public/allure-report
   artifacts:
     when: always
     expire_in: 1 day
     paths:
-      - public/allure-report
+      - ./public/allure-report
      # - public/reports/history
   when: manual
 
