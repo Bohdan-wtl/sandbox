@@ -1,0 +1,46 @@
+stages:
+  - install
+  - test
+  - deploy
+
+variables:
+  STAGE_ADMIN_LINK: $STAGE_ADMIN_LINK
+  STAGE_ADMIN_EMAIL: $STAGE_ADMIN_EMAIL
+  STAGE_ADMIN_PASSWORD: $STAGE_ADMIN_PASSWORD
+
+install_dependencies:
+  stage: install
+  image: python:3.12
+  script:
+    - apt-get update && apt-get install -y xvfb
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python -m playwright install --with-deps
+  only:
+    - main
+    - master
+
+run_tests:
+  stage: test
+  image: python:3.12
+  script:
+    - xvfb-run -a pytest
+    - mkdir -p public
+    - allure generate reports/ -o public/allure-report
+  artifacts:
+    paths:
+      - public/allure-report
+  only:
+    - main
+    - master
+
+pages:
+  stage: deploy
+  script:
+    - mv public/allure-report public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+    - master
