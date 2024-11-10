@@ -1,5 +1,4 @@
 stages:
-  - install
   - test
   - deploy
 
@@ -17,15 +16,15 @@ run_tests:
     - python -m pip install --upgrade pip
     - pip install -r requirements.txt
     - python -m playwright install --with-deps
-    - xvfb-run -a pytest
+    - xvfb-run -a pytest --alluredir=public/reports
     - mkdir -p public
     - allure generate reports/ -o public/allure-report
   artifacts:
+    when: always
+    expire_in: 1 day
     paths:
       - public/allure-report
-  only:
-    - main
-    - master
+  when: manual
 
 pages:
   stage: deploy
@@ -34,6 +33,4 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    - main
-    - master
+
