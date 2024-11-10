@@ -24,6 +24,7 @@ run_tests:
     expire_in: 1 day
     paths:
       - reports
+      - public/allure-report/history
   when: manual
 
 generate_allure_report:
@@ -37,8 +38,10 @@ generate_allure_report:
     - wget https://github.com/allure-framework/allure2/releases/download/2.21.0/allure-2.21.0.zip -O allure.zip
     - unzip allure.zip -d /opt/allure
     - export PATH=$PATH:/opt/allure/allure-2.21.0/bin
-    - mkdir -p public/allure-report
-    - allure generate reports/ -o public/allure-report
+    - mkdir -p reports/history
+    - if [ -d public/allure-report/history ]; then cp -R public/allure-report/history reports/; fi
+    - allure generate reports/ -o public/allure-report --clean
+    - cp -R reports/history public/allure-report/history
   artifacts:
     when: always
     expire_in: 1 week
