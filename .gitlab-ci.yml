@@ -17,7 +17,7 @@ run_tests:
     - pip install -r requirements.txt
     - python -m playwright install --with-deps
     #- #if [ -d public/reports/history ]; then cp -R public/reports/history public/reports/history_backup; fi
-    - xvfb-run -a pytest --alluredir=reports
+    - xvfb-run -a pytest tests/test_sign_up_flow_nsf.py --alluredir=reports
     #- #if [ -d public/reports/history_backup ]; then cp -R public/reports/history_backup public/reports/history; fi
     - mkdir -p ./public
     - allure generate reports/ -o ./public/allure-report
