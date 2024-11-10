@@ -8,23 +8,15 @@ variables:
   STAGE_ADMIN_EMAIL: $STAGE_ADMIN_EMAIL
   STAGE_ADMIN_PASSWORD: $STAGE_ADMIN_PASSWORD
 
-install_dependencies:
-  stage: install
-  image: python:3.12
-  script:
-    - python -m pip install --upgrade pip
-    - pip install -r requirements.txt
-    - python -m playwright install --with-deps
-  only:
-    - main
-    - master
-
 run_tests:
   stage: test
   image: mcr.microsoft.com/playwright/python:v1.47.0-noble
   script:
     - apt-get update
     - apt-get install -y xvfb
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python -m playwright install --with-deps
     - xvfb-run -a pytest
     - mkdir -p public
     - allure generate reports/ -o public/allure-report
