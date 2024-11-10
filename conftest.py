@@ -93,7 +93,8 @@ def delete_user_after_test(fake_email):
     if response.status_code == 200:
         pass
     else:
-        print(f"Failed to delete user with email {fake_email}. Status code: {response.status_code}")
+        print(f"Failed to delete user with email {fake_email}. Status code: {response.status_code}"
+              f"Error message: {response.text}")
 
 
 @pytest.fixture(scope='function')
