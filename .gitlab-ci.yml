@@ -56,7 +56,7 @@ pages:
   needs:
     - job: generate_allure_report
   script:
-    - mv public/allure-report/* public/
+    - mv allure-report/*
   artifacts:
     paths:
       - public
