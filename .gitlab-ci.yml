@@ -18,7 +18,7 @@ run_tests:
   when: manual
   before_script:
     - apt-get update && apt-get install -y unzip xvfb wget default-jre
-    - curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/main/download?job=pages"
+    - 'curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/main/download?job=pages"'
     - unzip artifacts.zip
     - chmod -R 777 public
     - mkdir allure-results && cp -r public/history allure-results
