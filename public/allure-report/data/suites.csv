@@ -1,2 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","13300","test_nsf_sign_up_website_qr_type[en-chromium]","tests","Mon Nov 11 08:19:10 GMT+02:00 2024","passed","Mon Nov 11 08:19:24 GMT+02:00 2024","TestNSFSignUpFlow","test_sign_up_flow_nsf","",""
