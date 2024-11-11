@@ -50,6 +50,8 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+allure-results/
+artifacts/
 nosetests.xml
 coverage.xml
 *.cover
