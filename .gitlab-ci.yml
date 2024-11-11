@@ -35,7 +35,10 @@ run_tests:
       - allure-report
   when: manual
   script:
-    - xvfb-run -a pytest -s -v --alluredir=allure-results
+    - export TESTOMATIO="${testomatio}"
+    - export TESTOMATIO_URL="${testomatio_url}"
+    - export TESTOMATIO_RUN="${run}"
+    - xvfb-run -a pytest -s -v --alluredir=allure-results --grep "${grep}"
   after_script:
     - allure generate -c allure-results -o allure-report
 
