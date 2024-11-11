@@ -1,3 +1,5 @@
+import allure
+
 from base.base_page import BasePage
 from pages.locators.login_page_locators import LoginPageLocators
 
@@ -6,6 +8,7 @@ class LogInPage(BasePage):
         super().__init__(page)
         self.locator = LoginPageLocators(page)
 
+    @allure.step("Log in")
     def log_in(self, temporary_mail, signup_password):
         self.locator.email_log_in.fill(temporary_mail)
         self.locator.log_in_confirm_button.click()

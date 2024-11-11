@@ -60,6 +60,7 @@ def artifacts(request):
 
 
 @pytest.fixture(scope="session", autouse=True)
+@allure.title("Clean folders before tests")
 def clean_folders():
     folders_to_clean = ["artifacts/generated_files", "artifacts/downloaded_qr_codes", "artifacts/screenshots",
                         "artifacts/videos", "artifacts/snapshots"]
@@ -78,6 +79,7 @@ def fake_email():
 
 
 @pytest.fixture(scope='function')
+@allure.title("Sign up")
 def sign_up_fixture(request, fake_email, language):
     stage_url = languages_urls[language]
     email = fake_email
@@ -86,6 +88,7 @@ def sign_up_fixture(request, fake_email, language):
     yield
 
 @pytest.fixture(scope='function', autouse=True)
+@allure.title("Delete user after test")
 def delete_user_after_test(fake_email):
     yield
     headers = {"Content-Type": "application/json"}
@@ -100,11 +103,13 @@ def delete_user_after_test(fake_email):
 
 
 @pytest.fixture(scope='function')
+@allure.title("Navigate to DPF funnel")
 def navigate_to_dpf_page(request, dpf_language):
     stage_url = languages_dpf_urls[dpf_language]
     request.instance.main_page.open_page(stage_url)
 
 @pytest.fixture(scope='function')
+@allure.title("Navigate to NSF funnel")
 def navigate_to_nsf_page(request, nsf_language):
     stage_url = languages_nsf_urls[nsf_language]
     request.instance.main_page.open_page(stage_url)
