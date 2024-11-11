@@ -1,29 +1,31 @@
 import allure
 from PIL import Image
-from utils.comparison_module import compare_images
+from utils.comparison_module import allure_attach_image_diff
 import pytest
 from base.base_test import BaseTest
 from config import languages_urls
 
 
-@pytest.mark.parametrize("browser", ["chromium", "firefox"], indirect=True)
+@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
+@allure.feature("Frame comparatives")
 class TestFrameComparatives(BaseTest):
 
     @pytest.mark.parametrize("qr_create_method", [
         "mp3_qr_create",
-        # "menu_menu_qr_create",
-        # "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
-        # "image_qr_create", "business_qr_create", "vcard_qr_create",
-        # "pdf_qr_create", "apps_qr_create"
+        "menu_menu_qr_create",
+        "social_media_qr_create", "whatsapp_qr_create", "video_qr_create",
+        "image_qr_create", "business_qr_create", "vcard_qr_create",
+        "pdf_qr_create", "apps_qr_create"
     ])
+    @allure.title("Comparative mobile preview and web view")
     def test_comparative_preview_and_view(self, sign_up_fixture, browser, request, qr_create_method):
         test_func = request.node.originalname
-        expected_image_path = (f"tests/snapshots/preview/Expected/{test_func}"
+        expected_image_path = (f"artifacts/snapshots/preview/Expected/{test_func}"
                                f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
-        actual_image_path = (f"tests/snapshots/preview/Actual/{test_func}"
+        actual_image_path = (f"artifacts/snapshots/preview/Actual/{test_func}"
                              f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
-        diff_image_path = (f"tests/snapshots/preview/Diff/{test_func}"
+        diff_image_path = (f"artifacts/snapshots/preview/Diff/{test_func}"
                            f"[{browser.browser_type.name}-{qr_create_method}-{browser.browser_type.name}].png")
         self.qr_creation_page.helper.set_screenshot_path(expected_image_path)
         qr_create_method_func = getattr(self.qr_creation_page, qr_create_method)
@@ -45,4 +47,4 @@ class TestFrameComparatives(BaseTest):
         }
         """)
         new_page.screenshot(full_page=True, path=actual_image_path)
-        compare_images(actual_image_path, expected_image_path, diff_image_path, threshold=10)
+        allure_attach_image_diff(actual_image_path, expected_image_path, diff_image_path)

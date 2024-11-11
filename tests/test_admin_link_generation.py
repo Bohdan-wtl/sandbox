@@ -1,4 +1,6 @@
 import random
+
+import allure
 import pytest
 from base.base_test import BaseTest
 from config import get_env, languages_urls, languages_dpf_urls
@@ -6,6 +8,7 @@ from config import get_env, languages_urls, languages_dpf_urls
 refund_alert_text = "The refund was successfully completed."
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
+@allure.feature("Admin link generation")
 class TestAdminLinkGeneration(BaseTest):
 
     @pytest.mark.flaky(reruns=0)

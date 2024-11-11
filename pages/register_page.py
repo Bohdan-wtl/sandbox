@@ -1,3 +1,5 @@
+import allure
+
 from base.base_page import BasePage
 from pages.locators.register_page_locators import RegisterPageLocators
 
@@ -7,6 +9,7 @@ class RegisterPage(BasePage):
         self.locator = RegisterPageLocators(page)
 
 
+    @allure.step("Sign up")
     def sign_up(self, temporary_mail, signup_password):
         self.locator.email_input_field.is_visible()
         self.locator.email_input_field.fill(temporary_mail)

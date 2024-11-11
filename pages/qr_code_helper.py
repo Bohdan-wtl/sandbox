@@ -3,6 +3,7 @@ import os
 import time
 from pathlib import Path
 
+import allure
 from PIL import Image, ImageDraw, ImageFont
 from fpdf import FPDF
 from faker import Faker
@@ -19,6 +20,7 @@ class QrCodeHelper:
         self.generated_files_dir.mkdir(parents=True, exist_ok=True)
         self.screenshot_path = None
 
+    @allure.step("Generate file")
     def generate_file(self, file_type):
         timestamp = int(time.time())
         file_path = self.generated_files_dir
@@ -64,6 +66,7 @@ class QrCodeHelper:
             audio.export(mp3_path, format='mp3')
             return mp3_path
 
+    @allure.step("Emulate drag and drop")
     def emulate_drag_and_drop(self, selector, file_type):
         file_path = self.generate_file(file_type)
         mime_type_mapping = {
@@ -98,26 +101,31 @@ class QrCodeHelper:
             'fileName': file_path.name
         })
 
+    @allure.step("Set file")
     def set_file(self, selector, file_type):
         file_path = self.generate_file(file_type)
         selector.set_input_files(file_path)
 
+    @allure.step("Close help modal window step 3")
     def close_help_modal_window_st3(self):
         self.locator.help_modal_close_button.is_visible()
         self.locator.help_modal_close_button.click()
 
+    @allure.step("Close help modal window step 2")
     def close_help_modal_window_st2(self):
         self.locator.help_modal_close_button.wait_for(state="visible")
         self.locator.help_modal_close_button.is_enabled()
         self.locator.help_modal_close_button.click()
         self.page.wait_for_selector(self.locator.modal_window_step2, state="hidden", timeout=5000)
 
+    @allure.step("Set QR code name")
     def set_custom_qr_code_name(self, qr_code_type):
         self.locator.custom_name_qr_code_dropdown.click()
         custom_qr_code_name = self.locator.custom_name_qr_code_input.fill(
             f"{qr_code_type}_{str(self.faker.random_number(digits=9, fix_len=True))}")
         return custom_qr_code_name
 
+    @allure.step("Set QR code style")
     def fonts_style_select(self):
         self.locator.update_fonts_qr_code_dropdown.click()
         self.locator.fonts_title_dropdown.scroll_into_view_if_needed()
@@ -135,16 +143,19 @@ class QrCodeHelper:
         random_text_font.click(force=True)
         random_text_font.click(force=True)
 
+    @allure.step("Set QR code image on welcome screen")
     def welcome_screen_set_img(self):
         image_path = self.generate_file('image')
         self.locator.upload_welcome_screen_qr_code_dropdown.click()
         self.locator.upload_welcome_screen_qr_code_input.set_input_files(image_path)
 
+    @allure.step("Select random option")
     def select_random_option(self, locators):
         random_locator = random.choice(locators)
         self.page.locator(random_locator).click()
         return random_locator
 
+    @allure.step("Select iframe on step 3")
     def select_frame_step3(self):
         self.locator.frame_step3_dropdown.is_visible()
         self.locator.frame_step3_dropdown.is_enabled()
@@ -154,7 +165,7 @@ class QrCodeHelper:
         ]
         return self.select_random_option(frame_locators)
 
-
+    @allure.step("Select QR cornets on step 3")
     def select_qrcode_corners_step3(self):
         self.select_random_child_by_attribute(
             "//div[@id='acc_corners']//div[@class='col-md-6']//div[@class='cornerBtn-container']", 'label', 'id')
@@ -162,6 +173,7 @@ class QrCodeHelper:
             "//div[@id='acc_corners']//div[contains(@class,'col-md-5')]//div[@class='cornerBtn-container']", 'label',
             'id')
 
+    @allure.step("Add phone, email and website")
     def add_phone_email_website(self):
         self.locator.contact_details_qr_code_add_phone_btn.scroll_into_view_if_needed()
         self.locator.contact_details_qr_code_add_phone_btn.click()
@@ -174,6 +186,7 @@ class QrCodeHelper:
         self.locator.contact_details_qr_code_add_website_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_website_url.fill(self.faker.url())
 
+    @allure.step("Set location")
     def set_location(self):
         self.locator.location_qr_code_search_address.click()
         self.locator.location_qr_code_search_address.fill(self.faker.city())
@@ -198,9 +211,11 @@ class QrCodeHelper:
                 child.click()
                 break
 
+    @allure.step("Set path for screenshot")
     def set_screenshot_path(self, screenshot_path):
         self.screenshot_path = screenshot_path
 
+    @allure.step("Take iframe screenshot on step 2")
     def take_iframe_screenshot(self):
         self.page.add_style_tag(content="""
         .card {

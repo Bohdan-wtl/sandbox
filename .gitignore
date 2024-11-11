@@ -50,7 +50,11 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+allure-results/
+artifacts/
 nosetests.xml
+allure-results/
+artifacts/
 coverage.xml
 *.cover
 *.py,cover
@@ -175,6 +179,7 @@ cython_debug/
 .webm
 .pdf
 .mp3
+.allure-results
 .mp4
 .DS_Store
 
