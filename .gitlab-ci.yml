@@ -17,17 +17,17 @@ run_tests:
       - allure-report
   when: manual
   before_script:
-    - 'curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/main/download?job=pages"'
+    - apt-get update && apt-get install -y unzip xvfb wget default-jre
+    - curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/main/download?job=pages"
     - unzip artifacts.zip
     - chmod -R 777 public
     - mkdir allure-results && cp -r public/history allure-results
-    - apt-get update
-    - apt-get install -y xvfb
     - python -m pip install --upgrade pip
     - pip install -r requirements.txt
     - python -m playwright install --with-deps
-    - apt-get install -y wget unzip default-jre
-    - wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz && tar -zxvf allure-2.25.0.tgz -C /opt/ && ln -s /opt/allure-2.25.0/bin/allure /usr/bin/allure
+    - wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz
+    - tar -zxvf allure-2.25.0.tgz -C /opt/
+    - ln -s /opt/allure-2.25.0/bin/allure /usr/bin/allure
   script:
     - xvfb-run -a pytest -s -v tests/test_sign_up_flow_dpf.py -k test_sign_up_website_qr_type --alluredir=allure-results
   after_script:
