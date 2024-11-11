@@ -41,6 +41,7 @@ generate_allure_report:
     - mkdir -p reports/history
     - if [ -d public/allure-report/history ]; then cp -R public/allure-report/history reports/; fi
     - allure generate reports/ -o public/allure-report --clean
+    - mkdir -p public/allure-report/history
     - cp -R reports/history public/allure-report/history
   artifacts:
     when: always
