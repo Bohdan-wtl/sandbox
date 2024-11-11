@@ -28,3 +28,16 @@ run_tests:
       - allure-report
   when: manual
 
+pages:
+  stage: report
+  needs:
+    - run_tests
+  script:
+    - mkdir public
+    - cp -r allure-report/* public
+  artifacts:
+    when: on_success
+    expire_in: never
+    paths:
+      - public
+
