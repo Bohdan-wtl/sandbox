@@ -1,5 +1,6 @@
 stages:
   - test
+  - report
 
 variables:
   STAGE_ADMIN_LINK: $STAGE_ADMIN_LINK
