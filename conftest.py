@@ -15,6 +15,7 @@ DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
 
 
 @pytest.fixture(scope="session")
+@allure.title("Set up browser")
 def browser(request):
     with sync_playwright() as p:
         browser = getattr(p, request.param).launch(headless=headless)
@@ -24,7 +25,7 @@ def browser(request):
 
 @pytest.fixture(scope="function")
 def context(request, browser):
-    context = browser.new_context(viewport={"width": 1440, "height": 1080}, record_video_dir="videos/")
+    context = browser.new_context(viewport={"width": 1440, "height": 1080}, record_video_dir="artifacts/videos/")
     yield context
     context.close()
 
@@ -34,10 +35,10 @@ def page(context, request):
     page = context.new_page()
     yield page
     if request.node.rep_call.failed:
-        page.screenshot(path=f"screenshots/{request.node.name}.png", full_page=True)
+        page.screenshot(path=f"artifacts/screenshots/{request.node.name}.png", full_page=True)
     page.close()
     if request.node.rep_call.failed:
-        page.video.save_as(path=f"videos/{request.node.name}.webm")
+        page.video.save_as(path=f"artifacts/videos/{request.node.name}.webm")
 
 
 @hookimpl(tryfirst=True, hookwrapper=True)
@@ -48,18 +49,20 @@ def pytest_runtest_makereport(item, call):
 
 
 @pytest.fixture(scope="function", autouse=True)
+@allure.title("Failed test artifacts")
 def artifacts(request):
     yield
     if request.node.rep_call.failed:
-        allure.attach.file(f"screenshots/{request.node.name}.png", name="screenshot",
+        allure.attach.file(f"artifacts/screenshots/{request.node.name}.png", name="screenshot",
                            attachment_type=allure.attachment_type.PNG)
-        allure.attach.file(f"videos/{request.node.name}.webm", name="video",
+        allure.attach.file(f"artifacts/videos/{request.node.name}.webm", name="video",
                            attachment_type=allure.attachment_type.WEBM)
 
 
 @pytest.fixture(scope="session", autouse=True)
 def clean_folders():
-    folders_to_clean = ["generated_files", "downloaded_qr_codes", "reports", "screenshots", "videos", "tests/snapshots"]
+    folders_to_clean = ["artifacts/generated_files", "artifacts/downloaded_qr_codes", "artifacts/screenshots",
+                        "artifacts/videos", "artifacts/snapshots"]
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)
@@ -79,7 +82,7 @@ def sign_up_fixture(request, fake_email, language):
     stage_url = languages_urls[language]
     email = fake_email
     request.instance.main_page.open_page(f"{stage_url}/register")
-    request.instance.register_page.sign_up(email, "wtl-testBohdan@gmail.com")
+    request.instance.register_page.sign_up(email, email)
     yield
 
 @pytest.fixture(scope='function', autouse=True)
