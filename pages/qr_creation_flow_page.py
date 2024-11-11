@@ -1,3 +1,4 @@
+import allure
 from faker import Faker
 from base.base_page import BasePage
 from pages.locators.qr_creation_flow_locators import QrCreationLocators
@@ -12,13 +13,16 @@ class QrCreationPage(BasePage):
         self.faker = Faker()
         self.helper = QrCodeHelper(self.page, self.locator)
 
+    @allure.step("Select DPF plan")
     def select_dpf_plan(self):
         self.locator.annual_plan_button.click()
         self.locator.continue_user_plan_button.click()
 
+    @allure.step("Click on Next button")
     def click_next_button_step2(self):
         self.locator.next_button.click()
 
+    @allure.step("Complete step 3")
     def complete_step_3(self):
         self.helper.close_help_modal_window_st3()
         self.helper.select_frame_step3()
@@ -30,6 +34,7 @@ class QrCreationPage(BasePage):
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
+    @allure.step("Create Webiste QR code")
     def website_qr_create(self):
         self.locator.website_qr_type.click(delay=1000)
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
@@ -46,6 +51,7 @@ class QrCreationPage(BasePage):
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
+    @allure.step("Create PDF QR code")
     def pdf_qr_create(self):
         self.locator.pdf_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -64,6 +70,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="PDF")
 
+    @allure.step("Create Links QR code")
     def links_qr_create(self):
         self.locator.links_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -81,6 +88,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Links")
 
+    @allure.step("Create VCard QR code")
     def vcard_qr_create(self):
         self.locator.vcard_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -100,6 +108,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="vCard")
 
+    @allure.step("Create Business QR code")
     def business_qr_create(self):
         self.locator.business_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -125,6 +134,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
 
+    @allure.step("Create Image QR code")
     def image_qr_create(self):
         self.locator.images_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -140,6 +150,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
 
+    @allure.step("Create Video QR code")
     def video_qr_create(self):
         self.locator.video_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -160,7 +171,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Business")
 
-
+    @allure.step("Create Apps QR code")
     def apps_qr_create(self):
         self.locator.apps_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -180,6 +191,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Apps")
 
+    @allure.step("Create Coupon QR code")
     def coupon_qr_create(self):
         self.locator.coupon_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -198,6 +210,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Coupon")
 
+    @allure.step("Create MP3 QR code")
     def mp3_qr_create(self):
         self.locator.mp3_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -219,6 +232,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="MP3")
 
+    @allure.step("Create Menu QR code")
     def menu_menu_qr_create(self):
         self.locator.menu_qr_type.click(delay=1000)
         self.locator.menu_var_popup_menu_type_button.click()
@@ -248,6 +262,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Menu-Digital")
 
+    @allure.step("Create Menu - PDF QR code")
     def menu_pdf_qr_create(self):
         self.locator.menu_qr_type.click(delay=1000)
         self.locator.menu_var_popup_pdf_type_button.click()
@@ -266,6 +281,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Menu - PDF")
 
+    @allure.step("Create Menu - Website QR code")
     def menu_link_qr_create(self):
         self.locator.menu_qr_type.click(delay=1000)
         self.locator.menu_var_popup_web_type_button.click()
@@ -284,6 +300,7 @@ class QrCreationPage(BasePage):
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
         self.locator.create_button.click()
 
+    @allure.step("Create Wi-Fi QR code")
     def wifi_qr_create(self):
         self.locator.wifi_qr_type.click(delay=1000)
         self.locator.wi_fi_info_network_name_input.fill(self.faker.text(max_nb_chars=20))
@@ -292,6 +309,7 @@ class QrCreationPage(BasePage):
         self.locator.wi_fi_info_encrypting_type_dropdown.select_option(random_encryption_type)
         self.helper.set_custom_qr_code_name(qr_code_type="Wi-Fi")
 
+    @allure.step("Create Facebook QR code")
     def facebook_qr_create(self):
         self.locator.facebook_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -304,12 +322,14 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Facebook")
 
+    @allure.step("Create Instagram QR code")
     def instagram_qr_create(self):
         self.locator.instagram_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
         self.locator.instagram_basic_info_username_input.fill(self.faker.user_name())
         self.helper.set_custom_qr_code_name(qr_code_type="Instagram")
 
+    @allure.step("Create LinkedIn QR code")
     def social_media_qr_create(self):
         self.locator.social_media_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
@@ -326,6 +346,7 @@ class QrCreationPage(BasePage):
         self.helper.welcome_screen_set_img()
         self.helper.set_custom_qr_code_name(qr_code_type="Social Media")
 
+    @allure.step("Create WhatsApp QR code")
     def whatsapp_qr_create(self):
         self.locator.whatsapp_qr_type.click(delay=1000)
         self.helper.close_help_modal_window_st2()
