@@ -39,15 +39,15 @@ generate_allure_report:
     - unzip allure.zip -d /opt/allure
     - export PATH=$PATH:/opt/allure/allure-2.21.0/bin
     - mkdir -p reports/history
-    - if [ -d public/allure-report/history ]; then cp -R public/allure-report/history reports/; fi
+    - cp -R public/allure-report/history reports/
     - allure generate reports/ -o public/allure-report --clean
-    - mkdir -p public/allure-report/history
     - cp -R reports/history public/allure-report/history
   artifacts:
     when: always
     expire_in: 1 week
     paths:
       - public/allure-report
+      - reports/history
 
 pages:
   stage: deploy
