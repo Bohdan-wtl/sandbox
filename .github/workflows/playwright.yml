@@ -52,7 +52,7 @@ jobs:
         run: sudo ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure
 
       - name: Run Playwright tests with Xvfb
-        run: xvfb-run -a pytest
+        run: xvfb-run -a pytest tests/test_frame_comperatives.py -s -v --alluredir=allure-results
 
       - name: Generate Allure Report
         run: allure generate -c allure-results -o reports
