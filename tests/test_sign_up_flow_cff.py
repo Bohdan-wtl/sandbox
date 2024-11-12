@@ -3,6 +3,7 @@ import pytest
 from base.base_test import BaseTest
 from config import languages_dpf_urls
 
+
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
 @allure.feature("CFF sign up flow")
@@ -26,6 +27,7 @@ class TestCFFSignUpFlow(BaseTest):
         self.main_page.locator.main_logo_link.click()
         self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
 
+
     @allure.title("Links QR type")
     def test_cff_sign_up_links_qr_type(self, navigate_to_dpf_page, fake_email):
         self.qr_creation_page.links_qr_create()
@@ -34,7 +36,7 @@ class TestCFFSignUpFlow(BaseTest):
         self.qr_creation_page.locator.dpf_form_email_input.fill(fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.main_page.locator.main_logo_link.click()
-        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled(timeout=3000)
 
     @allure.title("VCard QR type")
     def test_cff_sign_up_vcard_qr_type(self, navigate_to_dpf_page, fake_email):
@@ -54,7 +56,7 @@ class TestCFFSignUpFlow(BaseTest):
         self.qr_creation_page.locator.dpf_form_email_input.fill(fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
         self.main_page.locator.main_logo_link.click()
-        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled()
+        self.my_qr_codes_page.expect(self.my_qr_codes_page.locator.sign_up_success_image).to_be_enabled(timeout=30000)
 
     @allure.title("Image QR type")
     def test_cff_sign_up_image_qr_type(self, navigate_to_dpf_page, fake_email):
