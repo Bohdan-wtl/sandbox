@@ -51,7 +51,7 @@ jobs:
           STAGE_ADMIN_LINK: ${{ secrets.STAGE_ADMIN_LINK }}
           STAGE_ADMIN_EMAIL: ${{ secrets.STAGE_ADMIN_EMAIL }}
           STAGE_ADMIN_PASSWORD: ${{ secrets.STAGE_ADMIN_PASSWORD }}
-        run: pytest tests/test_debug.py -s -v --alluredir=allure-results
+        run: pytest -s -v -n 5 --alluredir=allure-results
 
       - name: Load test report history
         uses: actions/checkout@v3
