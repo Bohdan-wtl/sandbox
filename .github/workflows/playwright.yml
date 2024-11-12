@@ -1,8 +1,7 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -15,7 +14,8 @@ jobs:
       STAGE_ADMIN_PASSWORD: ${{ secrets.STAGE_ADMIN_PASSWORD }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -36,8 +36,26 @@ jobs:
       - name: Install xvfb
         run: sudo apt-get install -y xvfb
 
+      - name: Install wget
+        run: sudo apt-get install -y wget
+
+      - name: Install default-jre
+        run: sudo apt-get install -y default-jre
+
+      - name: Download Allure
+        run: wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz
+
+      - name: Extract Allure
+        run: tar -zxvf allure-2.25.0.tgz -C /opt/
+
+      - name: Create a symbolic link
+        run: sudo ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure
+
       - name: Run Playwright tests with Xvfb
-        run: xvfb-run -a pytest
+        run: xvfb-run -a pytest tests/test_frame_comperatives.py -s -v --alluredir=allure-results
+
+      - name: Generate Allure Report
+        run: allure generate -c allure-results -o reports
 
       - name: Upload Allure Reports
         uses: actions/upload-artifact@v3
@@ -45,3 +63,19 @@ jobs:
         with:
           name: allure-reports
           path: reports
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to GitHub Pages
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./reports
+          destination_dir: allure-report
