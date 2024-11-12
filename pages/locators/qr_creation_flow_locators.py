@@ -272,7 +272,7 @@ class QrCreationLocators:
         self.qrcode_corners_step3_dropdown = page.locator("//button[@data-target='#acc_corners']")
         self.qrcode_add_logo_step3_dropdown = page.locator("//button[@data-target='#acc_addLogo']")
         self.qrcode_upload_logo_input = page.locator("//input[@id='qr_code_logo']")
-        self.create_button = page.locator("//button[@id='temp_submit']")
+        self.create_button = page.locator("#temp_submit")
         self.back_button = page.locator("//button[@id='cancel']")
         self.close_download_modal_button = page.locator("//div[@id='DownloadModal']//button[@aria-label='Close']")
         # Add QR design parameters Frame, QR code pattern, QR code corners, Add logo.

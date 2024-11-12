@@ -26,14 +26,14 @@ class QrCodeHelper:
         file_path = self.generated_files_dir
 
         if file_type == 'image':
-            image_filename = f"generated_image_{timestamp}.png"
+            image_filename = f"generated_image_{timestamp}.jpg"
             image_path = file_path / image_filename
-            image = Image.new('RGB', (800, 600), color=(000, 111, 255))
+            image = Image.new('RGB', (2440, 2440), color=(000, 111, 255))
             draw = ImageDraw.Draw(image)
             font = ImageFont.load_default()
-            text = f"{self.faker.texts(max_nb_chars=500)} {timestamp}"
+            text = f"{self.faker.texts(max_nb_chars=5000)} {timestamp}"
             draw.text((10, 10), text, font=font, fill=(0, 0, 0))
-            image.save(image_path)
+            image.save(image_path, format="JPEG", quality=95)
             return image_path
 
         elif file_type == 'mp4':
@@ -179,9 +179,11 @@ class QrCodeHelper:
         self.locator.contact_details_qr_code_add_phone_btn.click()
         self.locator.contact_details_qr_code_add_phone_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_phone_number.fill(self.faker.basic_phone_number())
+        self.locator.contact_details_qr_code_add_email_btn.scroll_into_view_if_needed()
         self.locator.contact_details_qr_code_add_email_btn.click()
         self.locator.contact_details_qr_code_add_email_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_email_address.fill(self.faker.email())
+        self.locator.contact_details_qr_code_add_website_btn.scroll_into_view_if_needed()
         self.locator.contact_details_qr_code_add_website_btn.click()
         self.locator.contact_details_qr_code_add_website_label.fill(self.faker.word())
         self.locator.contact_details_qr_code_add_website_url.fill(self.faker.url())
@@ -259,3 +261,9 @@ class QrCodeHelper:
         mobile.evaluate(f"element => element.style.height = '{iframe_height}px'")
         iframe.screenshot(path=str(self.screenshot_path))
         footer_element.evaluate("element => element.style.display = 'block'")
+
+    def preview_loader_active_and_not_active_state(self):
+        self.page.wait_for_function(
+            "document.querySelector('#loader') && document.querySelector('#loader').classList.contains('active')")
+        self.page.wait_for_function(
+            "document.querySelector('#loader') && !document.querySelector('#loader').classList.contains('active')")

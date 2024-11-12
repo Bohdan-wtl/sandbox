@@ -7,4 +7,5 @@ class PlansAndPriceLocators:
         self.monthly_buy_now_button = page.locator("//a[@data-plan-name='Monthly']")
         self.annually_buy_now_button = page.locator("//a[@data-plan-name='Annually']")
         self.quarterly_buy_now_button = page.locator("//a[@data-plan-name='Quarterly']")
+        self.continue_button = page.locator("#user_plan_url")
 

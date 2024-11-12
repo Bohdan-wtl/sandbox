@@ -1,3 +1,5 @@
+import time
+
 import allure
 from faker import Faker
 from base.base_page import BasePage
@@ -7,6 +9,7 @@ import random
 
 
 class QrCreationPage(BasePage):
+
     def __init__(self, page):
         super().__init__(page)
         self.locator = QrCreationLocators(page)
@@ -31,11 +34,15 @@ class QrCreationPage(BasePage):
             '//div[@id="acc_patterns"]//div[contains(@class,"d-flex mb-3 qr-shape customScrollbar")]', 'label', 'id')
         self.locator.qrcode_corners_step3_dropdown.click()
         self.helper.select_qrcode_corners_step3()
+        self.locator.qrcode_add_logo_step3_dropdown.scroll_into_view_if_needed()
+        self.locator.qrcode_add_logo_step3_dropdown.click()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
+        self.helper.preview_loader_active_and_not_active_state()
         self.locator.create_button.click()
 
     @allure.step("Create Webiste QR code")
     def website_qr_create(self):
+        url = "https://oqg-staging.test-qr.com/qr-code-generator"
         self.locator.website_qr_type.click(delay=1000)
         self.locator.setup_website_qr_code_input.fill(self.faker.url())
         self.helper.set_custom_qr_code_name(qr_code_type="Website")
@@ -49,6 +56,7 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.locator.qrcode_add_logo_step3_dropdown.click()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
+        self.helper.preview_loader_active_and_not_active_state()
         self.locator.create_button.click()
 
     @allure.step("Create PDF QR code")
@@ -298,6 +306,7 @@ class QrCreationPage(BasePage):
         self.helper.select_qrcode_corners_step3()
         self.locator.qrcode_add_logo_step3_dropdown.click()
         self.helper.set_file(self.locator.qrcode_upload_logo_input, 'image')
+        self.helper.preview_loader_active_and_not_active_state()
         self.locator.create_button.click()
 
     @allure.step("Create Wi-Fi QR code")
