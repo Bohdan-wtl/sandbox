@@ -6,7 +6,6 @@ from config import languages_urls
 
 @pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
-@pytest.mark.skip
 @allure.feature("CFF sign up flow")
 class TestDebug(BaseTest):
 
