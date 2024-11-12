@@ -1,8 +1,3 @@
-workflow:
-  rules:
-    - if: '$CI_COMMIT_MESSAGE =~ /create job/'
-      when: always
-
 stages:
   - test
   - report
@@ -11,19 +6,6 @@ variables:
   STAGE_ADMIN_LINK: $STAGE_ADMIN_LINK
   STAGE_ADMIN_EMAIL: $STAGE_ADMIN_EMAIL
   STAGE_ADMIN_PASSWORD: $STAGE_ADMIN_PASSWORD
-
-.common_before_script:
-  - apt-get update && apt-get install -y unzip xvfb wget default-jre
-  - 'curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/main/download?job=pages"'
-  - unzip artifacts.zip
-  - chmod -R 777 public
-  - mkdir allure-results && cp -r public/history allure-results
-  - python -m pip install --upgrade pip
-  - pip install -r requirements.txt
-  - python -m playwright install --with-deps
-  - wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz
-  - tar -zxvf allure-2.25.0.tgz -C /opt/
-  - ln -s /opt/allure-2.25.0/bin/allure /usr/bin/allure
 
 run_tests:
   stage: test
@@ -34,12 +16,20 @@ run_tests:
     paths:
       - allure-report
   when: manual
+  before_script:
+    - apt-get update && apt-get install -y unzip xvfb wget default-jre
+    - 'curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/main/download?job=pages"'
+    - unzip artifacts.zip
+    - chmod -R 777 public
+    - mkdir allure-results && cp -r public/history allure-results
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python -m playwright install --with-deps
+    - wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz
+    - tar -zxvf allure-2.25.0.tgz -C /opt/
+    - ln -s /opt/allure-2.25.0/bin/allure /usr/bin/allure
   script:
-    - export TESTOMATIO="${testomatio}"
-    - export TESTOMATIO_URL="${testomatio_url}"
-    - export TESTOMATIO_RUN="${run}"
-    - "curl -X POST --fail -F token=TOKEN -F ref=REF_NAME https://gitlab.com/api/v4/projects/64397685/trigger/pipeline"
-    - xvfb-run -a pytest -s -v --alluredir=allure-results --grep "${grep}"
+    - xvfb-run -a pytest -s -v --alluredir=allure-results
   after_script:
     - allure generate -c allure-results -o allure-report
 
@@ -55,3 +45,4 @@ pages:
     expire_in: never
     paths:
       - public
+
