@@ -4,7 +4,6 @@ from base.base_test import BaseTest
 from config import languages_urls
 
 
-@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
 @allure.feature("Default sign up flow")
 class TestDefaultSignUpFlow(BaseTest):

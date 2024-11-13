@@ -3,8 +3,6 @@ import pytest
 from base.base_test import BaseTest
 from config import languages_dpf_urls
 
-
-@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
 @allure.feature("DPF sign up flow")
 class TestDPFSignUpFlow(BaseTest):
