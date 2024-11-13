@@ -8,25 +8,25 @@ from playwright.sync_api import sync_playwright
 from random import Random
 from config import languages_urls, languages_dpf_urls, languages_nsf_urls
 
-headless = False
+headless = True
 slow_mo = 0
 
 DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser_name", action="store", default="chromium", help="Browser to use: chromium, firefox, or webkit"
+    )
 
-@pytest.fixture(scope="session")
-@allure.title("Set up browser")
+@pytest.fixture(scope="function")
+@allure.title("Setup browser")
 def browser(request):
-    browser_name = request.config.getoption("--browser")
+    browser_name = request.config.getoption("--browser_name")
     with sync_playwright() as p:
-        if browser_name[0]== "chromium":
-            browser = p.chromium.launch(headless=headless)
-        elif browser_name[0] == "firefox":
-            browser = p.firefox.launch(headless=headless)
-        elif browser_name[0] == "webkit":
+        if browser_name == "webkit":
             browser = p.webkit.launch(headless=headless)
-        else:
-            raise ValueError(f"{browser_name} - Invalid browser option. Choose from: chromium, firefox, webkit")
+        elif browser_name == "chromium":
+            browser = p.chromium.launch(headless=headless)
         yield browser
         browser.close()
 
@@ -68,13 +68,13 @@ def artifacts(request):
 @pytest.fixture(scope="session", autouse=True)
 @allure.title("Clean folders before tests")
 def clean_folders():
-    yield
     folders_to_clean = ["artifacts/generated_files", "artifacts/downloaded_qr_codes", "artifacts/screenshots",
                         "artifacts/videos", "artifacts/snapshots"]
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)
-        os.makedirs(folder, exist_ok=True)
+        os.makedirs(folder)
+    yield
 
 
 @pytest.fixture(scope='function')

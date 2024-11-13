@@ -16,7 +16,7 @@ class QrCodeHelper:
         self.page = page
         self.locator = locator
         self.faker = Faker()
-        self.generated_files_dir = Path(os.getcwd()) / "generated_files"
+        self.generated_files_dir = Path(os.getcwd()) /"artifacts"/ "generated_files"
         self.generated_files_dir.mkdir(parents=True, exist_ok=True)
         self.screenshot_path = None
 
