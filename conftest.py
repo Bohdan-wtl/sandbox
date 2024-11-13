@@ -8,32 +8,26 @@ from playwright.sync_api import sync_playwright
 from random import Random
 from config import languages_urls, languages_dpf_urls, languages_nsf_urls
 
-headless = False
+headless = True
 slow_mo = 0
 
 DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
 
-def pytest_addoption(parser):
-    parser.addoption(
-        "--browser_name", action="store", default="chromium", help="Browser to use: chromium, firefox, or webkit"
-    )
 
 @pytest.fixture(scope="session")
-@allure.title("Setup browser")
+@allure.title("Set up browser")
 def browser(request):
-    browser_name = request.config.getoption("--browser_name")
     with sync_playwright() as p:
-        if browser_name == "webkit":
-            browser = p.webkit.launch(headless=headless)
-        elif browser_name == "chromium":
-            browser = p.chromium.launch(headless=headless)
+        browser = getattr(p, request.param).launch(headless=headless)
         yield browser
         browser.close()
 
 @pytest.fixture(scope="function")
 def context(request, browser):
     context = browser.new_context(viewport={"width": 1440, "height": 1080}, record_video_dir="artifacts/videos/")
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
     yield context
+    context.tracing.stop(path = "trace.zip")
     context.close()
 
 @pytest.fixture(scope="function")

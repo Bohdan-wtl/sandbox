@@ -6,6 +6,8 @@ from base.base_test import BaseTest
 from config import get_env, languages_urls, languages_dpf_urls
 
 refund_alert_text = "The refund was successfully completed."
+
+@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @allure.feature("Admin link generation")
 class TestAdminLinkGeneration(BaseTest):
 
@@ -19,7 +21,7 @@ class TestAdminLinkGeneration(BaseTest):
         "discount_8_99_monthly_button",
         "discount_50_one_time_button"
     ])
-    def test_admin_create_uniq_payment_link(self, browser, language, sign_up_fixture, discount_button_locator, fake_email):
+    def test_admin_create_uniq_payment_link(self, language, sign_up_fixture, discount_button_locator, fake_email):
         discount_locator = getattr(self.admin_page.locator, discount_button_locator)
         self.qr_creation_page.website_qr_create()
         self.my_qr_codes_page.locator.download_modal_close_button.click()
@@ -64,7 +66,7 @@ class TestAdminLinkGeneration(BaseTest):
         "full_refund_plan_button_cancel_subscription",
         "full_refund_plan_button_keep_subscription"
     ])
-    def test_admin_full_refund_options(self, browser, navigate_to_dpf_page, dpf_language, refund_button, fake_email):
+    def test_admin_full_refund_options(self, navigate_to_dpf_page, dpf_language, refund_button, fake_email):
         self.qr_creation_page.website_qr_create()
         self.qr_creation_page.locator.dpf_form_email_input.fill(fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
@@ -95,7 +97,7 @@ class TestAdminLinkGeneration(BaseTest):
         "partial_refund_plan_button_cancel_subscription",
         "partial_refund_plan_button_keep_subscription"
     ])
-    def test_admin_partial_refund_options(self, browser, navigate_to_dpf_page, dpf_language, refund_button, fake_email):
+    def test_admin_partial_refund_options(self, navigate_to_dpf_page, dpf_language, refund_button, fake_email):
         self.qr_creation_page.website_qr_create()
         self.qr_creation_page.locator.dpf_form_email_input.fill(fake_email)
         self.qr_creation_page.locator.dpf_form_submit_button.click()
