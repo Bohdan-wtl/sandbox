@@ -31,10 +31,6 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Setup Docker Compose
-        run: |
-          docker-compose up --build -d
-
       - name: Checkout (copy) gh-pages repository to GitHub runner
         uses: actions/checkout@v2
         with:
@@ -47,18 +43,19 @@ jobs:
           BROWSER: ${{ github.event.inputs.browser }}
         run: docker-compose up --exit-code-from regression || true
 
-      - name: Copy history for selected browser from gh-pages to allure-results
-        if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
+      - name: Copy history from gh-pages to allure-results
         run: |
-          sudo mkdir -p allure-results/${{ github.event.inputs.browser }}/history
-          if [ -d "./.github/gh-pages/${{ github.event.inputs.browser }}/history" ]; then
-            sudo cp -R ./.github/gh-pages/${{ github.event.inputs.browser }}/history/* allure-results/${{ github.event.inputs.browser }}/history/
-          fi
+          sudo mkdir -p allure-results/history
+          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
 
       - name: Generate Allure report
         if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
         run: |
           sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
+
+      - name: Update Allure history
+        run: |
+          sudo cp -R allure-report/history/* ./.github/gh-pages/history/
 
       - name: Deploy to GitHub Pages
         if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
