@@ -5,7 +5,7 @@ WORKDIR /app/workspace
 COPY ./requirements.txt /app/workspace
 
 RUN apt-get update && \
-    apt-get install -y wget default-jre && \
+    apt-get install -y wget xvfb default-jre && \
     python -m pip install --upgrade pip && \
     pip install -r requirements.txt && \
     wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz && \
