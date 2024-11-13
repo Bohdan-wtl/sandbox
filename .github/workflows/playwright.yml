@@ -155,7 +155,7 @@ jobs:
           STAGE_ADMIN_LINK: ${STAGE_ADMIN_LINK}
           STAGE_ADMIN_EMAIL: ${STAGE_ADMIN_EMAIL}
           STAGE_ADMIN_PASSWORD: ${STAGE_ADMIN_PASSWORD}
-        run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
+        run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results/${{ github.event.inputs.browser }} --browser_name=${BROWSER}
 
       - name: Load test report history
         uses: actions/checkout@v3
