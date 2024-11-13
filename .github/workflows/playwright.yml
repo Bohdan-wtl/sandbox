@@ -18,7 +18,7 @@
       strategy:
         matrix:
           browser: [ "chromium", "webkit" ]
-        max-parallel: 1
+        max-parallel: 2
 
       steps:
         - name: Check out repository
@@ -53,6 +53,7 @@
             pip install -r requirements.txt && \
             wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz && \
             tar -zxvf allure-2.25.0.tgz -C /opt/ && \
+            sudo rm -f /usr/local/bin/allure && \
             sudo ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure && \
             sudo chmod +x /usr/local/bin/allure
 
