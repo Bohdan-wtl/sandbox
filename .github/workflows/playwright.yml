@@ -1,5 +1,116 @@
-name: Playwright Tests
+#name: Playwright Tests
+#
+#
+#jobs:
+#  test_chromium:
+#    timeout-minutes: 180
+#    runs-on: ubuntu-latest
+#    if: ${{ github.event.inputs.browser == 'chromium' }}  # Условие для запуска только для Chromium
+#    concurrency:
+#      group: 'deploy-to-gh-pages-chromium'
+#      cancel-in-progress: false
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Checkout (copy) gh-pages repository to GitHub runner
+#        uses: actions/checkout@v2
+#        with:
+#          ref: gh-pages
+#          path: ./.github/gh-pages
+#
+#      - name: Install Docker Compose
+#        run: |
+#          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#          sudo chmod +x /usr/local/bin/docker-compose
+#
+#      - name: Run tests in Docker container
+#        if: ${{ github.event.inputs.browser == 'chromium' }}
+#        env:
+#          BROWSER: ${{ github.event.inputs.browser }}
+#        run: docker-compose up --exit-code-from regression || true
+#
+#      - name: Copy history from gh-pages to allure-results
+#        run: |
+#          sudo mkdir -p allure-results/history
+#          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
+#
+#      - name: Generate Allure report
+#        if: ${{ github.event.inputs.browser == 'chromium' }}
+#        run: |
+#          sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
+#
+#      - name: Update Allure history
+#        run: |
+#          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/history/
+#
+#  test_safari:
+#    timeout-minutes: 180
+#    runs-on: ubuntu-latest
+#    if: ${{ github.event.inputs.browser == 'webkit' }}  # Условие для запуска только для Webkit
+#    concurrency:
+#      group: 'deploy-to-gh-pages-webkit'
+#      cancel-in-progress: false
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Checkout (copy) gh-pages repository to GitHub runner
+#        uses: actions/checkout@v2
+#        with:
+#          ref: gh-pages
+#          path: ./.github/gh-pages
+#
+#      - name: Install Docker Compose
+#        run: |
+#          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#          sudo chmod +x /usr/local/bin/docker-compose
+#
+#      - name: Run tests in Docker container
+#        if: ${{ github.event.inputs.browser == 'webkit' }}
+#        env:
+#          BROWSER: ${{ github.event.inputs.browser }}
+#        run: docker-compose up --exit-code-from regression || true
+#
+#      - name: Copy history from gh-pages to allure-results
+#        run: |
+#          sudo mkdir -p allure-results/history
+#          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
+#
+#      - name: Generate Allure report
+#        if: ${{ github.event.inputs.browser == 'webkit' }}
+#        run: |
+#          sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
+#
+#      - name: Update Allure history
+#        run: |
+#          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/history/
+#
+#  deploy:
+#    needs: [test_chromium, test_safari]
+#    runs-on: ubuntu-latest
+#    concurrency:
+#      group: 'deploy-gh-pages'
+#      cancel-in-progress: false
+#
+#    steps:
+#      - name: Checkout gh-pages branch
+#        uses: actions/checkout@v2
+#        with:
+#          ref: gh-pages
+#          path: ./.github/gh-pages
+#
+#      - name: Deploy to GitHub Pages
+#        uses: JamesIves/github-pages-deploy-action@4.1.5
+#        with:
+#          token: ${{ secrets.CI_TOKEN }}
+#          branch: gh-pages
+#          folder: allure-report/${{ github.event.inputs.browser }}
+#          clean: false
 
+name: Playwright Tests
 on:
   workflow_dispatch:
     inputs:
@@ -7,113 +118,64 @@ on:
         description: 'Choose the browser to run tests on (chromium, webkit)'
         required: true
         default: 'chromium'
+        type: choice
         options:
           - chromium
           - webkit
-
 jobs:
-  test_chromium:
+  run-tests:
     timeout-minutes: 180
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.browser == 'chromium' }}  # Условие для запуска только для Chromium
-    concurrency:
-      group: 'deploy-to-gh-pages-chromium'
-      cancel-in-progress: false
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Checkout (copy) gh-pages repository to GitHub runner
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          ref: gh-pages
-          path: ./.github/gh-pages
-
-      - name: Install Docker Compose
+          python-version: '3.11'
+      - name: Install dependencies
         run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+          apt-get update && \
+          apt-get install -y wget xvfb default-jre && \
+          python -m pip install --upgrade pip && \
+          pip install -r requirements.txt && \
+          wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz && \
+          tar -zxvf allure-2.25.0.tgz -C /opt/ && \
+          ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure && \
+          chmod +x /usr/local/bin/allure
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Run tests in Docker container
-        if: ${{ github.event.inputs.browser == 'chromium' }}
+      - name: Ensure browsers are installed
+        run: python -m playwright install --with-deps
+
+      - name: Run your tests
         env:
           BROWSER: ${{ github.event.inputs.browser }}
-        run: docker-compose up --exit-code-from regression || true
+          STAGE_URL: ${STAGE_URL}
+          STAGE_ADMIN_LINK: ${STAGE_ADMIN_LINK}
+          STAGE_ADMIN_EMAIL: ${STAGE_ADMIN_EMAIL}
+          STAGE_ADMIN_PASSWORD: ${STAGE_ADMIN_PASSWORD}
+        run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
 
-      - name: Copy history from gh-pages to allure-results
-        run: |
-          sudo mkdir -p allure-results/history
-          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
-
-      - name: Generate Allure report
-        if: ${{ github.event.inputs.browser == 'chromium' }}
-        run: |
-          sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
-
-      - name: Update Allure history
-        run: |
-          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/history/
-
-  test_safari:
-    timeout-minutes: 180
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.browser == 'webkit' }}  # Условие для запуска только для Webkit
-    concurrency:
-      group: 'deploy-to-gh-pages-webkit'
-      cancel-in-progress: false
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Checkout (copy) gh-pages repository to GitHub runner
-        uses: actions/checkout@v2
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
         with:
           ref: gh-pages
-          path: ./.github/gh-pages
+          path: gh-pages
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-
-      - name: Run tests in Docker container
-        if: ${{ github.event.inputs.browser == 'webkit' }}
-        env:
-          BROWSER: ${{ github.event.inputs.browser }}
-        run: docker-compose up --exit-code-from regression || true
-
-      - name: Copy history from gh-pages to allure-results
-        run: |
-          sudo mkdir -p allure-results/history
-          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
-
-      - name: Generate Allure report
-        if: ${{ github.event.inputs.browser == 'webkit' }}
-        run: |
-          sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
-
-      - name: Update Allure history
-        run: |
-          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/history/
-
-  deploy:
-    needs: [test_chromium, test_safari]
-    runs-on: ubuntu-latest
-    concurrency:
-      group: 'deploy-gh-pages'
-      cancel-in-progress: false
-
-    steps:
-      - name: Checkout gh-pages branch
-        uses: actions/checkout@v2
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
         with:
-          ref: gh-pages
-          path: ./.github/gh-pages
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
 
-      - name: Deploy to GitHub Pages
+      - name: Publish test report
         uses: JamesIves/github-pages-deploy-action@4.1.5
+        if: always()
         with:
           token: ${{ secrets.CI_TOKEN }}
           branch: gh-pages
