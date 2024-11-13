@@ -57,6 +57,16 @@ jobs:
         run: |
           sudo cp -R allure-report/history/* ./.github/gh-pages/history/
 
+      - name: Wait for deployment lock
+        run: |
+          while [ -f ./.github/gh-pages/deploy_lock ]; do
+            echo "Waiting for deployment lock to be released..."
+            sleep 10
+          done
+
+      - name: Create deployment lock
+        run: touch ./.github/gh-pages/deploy_lock
+
       - name: Deploy to GitHub Pages
         if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
         uses: JamesIves/github-pages-deploy-action@4.1.5
