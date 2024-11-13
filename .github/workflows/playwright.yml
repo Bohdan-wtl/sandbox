@@ -35,6 +35,12 @@ jobs:
         run: |
           docker-compose up --build -d
 
+      - name: Checkout (copy) gh-pages repository to GitHub runner
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: ./.github/gh-pages
+
       - name: Run tests in Docker container
         if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
         env:
@@ -53,12 +59,6 @@ jobs:
         if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
         run: |
           sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
-
-      - name: Update Allure history for the selected browser
-        if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
-        run: |
-          sudo mkdir -p ./.github/gh-pages/${{ github.event.inputs.browser }}/history
-          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/${{ github.event.inputs.browser }}/history/
 
       - name: Deploy to GitHub Pages
         if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
