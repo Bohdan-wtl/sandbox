@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright
 from random import Random
 from config import languages_urls, languages_dpf_urls, languages_nsf_urls
 
-headless = True
+headless = False
 slow_mo = 0
 
 DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
@@ -18,7 +18,7 @@ def pytest_addoption(parser):
         "--browser_name", action="store", default="chromium", help="Browser to use: chromium, firefox, or webkit"
     )
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 @allure.title("Setup browser")
 def browser(request):
     browser_name = request.config.getoption("--browser_name")

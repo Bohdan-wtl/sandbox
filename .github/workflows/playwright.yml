@@ -17,7 +17,7 @@
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          browser: [ chromium, webkit ]
+          browser: [ "chromium", "webkit" ]
         max-parallel: 1
 
       steps:
@@ -35,7 +35,17 @@
           with:
             python-version: '3.12'
 
+        - name: Cache system dependencies and Allure
+          uses: actions/cache@v2
+          with:
+            path: |
+              /usr/local/bin/allure
+              /opt/allure-2.25.0
+            key: ${{ runner.os }}-system-dependencies-allure
+
+
         - name: Install dependencies
+          if: steps.cache-system-dependencies-and-allure.outputs.cache-hit != 'true'
           run: |
             sudo apt-get update && \
             sudo apt-get install -y wget xvfb default-jre && \
@@ -46,8 +56,16 @@
             sudo ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure && \
             sudo chmod +x /usr/local/bin/allure
 
+        - name: Cache Playwright browsers and pytest-playwright
+          uses: actions/cache@v2
+          with:
+            path: |
+              ~/.cache/ms-playwright
+              ~/.cache/pip
+            key: ${{ runner.os }}-playwright-browsers
 
         - name: Install Playwright Browsers
+          if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
           run: |
             python -m pip install pytest-playwright && \
             playwright install
@@ -62,6 +80,7 @@
           run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
 
         - name: Upload Allure results as artifact
+          if: always()
           uses: actions/upload-artifact@v4
           with:
             name: allure-results-${{ matrix.browser }}
@@ -79,14 +98,15 @@
             path: gh-pages
 
         - name: Download Chrome Allure results artifacts
-          if: ${{ github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium' }}
+          if: always() && (github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium')
+
           uses: actions/download-artifact@v2
           with:
             name: allure-results-chromium
             path: allure-results/chromium
 
         - name: Download WebKit Allure results artifacts
-          if: ${{ github.event.inputs.browser == 'both' || github.event.inputs.browser == 'webkit' }}
+          if: always() && (github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium')
           uses: actions/download-artifact@v2
           with:
             name: allure-results-webkit
