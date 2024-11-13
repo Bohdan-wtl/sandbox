@@ -2,6 +2,11 @@ name: Playwright Tests
 
 on:
   workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Choose the browser to run tests on (chrome, webkit)'
+        required: true
+        default: 'chrome'
 
 jobs:
   test:
@@ -11,6 +16,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Checkout (copy) gh-pages repository to GitHub runner
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: ./.github/gh-pages
 
       - name: Install Docker Compose
         run: |
@@ -23,11 +34,14 @@ jobs:
           docker-compose up --build -d
 
       - name: Run tests in Docker container
+        env:
+          BROWSER: ${{ github.event.inputs.browser }}
         run: docker-compose up --exit-code-from regression || true
 
       - name: Copy history from gh-pages to allure-results
         run: |
           sudo mkdir -p allure-results/history
+          sudo ls
           sudo cp -R ./.github/gh-pages/history/* allure-results/history/
 
       - name: Generate Allure report

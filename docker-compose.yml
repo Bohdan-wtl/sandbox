@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.12'
 
 services:
   regression:
@@ -7,10 +7,11 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/app/workspace
-    command: /bin/sh -c "ls -la && pytest -sv -n 10 --alluredir=allure-results"
+    command: /bin/sh -c "ls -la && pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser=${BROWSER}"
     working_dir: /app/workspace
     environment:
       STAGE_URL: ${STAGE_URL}
       STAGE_ADMIN_LINK: ${STAGE_ADMIN_LINK}
       STAGE_ADMIN_EMAIL: ${STAGE_ADMIN_EMAIL}
       STAGE_ADMIN_PASSWORD: ${STAGE_ADMIN_PASSWORD}
+      BROWSER: ${BROWSER}
