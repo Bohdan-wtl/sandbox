@@ -155,7 +155,7 @@ jobs:
           STAGE_ADMIN_LINK: ${STAGE_ADMIN_LINK}
           STAGE_ADMIN_EMAIL: ${STAGE_ADMIN_EMAIL}
           STAGE_ADMIN_PASSWORD: ${STAGE_ADMIN_PASSWORD}
-        run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results/${{ github.event.inputs.browser }} --browser_name=${BROWSER}
+        run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results/ --browser_name=${BROWSER}
 
       - name: Load test report history
         uses: actions/checkout@v3
@@ -171,13 +171,13 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: build/allure-results
+          allure_results: build/allure-results/
 
       - name: Publish test report
-        uses: JamesIves/github-pages-deploy-action@4.1.5
+        uses: peaceiris/actions-gh-pages@v3
         if: always()
         with:
-          token: ${{ secrets.CI_TOKEN }}
-          branch: gh-pages
-          folder: allure-report/${{ github.event.inputs.browser }}
-          clean: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+          keep_files: 'true'
