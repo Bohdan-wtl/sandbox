@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       browser:
-        description: 'Choose the browser to run tests on (chrome, webkit)'
+        description: 'Choose the browser to run tests on (chromium, webkit)'
         required: true
-        default: 'chrome'
+        default: 'chromium'
 
 jobs:
   test:
