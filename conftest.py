@@ -68,13 +68,13 @@ def artifacts(request):
 @pytest.fixture(scope="session", autouse=True)
 @allure.title("Clean folders before tests")
 def clean_folders():
+    yield
     folders_to_clean = ["artifacts/generated_files", "artifacts/downloaded_qr_codes", "artifacts/screenshots",
                         "artifacts/videos", "artifacts/snapshots"]
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)
-        os.makedirs(folder)
-    yield
+        os.makedirs(folder, exist_ok=True)
 
 
 @pytest.fixture(scope='function')
