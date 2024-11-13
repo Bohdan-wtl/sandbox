@@ -12,9 +12,13 @@ on:
           - webkit
 
 jobs:
-  test:
+  test_chromium:
     timeout-minutes: 180
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.browser == 'chromium' }}  # Условие для запуска только для Chromium
+    concurrency:
+      group: 'deploy-to-gh-pages-chromium'
+      cancel-in-progress: false
 
     steps:
       - name: Checkout code
@@ -31,14 +35,8 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Checkout (copy) gh-pages repository to GitHub runner
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: ./.github/gh-pages
-
       - name: Run tests in Docker container
-        if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
+        if: ${{ github.event.inputs.browser == 'chromium' }}
         env:
           BROWSER: ${{ github.event.inputs.browser }}
         run: docker-compose up --exit-code-from regression || true
@@ -49,7 +47,7 @@ jobs:
           sudo cp -R ./.github/gh-pages/history/* allure-results/history/
 
       - name: Generate Allure report
-        if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
+        if: ${{ github.event.inputs.browser == 'chromium' }}
         run: |
           sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
 
@@ -57,18 +55,64 @@ jobs:
         run: |
           sudo cp -R allure-report/history/* ./.github/gh-pages/history/
 
-      - name: Wait for deployment lock
-        run: |
-          while [ -f ./.github/gh-pages/deploy_lock ]; do
-            echo "Waiting for deployment lock to be released..."
-            sleep 10
-          done
+  test_safari:
+    timeout-minutes: 180
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.browser == 'webkit' }}  # Условие для запуска только для Webkit
+    concurrency:
+      group: 'deploy-to-gh-pages-webkit'
+      cancel-in-progress: false
 
-      - name: Create deployment lock
-        run: touch ./.github/gh-pages/deploy_lock
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout (copy) gh-pages repository to GitHub runner
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: ./.github/gh-pages
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Run tests in Docker container
+        if: ${{ github.event.inputs.browser == 'webkit' }}
+        env:
+          BROWSER: ${{ github.event.inputs.browser }}
+        run: docker-compose up --exit-code-from regression || true
+
+      - name: Copy history from gh-pages to allure-results
+        run: |
+          sudo mkdir -p allure-results/history
+          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
+
+      - name: Generate Allure report
+        if: ${{ github.event.inputs.browser == 'webkit' }}
+        run: |
+          sudo docker-compose run regression /bin/sh -c "allure generate allure-results/${{ github.event.inputs.browser }} --clean -o allure-report/${{ github.event.inputs.browser }}"
+
+      - name: Update Allure history
+        run: |
+          sudo cp -R allure-report/history/* ./.github/gh-pages/history/
+
+  deploy:
+    needs: [test_chromium, test_safari]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: 'deploy-gh-pages'
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: ./.github/gh-pages
 
       - name: Deploy to GitHub Pages
-        if: ${{ github.event.inputs.browser == 'chromium' || github.event.inputs.browser == 'webkit' }} # Условие для выбранного браузера
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           token: ${{ secrets.CI_TOKEN }}
