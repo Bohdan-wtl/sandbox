@@ -62,7 +62,7 @@
           run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
 
         - name: Upload Allure results as artifact
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v4
           with:
             name: allure-results-${{ matrix.browser }}
             path: allure-results
