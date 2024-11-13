@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Tests - ${{ github.event.inputs.browser }}
 
 on:
   workflow_dispatch:
@@ -53,7 +53,7 @@ jobs:
 
       - name: Update Allure history
         run: |
-          sudo cp -R allure-report/history/* ./.github/gh-pages/history/
+          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/history/
 
   test_safari:
     timeout-minutes: 180
@@ -96,7 +96,7 @@ jobs:
 
       - name: Update Allure history
         run: |
-          sudo cp -R allure-report/history/* ./.github/gh-pages/history/
+          sudo cp -R allure-report/${{ github.event.inputs.browser }}/history/* ./.github/gh-pages/history/
 
   deploy:
     needs: [test_chromium, test_safari]
