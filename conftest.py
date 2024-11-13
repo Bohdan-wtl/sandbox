@@ -73,7 +73,7 @@ def clean_folders():
     for folder in folders_to_clean:
         if os.path.exists(folder):
             shutil.rmtree(folder)
-        os.makedirs(folder)
+        os.makedirs(folder, exist_ok=True)
     yield
 
 
