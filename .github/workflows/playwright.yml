@@ -78,7 +78,7 @@
             STAGE_ADMIN_LINK: ${{secrets.STAGE_ADMIN_LINK}}
             STAGE_ADMIN_EMAIL: ${{secrets.STAGE_ADMIN_EMAIL}}
             STAGE_ADMIN_PASSWORD: ${{secrets.STAGE_ADMIN_PASSWORD}}
-          run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
+          run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results
 
         - name: Upload Allure results as artifact
           if: always()
@@ -101,14 +101,14 @@
         - name: Download Chrome Allure results artifacts
           if: always() && (github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium')
 
-          uses: actions/download-artifact@v2
+          uses: actions/download-artifact@v4
           with:
             name: allure-results-chromium
             path: allure-results/chromium
 
         - name: Download WebKit Allure results artifacts
           if: always() && (github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium')
-          uses: actions/download-artifact@v2
+          uses: actions/download-artifact@v4
           with:
             name: allure-results-webkit
             path: allure-results/webkit
