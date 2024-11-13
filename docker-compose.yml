@@ -1,0 +1,15 @@
+version: '3.12'
+
+services:
+  regression:
+    image: python:3.12-slim-bookworm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app/workspace
+    command: /bin/sh -c "ls -la && pytest -sv --alluredir=allure-results"
+    working_dir: /app/workspace
+    environment:
+      - LOGIN=${LOGIN}
+      - PASSWORD=${PASSWORD}
