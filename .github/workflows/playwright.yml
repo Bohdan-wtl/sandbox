@@ -10,16 +10,26 @@
           options:
             - chromium
             - webkit
+
   jobs:
-    run-tests:
-      timeout-minutes: 180
+    test:
       runs-on: ubuntu-latest
+
       steps:
-        - uses: actions/checkout@v4
-        - name: Set up Python
-          uses: actions/setup-python@v4
+        - name: Check out repository
+          uses: actions/checkout@v2
+
+        - name: Check out gh-pages branch
+          uses: actions/checkout@v2
           with:
-            python-version: '3.11'
+            ref: gh-pages
+            path: gh-pages
+
+        - name: Set up Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.12'
+
         - name: Install dependencies
           run: |
             apt-get update && \
@@ -30,11 +40,11 @@
             tar -zxvf allure-2.25.0.tgz -C /opt/ && \
             ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure && \
             chmod +x /usr/local/bin/allure
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
 
-        - name: Ensure browsers are installed
-          run: python -m playwright install --with-deps
+        - name: Install Playwright Browsers
+          run: |
+            python -m pip install pytest-playwright && \
+            playwright install
 
         - name: Run your tests
           env:
@@ -43,29 +53,24 @@
             STAGE_ADMIN_LINK: ${STAGE_ADMIN_LINK}
             STAGE_ADMIN_EMAIL: ${STAGE_ADMIN_EMAIL}
             STAGE_ADMIN_PASSWORD: ${STAGE_ADMIN_PASSWORD}
-          run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results/ --browser_name=${BROWSER}
+          run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
 
-        - name: Load test report history
-          uses: actions/checkout@v3
-          if: always()
-          continue-on-error: true
-          with:
-            ref: gh-pages
-            path: gh-pages
+        - name: Copy previous reports
+          run: |
+            mkdir -p allure-results
+            cp -r gh-pages/allure-results/* allure-results/ || true
 
-        - name: Build test report
-          uses: simple-elf/allure-report-action@v1.7
-          if: always()
-          with:
-            gh_pages: gh-pages
-            allure_history: allure-history
-            allure_results: allure-results
+        - name: Merge new results with previous results
+          run: |
+            cp -r allure-results/* gh-pages/allure-results
 
-        - name: Publish test report
+        - name: Generate Allure Report with history
+          run: |
+            allure generate gh-pages/allure-results -o gh-pages --clean
+
+        - name: Deploy Allure Report to GitHub Pages
+          if: success()
           uses: peaceiris/actions-gh-pages@v3
-          if: always()
           with:
-            github_token: ${{ secrets.CI_TOKEN }}
-            publish_branch: gh-pages
-            publish_dir: allure-history
-            keep_files: 'true'
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: gh-pages
