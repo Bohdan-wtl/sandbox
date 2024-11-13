@@ -10,10 +10,16 @@
           options:
             - chromium
             - webkit
+            - both
 
   jobs:
     test:
       runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          browser: [ chromium, webkit ]
+        max-parallel: 1
+      if: ${{ github.event.inputs.browser == 'both' || github.event.inputs.browser == matrix.browser }}
 
       steps:
         - name: Check out repository
@@ -32,14 +38,15 @@
 
         - name: Install dependencies
           run: |
-            apt-get update && \
-            apt-get install -y wget xvfb default-jre && \
+            sudo apt-get update && \
+            sudo apt-get install -y wget xvfb default-jre && \
             python -m pip install --upgrade pip && \
             pip install -r requirements.txt && \
             wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz && \
             tar -zxvf allure-2.25.0.tgz -C /opt/ && \
-            ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure && \
-            chmod +x /usr/local/bin/allure
+            sudo ln -s /opt/allure-2.25.0/bin/allure /usr/local/bin/allure && \
+            sudo chmod +x /usr/local/bin/allure
+
 
         - name: Install Playwright Browsers
           run: |
@@ -48,29 +55,54 @@
 
         - name: Run your tests
           env:
-            BROWSER: ${{ github.event.inputs.browser }}
-            STAGE_URL: ${STAGE_URL}
-            STAGE_ADMIN_LINK: ${STAGE_ADMIN_LINK}
-            STAGE_ADMIN_EMAIL: ${STAGE_ADMIN_EMAIL}
-            STAGE_ADMIN_PASSWORD: ${STAGE_ADMIN_PASSWORD}
+            BROWSER: ${{ matrix.browser }}
+            STAGE_ADMIN_LINK: ${{secrets.STAGE_ADMIN_LINK}}
+            STAGE_ADMIN_EMAIL: ${{secrets.STAGE_ADMIN_EMAIL}}
+            STAGE_ADMIN_PASSWORD: ${{secrets.STAGE_ADMIN_PASSWORD}}
           run: xvfb-run -a pytest tests/test-debug.py -sv -n 10 --alluredir=allure-results --browser_name=${BROWSER}
 
-        - name: Copy previous reports
-          run: |
-            mkdir -p allure-results
-            cp -r gh-pages/allure-results/* allure-results/ || true
+        - name: Upload Allure results as artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: allure-results-${{ matrix.browser }}
+            path: allure-results
 
-        - name: Merge new results with previous results
-          run: |
-            cp -r allure-results/* gh-pages/allure-results
+    merge-reports:
+      runs-on: ubuntu-latest
+      needs: test
 
-        - name: Generate Allure Report with history
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v2
+          with:
+            ref: gh-pages
+            path: gh-pages
+
+        - name: Download Chrome Allure results artifacts
+          if: ${{ github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium' }}
+          uses: actions/download-artifact@v2
+          with:
+            name: allure-results-chromium
+            path: allure-results/chromium
+
+        - name: Download WebKit Allure results artifacts
+          if: ${{ github.event.inputs.browser == 'both' || github.event.inputs.browser == 'webkit' }}
+          uses: actions/download-artifact@v2
+          with:
+            name: allure-results-webkit
+            path: allure-results/webkit
+
+        - name: Merge Allure results and generate report
           run: |
+            mkdir -p gh-pages/allure-results
+            if [ -d allure-results/chromium ]; then cp -r allure-results/chromium/* gh-pages/allure-results/; fi
+            if [ -d allure-results/webkit ]; then cp -r allure-results/webkit/* gh-pages/allure-results/; fi
             allure generate gh-pages/allure-results -o gh-pages --clean
 
         - name: Deploy Allure Report to GitHub Pages
-          if: success()
+          if: always()
           uses: peaceiris/actions-gh-pages@v3
           with:
             github_token: ${{ secrets.CI_TOKEN }}
             publish_dir: gh-pages
+            keep_files: true
