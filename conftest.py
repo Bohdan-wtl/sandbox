@@ -13,20 +13,11 @@ slow_mo = 0
 
 DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
 
-def pytest_addoption(parser):
-    parser.addoption(
-        "--browser_name", action="store", default="chromium", help="Browser to use: chromium, firefox, or webkit"
-    )
-
 @pytest.fixture(scope="session")
-@allure.title("Setup browser")
+@allure.title("Set up browser")
 def browser(request):
-    browser_name = request.config.getoption("--browser_name")
     with sync_playwright() as p:
-        if browser_name == "webkit":
-            browser = p.webkit.launch(headless=headless)
-        elif browser_name == "chromium":
-            browser = p.chromium.launch(headless=headless)
+        browser = getattr(p, request.param).launch(headless=headless)
         yield browser
         browser.close()
 

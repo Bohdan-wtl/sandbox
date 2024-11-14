@@ -1,31 +1,17 @@
-  name: Playwright Tests
+  name: UI Tests
   on:
     workflow_dispatch:
-      inputs:
-        browser:
-          description: 'Choose the browser to run tests on (chromium, webkit)'
-          required: true
-          default: 'chromium'
-          type: choice
-          options:
-            - chromium
-            - webkit
-            - both
 
   jobs:
     test:
       runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          browser: [ "chromium", "webkit" ]
-        max-parallel: 2
 
       steps:
         - name: Check out repository
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
 
         - name: Check out gh-pages branch
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
           with:
             ref: gh-pages
             path: gh-pages
@@ -72,9 +58,7 @@
             playwright install
 
         - name: Run your tests
-          if: ${{ github.event.inputs.browser == 'both' || github.event.inputs.browser == matrix.browser }}
           env:
-            BROWSER: ${{ matrix.browser }}
             STAGE_ADMIN_LINK: ${{secrets.STAGE_ADMIN_LINK}}
             STAGE_ADMIN_EMAIL: ${{secrets.STAGE_ADMIN_EMAIL}}
             STAGE_ADMIN_PASSWORD: ${{secrets.STAGE_ADMIN_PASSWORD}}
@@ -84,41 +68,19 @@
           if: always()
           uses: actions/upload-artifact@v4
           with:
-            name: allure-results-${{ matrix.browser }}
+            name: allure-results
             path: allure-results
 
-    merge-reports:
+    deploy:
       runs-on: ubuntu-latest
       needs: test
 
       steps:
         - name: Check out repository
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
           with:
             ref: gh-pages
             path: gh-pages
-
-        - name: Download Chrome Allure results artifacts
-          if: always() && (github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium')
-
-          uses: actions/download-artifact@v4
-          with:
-            name: allure-results-chromium
-            path: allure-results/chromium
-
-        - name: Download WebKit Allure results artifacts
-          if: always() && (github.event.inputs.browser == 'both' || github.event.inputs.browser == 'chromium')
-          uses: actions/download-artifact@v4
-          with:
-            name: allure-results-webkit
-            path: allure-results/webkit
-
-        - name: Merge Allure results and generate report
-          run: |
-            mkdir -p gh-pages/allure-results
-            if [ -d allure-results/chromium ]; then cp -r allure-results/chromium/* gh-pages/allure-results/; fi
-            if [ -d allure-results/webkit ]; then cp -r allure-results/webkit/* gh-pages/allure-results/; fi
-            allure generate gh-pages/allure-results -o gh-pages --clean
 
         - name: Deploy Allure Report to GitHub Pages
           if: always()

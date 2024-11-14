@@ -6,6 +6,7 @@ from config import languages_urls
 
 @pytest.mark.parametrize("language", languages_urls.keys())
 @allure.feature("Default sign up flow")
+@pytest.mark.parametrize("browser", ["chromium", "webkit"], indirect=True)
 class TestDefaultSignUpFlow(BaseTest):
 
     @allure.title("Website QR type")

@@ -5,6 +5,7 @@ from config import languages_dpf_urls
 
 @pytest.mark.parametrize("dpf_language", languages_dpf_urls.keys())
 @allure.feature("CFF sign up flow")
+@pytest.mark.parametrize("browser", ["chromium", "webkit"], indirect=True)
 class TestCFFSignUpFlow(BaseTest):
 
     @allure.title("Website QR type")
