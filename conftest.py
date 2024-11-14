@@ -8,11 +8,10 @@ from playwright.sync_api import sync_playwright
 from random import Random
 from config import languages_urls, languages_dpf_urls, languages_nsf_urls
 
-headless = True
+headless = False
 slow_mo = 0
 
 DELETE_USER_URL = "https://oqg-staging.test-qr.com/api/test-user-delete"
-
 
 @pytest.fixture(scope="session")
 @allure.title("Set up browser")
@@ -25,9 +24,7 @@ def browser(request):
 @pytest.fixture(scope="function")
 def context(request, browser):
     context = browser.new_context(viewport={"width": 1440, "height": 1080}, record_video_dir="artifacts/videos/")
-    context.tracing.start(screenshots=True, snapshots=True, sources=True)
     yield context
-    context.tracing.stop(path = "trace.zip")
     context.close()
 
 @pytest.fixture(scope="function")

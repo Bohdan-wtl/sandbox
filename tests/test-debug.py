@@ -4,9 +4,9 @@ from base.base_test import BaseTest
 from config import languages_urls
 
 
-@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
 @allure.feature("CFF sign up flow")
+@pytest.mark.parametrize("browser", ["chromium", "webkit"], indirect=True)
 class TestDebug(BaseTest):
 
     @allure.title("Website QR type")

@@ -6,9 +6,9 @@ from base.base_test import BaseTest
 from config import languages_urls
 
 
-@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("language", languages_urls.keys())
 @allure.feature("Frame comparatives")
+@pytest.mark.parametrize("browser", ["chromium", "webkit"], indirect=True)
 class TestFrameComparatives(BaseTest):
 
     @pytest.mark.parametrize("qr_create_method", [

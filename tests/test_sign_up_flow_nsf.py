@@ -4,9 +4,9 @@ from base.base_test import BaseTest
 from config import languages_nsf_urls
 
 
-@pytest.mark.parametrize("browser", ["chromium"], indirect=True)
 @pytest.mark.parametrize("nsf_language", languages_nsf_urls.keys())
 @allure.feature("NSF sign up flow")
+@pytest.mark.parametrize("browser", ["chromium", "webkit"], indirect=True)
 class TestNSFSignUpFlow(BaseTest):
 
     @allure.title("Website QR type")
